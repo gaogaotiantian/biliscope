@@ -37,7 +37,7 @@ function getUserProfileCardDataHTML(data) {
                             ${data["name"]}
                         </b>
                     </a>
-                    <span class="gender icon ${sexToClass(data["sex"])}"></span>
+                    <span class="gender biliscope-icon ${sexToClass(data["sex"])}"></span>
                     <a lvl="6" href="//www.bilibili.com/html/help.html#k" target="_blank" class="m-level idc-m-level"></a>
                 </div>
                 <div class="idc-meta">
@@ -60,8 +60,8 @@ function getUserProfileCardDataHTML(data) {
 }
 function getUserProfileCardHTML(data) {
     return `
-        <div id="id-card" style="position: absolute;">
-            <div id="id-card-data">
+        <div id="biliscope-id-card" style="position: absolute;">
+            <div id="biliscope-id-card-data">
                 ${getUserProfileCardDataHTML(data)}
             </div>
             <canvas id="word-cloud-canvas" style="width: 100%; height: 0"></canvas>
@@ -174,18 +174,23 @@ UserProfileCard.prototype.updateData = function (data)
 
     if (data["api"] == "wordcloud") {
         let canvas = document.getElementById("word-cloud-canvas");
-        canvas.style.height = `${canvas.offsetWidth / 2}px`;
-        canvas.width = canvas.offsetWidth;
-        canvas.height = canvas.offsetHeight;
-        WordCloud(canvas, {
-            list: this.data["wordcloud"],
-            backgroundColor: "transparent",
-            weightFactor: 100 / this.wordCloudMaxCount(),
-            shrinkToFit: true,
-            minSize: 3
-        });
+        if (this.data["wordcloud"].length > 0) {
+            canvas.style.height = `${canvas.offsetWidth / 2}px`;
+            canvas.width = canvas.offsetWidth;
+            canvas.height = canvas.offsetHeight;
+            WordCloud(canvas, {
+                list: this.data["wordcloud"],
+                backgroundColor: "transparent",
+                weightFactor: 100 / this.wordCloudMaxCount(),
+                shrinkToFit: true,
+                minSize: 3
+            });
+        } else {
+            canvas.style.height = "0px";
+            canvas.height = 0;
+        }
     } else {
-        document.getElementById("id-card-data").innerHTML = getUserProfileCardDataHTML(this.data);
+        document.getElementById("biliscope-id-card-data").innerHTML = getUserProfileCardDataHTML(this.data);
     }
 
     if (this.enable && this.el) {

@@ -1,4 +1,4 @@
-#id-card {
+#biliscope-id-card {
     background: #fff;
     box-shadow: 0 0 2px rgba(0,0,0,.3);
     border-radius: 4px;
@@ -7,13 +7,13 @@
     width: 375px
 }
 
-#id-card .idc-laoding-text {
+#biliscope-id-card .idc-laoding-text {
     padding: 10px;
     font-size: 12px;
     color: #222
 }
 
-#id-card .idc-theme-img {
+#biliscope-id-card .idc-theme-img {
     border-radius: 4px 4px 0 0;
     display: block;
     width: 375px;
@@ -22,18 +22,18 @@
     background-position: 50%
 }
 
-#id-card .idc-content .idc-username {
+#biliscope-id-card .idc-content .idc-username {
     display: inline-block;
     line-height: 22px;
     vertical-align: middle
 }
 
-#id-card .idc-info {
-    padding: 7px 40px 10px 100px;
+#biliscope-id-card .idc-info {
+    padding: 7px 40px 10px 90px;
     position: relative
 }
 
-#id-card .idc-info .idc-avatar-container {
+#biliscope-id-card .idc-info .idc-avatar-container {
     position: absolute;
     top: -15px;
     left: 20px;
@@ -41,7 +41,7 @@
     height: 54px
 }
 
-#id-card .idc-avatar {
+#biliscope-id-card .idc-avatar {
     border: 2px solid #fff;
     border-radius: 50px;
     display: block;
@@ -53,7 +53,7 @@
     left: 0
 }
 
-#id-card .idc-uname {
+#biliscope-id-card .idc-uname {
     display: inline-block;
     font-size: 14px;
     vertical-align: top;
@@ -63,42 +63,43 @@
     white-space: nowrap
 }
 
-#id-card .idc-uname:hover {
+#biliscope-id-card .idc-uname:hover {
     color: #00a1d6!important
 }
 
-#id-card .idc-gender {
+#biliscope-id-card .idc-gender {
     vertical-align: middle
 }
 
-#id-card .idc-m-level {
+#biliscope-id-card .idc-m-level {
     vertical-align: middle;
     margin-top: 1px
 }
 
-#id-card .idc-meta {
+#biliscope-id-card .idc-meta {
+    font-size: 12px;
     margin-top: 6px
 }
 
-#id-card .idc-meta-item {
-    margin-right: 10px
+#biliscope-id-card .idc-meta-item {
+    margin-right: 20px
 }
 
-#id-card .idc-tag-list {
+#biliscope-id-card .idc-tag-list {
     display: none;
     padding-bottom: 0
 }
 
-#id-card .idc-certification {
+#biliscope-id-card .idc-certification {
     color: #ff931e;
     margin: 7px 0 0
 }
 
-#id-card .idc-certification:empty {
+#biliscope-id-card .idc-certification:empty {
     display: none
 }
 
-#id-card .idc-certified-icon {
+#biliscope-id-card .idc-certified-icon {
     background-position: -213px -791px;
     width: 20px;
     height: 20px;
@@ -106,33 +107,33 @@
     margin-right: 5px
 }
 
-#id-card .idc-auth-description {
+#biliscope-id-card .idc-auth-description {
     line-height: 20px;
     font-size: 12px;
     margin-top: 6px;
     color: #6d757a
 }
 
-#id-card .idc-auth-description.no-desc {
+#biliscope-id-card .idc-auth-description.no-desc {
     color: #99a2aa
 }
 
-#id-card .idc-sign {
+#biliscope-id-card .idc-sign {
     color: #999;
     line-height: 1.7;
     padding: 7px 0 5px
 }
 
-#id-card .idc-sign:empty {
+#biliscope-id-card .idc-sign:empty {
     display: none
 }
 
-#id-card .idc-action {
+#biliscope-id-card .idc-action {
     text-align: center;
     padding: 0 20px 20px 29px
 }
 
-#id-card .idc-btn {
+#biliscope-id-card .idc-btn {
     display: inline-block;
     cursor: pointer;
     line-height: 24px;
@@ -142,25 +143,25 @@
     font-size: 12px
 }
 
-#id-card .idc-btn.blue {
+#biliscope-id-card .idc-btn.blue {
     color: #fff;
     background-color: #00a1d6;
     border: 1px solid #00a1d6
 }
 
-#id-card .idc-btn.blue:hover {
+#biliscope-id-card .idc-btn.blue:hover {
     background-color: #00b5e5;
     border: 1px solid #00b5e5;
     color: #fff
 }
 
-#id-card .idc-btn.unfollow {
+#biliscope-id-card .idc-btn.unfollow {
     background-color: #edf2f9;
     border-color: #edf2f9;
     color: #999
 }
 
-#id-card .idc-btn .btn-content {
+#biliscope-id-card .idc-btn .btn-content {
     line-height: 24px
 }
 
@@ -181,4 +182,28 @@
 
 .biliscope-organization-auth-icon {
     background-position: -5px -54px;
+}
+
+.biliscope-icon {
+    display: inline-block;
+    background-image: url(//s1.hdslb.com/bfs/static/jinkela/space/assets/icons.png)
+}
+
+.h .gender {
+    display: none;
+    width: 21px;
+    height: 18px;
+    margin-right: 5px;
+    vertical-align: middle;
+    background-position: -212px -922px
+}
+
+.h .gender.male {
+    display: inline-block;
+    background-position: -212px -472px
+}
+
+.h .gender.female {
+    display: inline-block;
+    background-position: -211px -404px
 }
