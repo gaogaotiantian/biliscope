@@ -1,0 +1,184 @@
+#id-card {
+    background: #fff;
+    box-shadow: 0 0 2px rgba(0,0,0,.3);
+    border-radius: 4px;
+    position: absolute;
+    z-index: 1002;
+    width: 375px
+}
+
+#id-card .idc-laoding-text {
+    padding: 10px;
+    font-size: 12px;
+    color: #222
+}
+
+#id-card .idc-theme-img {
+    border-radius: 4px 4px 0 0;
+    display: block;
+    width: 375px;
+    height: 120px;
+    background-size: cover;
+    background-position: 50%
+}
+
+#id-card .idc-content .idc-username {
+    display: inline-block;
+    line-height: 22px;
+    vertical-align: middle
+}
+
+#id-card .idc-info {
+    padding: 7px 40px 10px 100px;
+    position: relative
+}
+
+#id-card .idc-info .idc-avatar-container {
+    position: absolute;
+    top: -15px;
+    left: 20px;
+    width: 54px;
+    height: 54px
+}
+
+#id-card .idc-avatar {
+    border: 2px solid #fff;
+    border-radius: 50px;
+    display: block;
+    float: left;
+    width: 50px;
+    height: 50px;
+    position: absolute;
+    top: 0;
+    left: 0
+}
+
+#id-card .idc-uname {
+    display: inline-block;
+    font-size: 14px;
+    vertical-align: top;
+    max-width: 9em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap
+}
+
+#id-card .idc-uname:hover {
+    color: #00a1d6!important
+}
+
+#id-card .idc-gender {
+    vertical-align: middle
+}
+
+#id-card .idc-m-level {
+    vertical-align: middle;
+    margin-top: 1px
+}
+
+#id-card .idc-meta {
+    margin-top: 6px
+}
+
+#id-card .idc-meta-item {
+    margin-right: 10px
+}
+
+#id-card .idc-tag-list {
+    display: none;
+    padding-bottom: 0
+}
+
+#id-card .idc-certification {
+    color: #ff931e;
+    margin: 7px 0 0
+}
+
+#id-card .idc-certification:empty {
+    display: none
+}
+
+#id-card .idc-certified-icon {
+    background-position: -213px -791px;
+    width: 20px;
+    height: 20px;
+    vertical-align: middle;
+    margin-right: 5px
+}
+
+#id-card .idc-auth-description {
+    line-height: 20px;
+    font-size: 12px;
+    margin-top: 6px;
+    color: #6d757a
+}
+
+#id-card .idc-auth-description.no-desc {
+    color: #99a2aa
+}
+
+#id-card .idc-sign {
+    color: #999;
+    line-height: 1.7;
+    padding: 7px 0 5px
+}
+
+#id-card .idc-sign:empty {
+    display: none
+}
+
+#id-card .idc-action {
+    text-align: center;
+    padding: 0 20px 20px 29px
+}
+
+#id-card .idc-btn {
+    display: inline-block;
+    cursor: pointer;
+    line-height: 24px;
+    height: 26px;
+    width: 80px;
+    margin: 0 10px;
+    font-size: 12px
+}
+
+#id-card .idc-btn.blue {
+    color: #fff;
+    background-color: #00a1d6;
+    border: 1px solid #00a1d6
+}
+
+#id-card .idc-btn.blue:hover {
+    background-color: #00b5e5;
+    border: 1px solid #00b5e5;
+    color: #fff
+}
+
+#id-card .idc-btn.unfollow {
+    background-color: #edf2f9;
+    border-color: #edf2f9;
+    color: #999
+}
+
+#id-card .idc-btn .btn-content {
+    line-height: 24px
+}
+
+.biliscope-auth-icon {
+    display: flex;
+    -ms-flex-negative: 0;
+    flex-shrink: 0;
+    width: 18px;
+    height: 18px;
+    background-image: url(//s1.hdslb.com/bfs/static/jinkela/space/assets/user-auth.png);
+    background-repeat: no-repeat;
+    margin-right: 6px
+}
+
+.biliscope-personal-auth-icon {
+    background-position: -39px -54px;
+}
+
+.biliscope-organization-auth-icon {
+    background-position: -5px -54px;
+}
