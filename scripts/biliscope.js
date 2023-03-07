@@ -13,7 +13,7 @@ chrome.storage.sync.get({
 
 function getUserId(target)
 {
-    let regex = /.*?bilibili.com\/([0-9]*)[^\/]*$/;
+    let regex = /.*?bilibili.com\/([0-9]*)([^\/]*|\/)$/;
     let userId = target.href.match(regex)[1];
 
     return userId;

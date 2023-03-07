@@ -33,12 +33,11 @@ function getUserProfileCardDataHTML(data) {
             <div class="idc-content h">
                 <div>
                     <a href="//space.bilibili.com/2051617240/" target="_blank" class="idc-username">
-                        <b title="${data["name"]}" class="idc-uname" style="${data["vip"] ? "color: rgb(251, 114, 153);": ""}">
+                        <b title="${data["name"]}" class="idc-uname" style="${data["vip"] ? "color: rgb(251, 114, 153);": "color: #18191C"}">
                             ${data["name"]}
                         </b>
                     </a>
                     <span class="gender biliscope-icon ${sexToClass(data["sex"])}"></span>
-                    <a lvl="6" href="//www.bilibili.com/html/help.html#k" target="_blank" class="m-level idc-m-level"></a>
                 </div>
                 <div class="idc-meta">
                     <span class="idc-meta-item">关注 ${data["following"]}</span>
@@ -115,11 +114,29 @@ UserProfileCard.prototype.updateUserId = function(userId)
 
 UserProfileCard.prototype.updateCursor = function(cursorX, cursorY)
 {
+    const cursorPadding = 10;
+    const windowPadding = 20;
+
     this.cursorX = cursorX;
     this.cursorY = cursorY;
+
     if (this.el) {
-        this.el.style.top = `${this.cursorY + 30}px`;
-        this.el.style.left = `${this.cursorX + 30}px`;
+        let width = this.el.scrollWidth;
+        let height = this.el.scrollHeight;
+
+        if (this.cursorX + width + windowPadding > window.scrollX + window.innerWidth) {
+            // Will overflow to the right, put it on the left
+            this.el.style.left = `${this.cursorX - cursorPadding - width}px`;
+        } else {
+            this.el.style.left = `${this.cursorX + cursorPadding}px`;
+        }
+
+        if (this.cursorY + height + windowPadding > window.scrollY + window.innerHeight) {
+            // Will overflow to the bottom, put it on the top
+            this.el.style.top = `${this.cursorY - cursorPadding - height}px`;
+        } else {
+            this.el.style.top = `${this.cursorY + cursorPadding}px`;
+        }
     }
 }
 
@@ -183,7 +200,7 @@ UserProfileCard.prototype.updateData = function (data)
                 backgroundColor: "transparent",
                 weightFactor: 100 / this.wordCloudMaxCount(),
                 shrinkToFit: true,
-                minSize: 3
+                minSize: 5
             });
         } else {
             canvas.style.height = "0px";
@@ -193,9 +210,11 @@ UserProfileCard.prototype.updateData = function (data)
         document.getElementById("biliscope-id-card-data").innerHTML = getUserProfileCardDataHTML(this.data);
     }
 
-    if (this.enable && this.el) {
+    if (this.enable && this.el && this.el.style.display != "flex") {
         this.el.style.display = "flex";
     }
+
+    this.updateCursor(this.cursorX, this.cursorY);
 }
 
 userProfileCard = new UserProfileCard();
