@@ -90,7 +90,7 @@ function updateWordCloud(userId, callback)
             }
         } else {
             cacheAndUpdate(callback, userId, "count", {"count": 0});
-            cacheAndUpdate(callback, userId, "wordcloud", []);
+            cacheAndUpdate(callback, userId, "wordcloud", {"word": [], "type": []});
         }
     });
 }
