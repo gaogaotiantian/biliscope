@@ -10,18 +10,43 @@ userInfoCache = new Map()
 function updateWordMap(map, sentence)
 {
     let results = Array.from(new Intl.Segmenter('cn', { granularity: 'word' }).segment(sentence));
+    let wordMap = map.get("word");
+
     for (let result of results) {
         if (result.isWordLike) {
             let word = result["segment"];
             if (word && !ignoreWordSet.has(word)) {
-                if (map.has(word)) {
-                    map.set(word, map.get(word) + 1);
+                if (wordMap.has(word)) {
+                    wordMap.set(word, wordMap.get(word) + 1);
                 } else {
-                    map.set(word, 1);
+                    wordMap.set(word, 1);
                 }
             }
         }
     }
+}
+
+function updateTypeMap(map, type)
+{
+    let typeMap = map.get("type");
+    if (typeMap.has(type)) {
+        typeMap.set(type, typeMap.get(type) + 1);
+    } else {
+        typeMap.set(type, 1);
+    }
+}
+
+function convertVideoData(map)
+{
+    let data = {};
+    let typeData = Array.from(map.get("type"));
+
+    typeData.sort((a, b) => b[1] - a[1]);
+
+    data["word"] = Array.from(map.get("word"));
+    data["type"] = typeData.slice(0, 3);
+
+    return data;
 }
 
 async function requestSearchPage(userId, pn, map)
@@ -33,6 +58,7 @@ async function requestSearchPage(userId, pn, map)
                     for (let v of data["data"]["list"]["vlist"]) {
                         updateWordMap(map, v["description"]);
                         updateWordMap(map, v["title"]);
+                        updateTypeMap(map, v["typeid"]);
                     }
                 }
                 return data;
@@ -42,6 +68,9 @@ async function requestSearchPage(userId, pn, map)
 function updateWordCloud(userId, callback)
 {
     let map = new Map();
+    map.set("word", new Map());
+    map.set("type", new Map());
+
     requestSearchPage(userId, 1, map).then((data) => {
         if (data["code"] == 0) {
             let count = data["data"]["page"]["count"];
@@ -54,10 +83,10 @@ function updateWordCloud(userId, callback)
                     pn += 1;
                 }
                 Promise.all(promises).then((values) => {
-                    cacheAndUpdate(callback, userId, "wordcloud", Array.from(map));
+                    cacheAndUpdate(callback, userId, "wordcloud", convertVideoData(map));
                 })
             } else {
-                cacheAndUpdate(callback, userId, "wordcloud", Array.from(map));
+                cacheAndUpdate(callback, userId, "wordcloud", convertVideoData(map));
             }
         } else {
             cacheAndUpdate(callback, userId, "count", {"count": 0});

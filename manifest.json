@@ -9,6 +9,7 @@
   "content_scripts": [
     {
       "js": [
+        "scripts/constants.js",
         "scripts/biliscope.js",
         "scripts/biliapi.js",
         "scripts/ui.js",

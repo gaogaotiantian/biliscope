@@ -45,8 +45,9 @@ function getUserProfileCardDataHTML(data) {
                     <span class="idc-meta-item">投稿 ${data["count"]}</span>
                 </div>
             </div>
-            <div class="tag-list idc-tag-list"></div>
-            <div class="idc-auth-description">
+            <div id="biliscope-tag-list">
+            </div>
+            <div class="idc-auth-description" style="${data["title"] ? "": "display: none"}">
                 <span style="display: flex">
                     ${data["title"] ? `<a class="biliscope-auth-icon ${titleTypeToClass(data["title_type"])}"></a>` + data["title"] : ""}
                 </span>
@@ -89,6 +90,7 @@ UserProfileCard.prototype.disable = function()
 {
     this.userId = null;
     this.enabled = false;
+    this.data = {};
     if (this.el) {
         this.el.style.display = "none";
         let canvas = document.getElementById("word-cloud-canvas");
@@ -162,6 +164,22 @@ UserProfileCard.prototype.wordCloudMaxCount = function ()
     return m;
 }
 
+UserProfileCard.prototype.drawVideoTags = function()
+{
+    let tagList = document.getElementById("biliscope-tag-list");
+    tagList.innerHTML = "";
+    if (this.data["video_type"]) {
+        for (let d of this.data["video_type"]) {
+            if (BILIBILI_VIDEO_TYPE_MAP[d[0]]) {
+                let el = document.createElement("span");
+                el.className = "biliscope-badge";
+                el.innerHTML = BILIBILI_VIDEO_TYPE_MAP[d[0]];
+                tagList.appendChild(el);
+            }
+        }
+    }
+}
+
 UserProfileCard.prototype.updateData = function (data)
 {
     let uid = data["uid"];
@@ -177,16 +195,17 @@ UserProfileCard.prototype.updateData = function (data)
     } else if (data["api"] == "info") {
         this.data["name"] = d["data"]["name"];
         this.data["sex"] = d["data"]["sex"];
-        this.data["face"] = d["data"]["face"];
+        this.data["face"] = d["data"]["face"].replace("http://", "https://");
         this.data["sign"] = d["data"]["sign"];
         this.data["title"] = d["data"]["official"]["title"];
         this.data["title_type"] = d["data"]["official"]["type"];
         this.data["vip"] = d["data"]["vip"]["status"];
-        this.data["top_photo"] = d["data"]["top_photo"];
+        this.data["top_photo"] = d["data"]["top_photo"].replace("http://", "https://");
     } else if (data["api"] == "count") {
         this.data["count"] = d["count"];
     } else if (data["api"] == "wordcloud") {
-        this.data["wordcloud"] = d;
+        this.data["wordcloud"] = d["word"];
+        this.data["video_type"] = d["type"];
     }
 
     if (data["api"] == "wordcloud") {
@@ -202,12 +221,15 @@ UserProfileCard.prototype.updateData = function (data)
                 shrinkToFit: true,
                 minSize: 5
             });
+            this.drawVideoTags();
         } else {
             canvas.style.height = "0px";
             canvas.height = 0;
         }
-    } else {
+    } else if (this.data['name']) {
+        // wait until name is ready
         document.getElementById("biliscope-id-card-data").innerHTML = getUserProfileCardDataHTML(this.data);
+        this.drawVideoTags();
     }
 
     if (this.enable && this.el && this.el.style.display != "flex") {
