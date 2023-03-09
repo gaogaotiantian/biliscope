@@ -40,9 +40,9 @@ function getUserProfileCardDataHTML(data) {
                     <span class="gender biliscope-icon ${sexToClass(data["sex"])}"></span>
                 </div>
                 <div class="idc-meta">
-                    <span class="idc-meta-item">关注 ${data["following"]}</span>
-                    <span class="idc-meta-item">粉丝 ${numberToDisplay(data["follower"])}</span>
-                    <span class="idc-meta-item">投稿 ${data["count"]}</span>
+                    <span class="idc-meta-item">关注 ${data["following"] || 0}</span>
+                    <span class="idc-meta-item">粉丝 ${numberToDisplay(data["follower"]) || 0}</span>
+                    <span class="idc-meta-item">投稿 ${data["count"] || 0}</span>
                 </div>
             </div>
             <div id="biliscope-tag-list">

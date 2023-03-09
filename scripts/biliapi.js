@@ -65,7 +65,7 @@ async function requestSearchPage(userId, pn, map)
             })
 }
 
-function updateWordCloud(userId, callback)
+function updateVideoData(userId, callback)
 {
     let map = new Map();
     map.set("word", new Map());
@@ -75,18 +75,20 @@ function updateWordCloud(userId, callback)
         if (data["code"] == 0) {
             let count = data["data"]["page"]["count"];
             cacheAndUpdate(callback, userId, "count", {"count": count});
-            let promises = [];
-            if (count > NUM_PER_PAGE) {
-                let pn = 2;
-                while (pn * NUM_PER_PAGE < count) {
-                    promises.push(requestSearchPage(userId, pn, map));
-                    pn += 1;
-                }
-                Promise.all(promises).then((values) => {
+            if (biliScopeOptions.enableWordCloud) {
+                let promises = [];
+                if (count > NUM_PER_PAGE) {
+                    let pn = 2;
+                    while (pn * NUM_PER_PAGE < count) {
+                        promises.push(requestSearchPage(userId, pn, map));
+                        pn += 1;
+                    }
+                    Promise.all(promises).then((values) => {
+                        cacheAndUpdate(callback, userId, "wordcloud", convertVideoData(map));
+                    })
+                } else {
                     cacheAndUpdate(callback, userId, "wordcloud", convertVideoData(map));
-                })
-            } else {
-                cacheAndUpdate(callback, userId, "wordcloud", convertVideoData(map));
+                }
             }
         } else {
             cacheAndUpdate(callback, userId, "count", {"count": 0});
@@ -137,9 +139,7 @@ function updateUserInfo(userId, callback)
             .then((response) => response.json())
             .then((data) => cacheAndUpdate(callback, userId, "info", data));
 
-            if (biliScopeOptions.enableWordCloud) {
-                updateWordCloud(userId, callback);
-            }
+            updateVideoData(userId, callback);
         }
     }
 }
