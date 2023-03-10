@@ -13,10 +13,6 @@ async function getUserIdFromVideoLink(videoLink)
     })
 }
 
-ignoreWordSet = new Set([
-    "的", "了", "我", "你", "他", "她", "在", "么", "哦", "是", "会", "啦", "这", "那"
-])
-
 userInfoCache = new Map()
 
 function updateWordMap(map, sentence)
@@ -27,7 +23,7 @@ function updateWordMap(map, sentence)
     for (let result of results) {
         if (result.isWordLike) {
             let word = result["segment"];
-            if (word && !ignoreWordSet.has(word)) {
+            if (word && !STOP_WORDS.has(word)) {
                 if (wordMap.has(word)) {
                     wordMap.set(word, wordMap.get(word) + 1);
                 } else {
