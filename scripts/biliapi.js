@@ -1,6 +1,18 @@
 const BILIBILI_API_URL = "https://api.bilibili.com"
 const NUM_PER_PAGE = 50
 
+async function getUserIdFromVideoLink(videoLink)
+{
+    let regex = /.*?bilibili.com\/video\/(.*)$/;
+    let bvid = videoLink.match(regex)[1];
+
+    return await fetch(`${BILIBILI_API_URL}/x/web-interface/view?bvid=${bvid}`)
+    .then((response) => response.json())
+    .then((data) => {
+        return  data["data"]["owner"]["mid"];
+    })
+}
+
 ignoreWordSet = new Set([
     "的", "了", "我", "你", "他", "她", "在", "么", "哦", "是", "会", "啦", "这", "那"
 ])
@@ -52,17 +64,17 @@ function convertVideoData(map)
 async function requestSearchPage(userId, pn, map)
 {
     return fetch(`${BILIBILI_API_URL}/x/space/wbi/arc/search?mid=${userId}&pn=${pn}&ps=${NUM_PER_PAGE}&index=1&order=pubdate&order_avoided=true`)
-            .then((response) => response.json())
-            .then((data) => {
-                if (data["code"] == 0) {
-                    for (let v of data["data"]["list"]["vlist"]) {
-                        updateWordMap(map, v["description"]);
-                        updateWordMap(map, v["title"]);
-                        updateTypeMap(map, v["typeid"]);
-                    }
-                }
-                return data;
-            })
+           .then((response) => response.json())
+           .then((data) => {
+               if (data["code"] == 0) {
+                   for (let v of data["data"]["list"]["vlist"]) {
+                       updateWordMap(map, v["description"]);
+                       updateWordMap(map, v["title"]);
+                       updateTypeMap(map, v["typeid"]);
+                   }
+               }
+               return data;
+           })
 }
 
 function updateVideoData(userId, callback)
