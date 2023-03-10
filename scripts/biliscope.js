@@ -17,7 +17,7 @@ function getUserId(s)
     let regex = /.*?bilibili.com\/([0-9]*)([^\/]*|\/)$/;
     let userId = null;
 
-    if (s) {
+    if (s && s.match(regex)) {
         return s.match(regex)[1];
     }
     return userId;
