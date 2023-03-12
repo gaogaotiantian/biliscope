@@ -64,7 +64,9 @@ function getUserProfileCardHTML(data) {
             <div id="biliscope-id-card-data">
                 ${getUserProfileCardDataHTML(data)}
             </div>
-            <canvas id="word-cloud-canvas" style="width: 100%; height: 0"></canvas>
+            <div id="word-cloud-canvas-wrapper">
+                <canvas id="word-cloud-canvas" style="width: 100%; height: 0"></canvas>
+            </div>
         </div>
     `
 }
@@ -96,6 +98,7 @@ UserProfileCard.prototype.disable = function()
         let canvas = document.getElementById("word-cloud-canvas");
         if (canvas) {
             canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
+            canvas.parentNode.classList.remove("biliscope-canvas-show");
         }
     }
 }
@@ -214,6 +217,9 @@ UserProfileCard.prototype.updateData = function (data)
             canvas.style.height = `${canvas.offsetWidth / 2}px`;
             canvas.width = canvas.offsetWidth;
             canvas.height = canvas.offsetHeight;
+
+            canvas.parentNode.classList.add("biliscope-canvas-show");
+
             WordCloud(canvas, {
                 list: this.data["wordcloud"],
                 backgroundColor: "transparent",
