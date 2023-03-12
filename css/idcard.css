@@ -10,10 +10,9 @@
 }
 
 #biliscope-id-card .idc-theme-img {
-    /* border-radius: 4px 4px 0 0; */
     display: block;
     width: 375px;
-    height: 100px;
+    height: 120px;
     background-size: cover;
     background-position: 50%
 }
@@ -136,7 +135,7 @@
     color: white;
     display: inline-block;
     padding: 0px 10px;
-    line-height: 24px; /* Fixes some text alignment issue */
+    line-height: 24px;
     vertical-align: top;
     font-size: 12px;
     font-weight: 600;
@@ -157,10 +156,6 @@
     transition-timing-function: ease;
 }
 
-#word-cloud-canvas-wrapper.show {
-    height: 187.5px; /* 375px / 2 */
+#word-cloud-canvas-wrapper.biliscope-canvas-show {
+    height: 187.5px;
 }
-
-/* .user-card-m-exp {
-    display: none;
-} */

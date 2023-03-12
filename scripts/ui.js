@@ -64,7 +64,9 @@ function getUserProfileCardHTML(data) {
             <div id="biliscope-id-card-data">
                 ${getUserProfileCardDataHTML(data)}
             </div>
-            <div id="word-cloud-canvas-wrapper"><canvas id="word-cloud-canvas" style="width: 100%; height: 0"></canvas></div>
+            <div id="word-cloud-canvas-wrapper">
+                <canvas id="word-cloud-canvas" style="width: 100%; height: 0"></canvas>
+            </div>
         </div>
     `
 }
@@ -96,7 +98,7 @@ UserProfileCard.prototype.disable = function()
         let canvas = document.getElementById("word-cloud-canvas");
         if (canvas) {
             canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
-            canvas.parentNode.className = "";
+            canvas.parentNode.classList.remove("biliscope-canvas-show");
         }
     }
 }
@@ -217,10 +219,8 @@ UserProfileCard.prototype.updateData = function (data)
             canvas.style.height = `${canvas.offsetWidth / 2}px`;
             canvas.width = canvas.offsetWidth;
             canvas.height = canvas.offsetHeight;
-            // if transition is applied directly to canvas, 
-            // this needs to change to offsetWidth / 2
 
-            canvas.parentNode.className = "show";
+            canvas.parentNode.classList.add("biliscope-canvas-show");
 
             WordCloud(canvas, {
                 list: this.data["wordcloud"],
