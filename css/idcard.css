@@ -144,10 +144,6 @@
     margin-right: 5px;
 }
 
-#biliscope-id-card .biliscope-badge.muted {
-    background-color: #6d757a;
-}
-
 #word-cloud-canvas-wrapper {
     height: 0px;
     overflow: hidden;

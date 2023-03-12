@@ -180,8 +180,6 @@ UserProfileCard.prototype.drawVideoTags = function()
                 tagList.appendChild(el);
             }
         }
-    } else {
-        tagList.innerHTML = `<span class="biliscope-badge muted">无</span>`;
     }
 }
 
