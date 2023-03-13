@@ -84,7 +84,12 @@ function UserProfileCard()
     this.el = document.createElement("div");
     this.el.style.position = "absolute";
     this.el.innerHTML = getUserProfileCardHTML(this.data);
+    this.el.addEventListener("transitionend", () => {
+        this.updateCursor(this.cursorX, this.cursorY);
+    })
+
     this.disable();
+
     document.body.appendChild(this.el);
 }
 
