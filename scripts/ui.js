@@ -83,6 +83,7 @@ function UserProfileCard()
     this.lastDisable = 0;
     this.el = document.createElement("div");
     this.el.style.position = "absolute";
+    this.el.style.display = "none";
     this.el.innerHTML = getUserProfileCardHTML(this.data);
     this.el.addEventListener("transitionend", () => {
         this.updateCursor(this.cursorX, this.cursorY);
@@ -108,9 +109,9 @@ UserProfileCard.prototype.disable = function()
     }
 }
 
-UserProfileCard.prototype.enable = function(userId)
+UserProfileCard.prototype.enable = function()
 {
-    if (userId != null && userId != this.userId && Date.now() - this.lastDisable > 50) {
+    if (!this.enabled && Date.now() - this.lastDisable > 50) {
         this.enabled = true;
         return true;
     }
@@ -243,7 +244,7 @@ UserProfileCard.prototype.updateData = function (data)
         this.drawVideoTags();
     }
 
-    if (this.enable && this.el && this.el.style.display != "flex") {
+    if (this.enabled && this.el && this.el.style.display != "flex") {
         this.el.style.display = "flex";
     }
 
