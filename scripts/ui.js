@@ -89,6 +89,10 @@ function UserProfileCard()
         this.updateCursor(this.cursorX, this.cursorY);
     })
 
+    this.idCardObserver = new MutationObserver((mutationList, observer) => {
+        this.clearOriginalCard();
+    })
+
     this.disable();
 
     document.body.appendChild(this.el);
@@ -106,6 +110,7 @@ UserProfileCard.prototype.disable = function()
             canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
             canvas.parentNode.classList.remove("biliscope-canvas-show");
         }
+        this.idCardObserver.disconnect();
     }
 }
 
@@ -113,9 +118,23 @@ UserProfileCard.prototype.enable = function()
 {
     if (!this.enabled && Date.now() - this.lastDisable > 50) {
         this.enabled = true;
+        this.idCardObserver.observe(document.body, {
+            "childList": true
+        })
         return true;
     }
     return false;
+}
+
+UserProfileCard.prototype.clearOriginalCard = function()
+{
+    while (document.getElementById("id-card")) {
+        document.getElementById("id-card").remove();
+    }
+
+    for (let card of document.getElementsByClassName("user-card")) {
+        card.remove();
+    }
 }
 
 UserProfileCard.prototype.updateUserId = function(userId)
@@ -245,6 +264,7 @@ UserProfileCard.prototype.updateData = function (data)
     }
 
     if (this.enabled && this.el && this.el.style.display != "flex") {
+        this.clearOriginalCard();
         this.el.style.display = "flex";
     }
 

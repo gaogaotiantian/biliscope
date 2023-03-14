@@ -21,10 +21,6 @@
       ],
       "matches": [
         "https://*.bilibili.com/*"
-      ],
-      "exclude_matches": [
-        "https://space.bilibili.com/*",
-        "https://t.bilibili.com/*"
       ]
     }
   ],
