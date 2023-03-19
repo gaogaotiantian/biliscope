@@ -89,5 +89,7 @@ function showProfile(event)
                 userProfileCard.disable();
             }
         })
+    } else {
+        userProfileCard.checkTargetValid(event.target);
     }
 }

@@ -119,11 +119,24 @@ UserProfileCard.prototype.enable = function()
     if (!this.enabled && Date.now() - this.lastDisable > 50) {
         this.enabled = true;
         this.idCardObserver.observe(document.body, {
-            "childList": true
+            "childList": true,
+            "subtree": true
         })
         return true;
     }
     return false;
+}
+
+UserProfileCard.prototype.checkTargetValid = function(target) {
+    if (this.enabled && this.target) {
+        while (target) {
+            if (target == this.target) {
+                return;
+            }
+            target = target.parentNode;
+        }
+        this.disable();
+    }
 }
 
 UserProfileCard.prototype.clearOriginalCard = function()
@@ -133,6 +146,10 @@ UserProfileCard.prototype.clearOriginalCard = function()
     }
 
     for (let card of document.getElementsByClassName("user-card")) {
+        card.remove();
+    }
+
+    for (let card of document.getElementsByClassName("card-loaded")) {
         card.remove();
     }
 }
