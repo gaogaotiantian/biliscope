@@ -4,16 +4,16 @@ BILIBILI_POPULAR_URL = "https://www.bilibili.com/v/popular"
 document.addEventListener("mouseover", showProfile);
 document.addEventListener("mousemove", (ev) => userProfileCard.updateCursor(ev.pageX, ev.pageY));
 
+var PageDomain = window.location.host;
 biliScopeOptions = null;
 
 chrome.storage.sync.get({
     enableWordCloud: true
-}, function(items) {
+}, function (items) {
     biliScopeOptions = items;
 });
 
-function getUserIdFromLink(s)
-{
+function getUserIdFromLink(s) {
     let regex = /.*?bilibili.com\/([0-9]*)(\/dynamic)?([^\/]*|\/)$/;
     let userId = null;
 
@@ -23,8 +23,7 @@ function getUserIdFromLink(s)
     return userId;
 }
 
-async function getUserId(userLink)
-{
+async function getUserId(userLink) {
     let userId = null;
 
     if (window.location.href.startsWith(BILIBILI_POPULAR_URL)) {
@@ -48,8 +47,7 @@ async function getUserId(userLink)
     return null;
 }
 
-function getTarget(target)
-{
+function getTarget(target) {
     if (window.location.href.startsWith(BILIBILI_POPULAR_URL)) {
         // popular page, requires special treatment
         for (let userLink of [target, target.parentNode]) {
@@ -72,21 +70,60 @@ function getTarget(target)
     return null;
 }
 
-function showProfile(event)
-{
+function getPathTo(element) {
+    if (element.tagName === 'HTML')
+        return 'html';
+    var ix = 0;
+    var siblings = element.parentNode.children;
+    for (var i = 0; i < siblings.length; i++) {
+        var sibling = siblings[i];
+        if (sibling === element)
+            return getPathTo(element.parentNode) + '/' + element.tagName.toLowerCase() + '[' + (ix + 1) + ']';
+        if (sibling.nodeType === 1 && sibling.tagName === element.tagName)
+            ix++;
+    }
+}
+
+function showProfile(event) {
     let target = getTarget(event.target);
 
     if (target && userProfileCard.enable()) {
         userProfileCard.updateCursor(event.pageX, event.pageY);
         userProfileCard.updateTarget(target);
+        var element = document.elementFromPoint(event.pageX, event.pageY);
         getUserId(target).then((userId) => {
-            if (userId) {
-                if (userId != userProfileCard.userId) {
-                    userProfileCard.updateUserId(userId);
-                    updateUserInfo(userId, (data) => userProfileCard.updateData(data));
+            if (PageDomain == "space.bilibili.com") {
+                if (getPathTo(element) == "html/body[1]/div[2]/div[2]/div[1]/div[1]/div[1]/a[1]/span[2]") {
+                    userProfileCard.disable();
+                } else if (getPathTo(element) == "html/body[1]/div[2]/div[2]/div[1]/div[1]/div[1]/a[1]/span[1]") {
+                    userProfileCard.disable();
+                } else if (getPathTo(element) == "html/body[1]/div[2]/div[2]/div[1]/div[1]/div[1]/a[1]") {
+                    userProfileCard.disable();
+                } else if (getPathTo(element) == "html/body[1]/div[2]/div[2]/div[1]/div[1]/div[1]/a[2]/span[2]") {
+                    userProfileCard.disable();
+                } else if (getPathTo(element) == "html/body[1]/div[2]/div[2]/div[1]/div[1]/div[1]/a[2]/span[1]") {
+                    userProfileCard.disable();
+                } else if (getPathTo(element) == "html/body[1]/div[2]/div[2]/div[1]/div[1]/div[1]/a[2]") {
+                    userProfileCard.disable();
+                } else {
+                    if (userId) {
+                        if (userId != userProfileCard.userId) {
+                            userProfileCard.updateUserId(userId);
+                            updateUserInfo(userId, (data) => userProfileCard.updateData(data));
+                        }
+                    } else {
+                        userProfileCard.disable();
+                    }
                 }
             } else {
-                userProfileCard.disable();
+                if (userId) {
+                    if (userId != userProfileCard.userId) {
+                        userProfileCard.updateUserId(userId);
+                        updateUserInfo(userId, (data) => userProfileCard.updateData(data));
+                    }
+                } else {
+                    userProfileCard.disable();
+                }
             }
         })
     }
