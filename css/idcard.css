@@ -9,6 +9,10 @@
     overflow: hidden;
 }
 
+#biliscope-id-card data-title {
+    color: #777;
+}
+
 #biliscope-id-card .idc-theme-img {
     display: block;
     width: 375px;
@@ -105,6 +109,82 @@
 .biliscope-icon {
     display: inline-block;
     background-image: url(//s1.hdslb.com/bfs/static/jinkela/space/assets/icons.png)
+}
+
+#biliscope-id-card .idc-guard-info {
+    margin-top: 4px;
+    font-size: 12px;
+}
+
+#biliscope-id-card .support-note {
+    vertical-align: middle;
+    color: rgb(109, 117, 122);
+}
+
+#biliscope-id-card .fans-medal-item {
+    display: inline-block;
+    -webkit-box-sizing: content-box;
+    box-sizing: content-box;
+    height: 14px;
+    line-height: 14px;
+    color: #fff;
+    border: 1px solid transparent;
+    white-space: nowrap;
+    border-radius: 2px;
+    font-family: "Microsoft YaHei", "Microsoft Sans Serif", "Microsoft SanSerf", "\5FAE\8F6F\96C5\9ED1";
+    font-size: 12px;
+    position: relative;
+    cursor: default;
+    vertical-align: middle;
+}
+
+#biliscope-id-card .medal-guard {
+    display: block;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center center;
+    margin-left: -12px;
+    width: 22px;
+    height: 22px;
+}
+
+#biliscope-id-card .fans-medal-label {
+    display: flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    min-width: 12px;
+    padding: 0 4px;
+    color: #fff;
+    border-top-left-radius: 1px;
+    border-bottom-left-radius: 1px;
+    box-sizing: content-box;
+    height: 100%;
+    text-align: center;
+    float: left;
+}
+
+#biliscope-id-card .fans-medal-level {
+    width: 16px;
+    background-color: #fff;
+    text-align: center;
+    border-top-left-radius: 1px;
+    border-bottom-right-radius: 1px;
+    box-sizing: content-box;
+    height: 100%;
+    float: left;
+    line-height: 14px;
+    font-size: 12px;
+}
+
+#biliscope-id-card .fans-uname {
+    font-size: 12px;
+    line-height: 24px;
+    margin-left: 2px;
+    vertical-align: middle;
 }
 
 .h .gender {

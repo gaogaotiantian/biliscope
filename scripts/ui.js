@@ -5,6 +5,47 @@ function numberToDisplay(number) {
     return number;
 }
 
+function timestampToDisplay(timestamp) {
+    if (timestamp == null) {
+        return ""
+    }
+    let date = new Date(timestamp * 1000);
+    let timediff = Date.now() / 1000 - timestamp;
+    const hour = 60 * 60;
+    const day = 24 * hour;
+
+    if (timediff < hour) {
+        return "刚刚";
+    } else if (timediff < day) {
+        return `${Math.floor(timediff / hour)}小时前`;
+    } else if (timediff < 30 * day) {
+        return `${Math.floor(timediff / day)}天前`;
+    } else {
+        return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
+    }
+}
+
+function secondsToDisplay(sec) {
+    if (!sec) {
+        return 0;
+    }
+
+    function digitToStr(n) {
+        n = Math.floor(n);
+        return n < 10 ? "0" + n : n;
+    }
+
+    sec = Math.floor(sec);
+
+    if (sec < 60) {
+        return `00:${digitToStr(sec)}`;
+    } else if (sec < 60 * 60) {
+        return `${digitToStr(sec / 60)}:${digitToStr(sec % 60)}`;
+    } else {
+        return `${digitToStr(sec / 60 / 60)}:${digitToStr(sec / 60) % 60}:${digitToStr(sec % 60)}`;
+    }
+}
+
 function titleTypeToClass(titleType) {
     if (titleType == 0) {
         return "biliscope-personal-auth-icon";
@@ -40,9 +81,16 @@ function getUserProfileCardDataHTML(data) {
                     <span class="gender biliscope-icon ${sexToClass(data["sex"])}"></span>
                 </div>
                 <div class="idc-meta">
-                    <span class="idc-meta-item">关注 ${data["following"] || 0}</span>
-                    <span class="idc-meta-item">粉丝 ${numberToDisplay(data["follower"]) || 0}</span>
-                    <span class="idc-meta-item">投稿 ${data["count"] || 0}</span>
+                    <span class="idc-meta-item"><data-title>关注</data-title> ${data["following"] || 0}</span>
+                    <span class="idc-meta-item"><data-title>粉丝</data-title> ${numberToDisplay(data["follower"]) || 0}</span>
+                    <span class="idc-meta-item"><data-title>投稿</data-title> ${data["count"] || 0}</span>
+                </div>
+                <div class="idc-meta" style="${data["count"]} ? "": "display: none"}">
+                    <span class="idc-meta-item"><data-title>近30天投稿数</data-title> ${data["lastMonthVideoCount"] || 0}</span>
+                    <span class="idc-meta-item"><data-title>上次投稿</data-title> ${timestampToDisplay(data["lastVideoTimestamp"])}</span>
+                </div>
+                <div class="idc-meta" style="${data["count"]} ? "": "display: none"}">
+                    <span class="idc-meta-item"><data-title>平均稿件长度</data-title> ${secondsToDisplay(data["totalVideoLength"] / data["count"])}</span>
                 </div>
             </div>
             <div id="biliscope-tag-list">
@@ -55,9 +103,42 @@ function getUserProfileCardDataHTML(data) {
             <div class="idc-auth-description">
                 ${data["sign"]}
             </div>
+            <div>
+                ${getGuardSupportHTML(data)}
+            </div>
         </div>
     `
 }
+
+function getGuardSupportHTML(data) {
+    if (guardInfo == null) {
+        return "";
+    }
+
+    let guard = guardInfo[data["mid"] % guardInfo.length];
+
+    return `
+        <div class="idc-guard-info">
+            <span class="support-note" style="margin-right: 6px">感谢</span>
+            <span class="item dp-i-block t-over-hidden t-nowrap border-box live-skin-main-text">
+                <div class="fans-medal-item" style="border-color: rgb(103, 232, 255);">
+                    <div class="fans-medal-label" style="background-image: linear-gradient(45deg, rgb(26, 84, 75), rgb(82, 157, 146));">
+                        <i class="medal-deco medal-guard" style="background-image: url(&quot;https://i0.hdslb.com/bfs/live/143f5ec3003b4080d1b5f817a9efdca46d631945.png@44w_44h.webp&quot;);"></i>
+                        <span class="fans-medal-content">天分高</span>
+                    </div>
+                    <div class="fans-medal-level" style="color: rgb(26, 84, 75);">
+                        ${guard["medal_info"]["medal_level"]}
+                    </div>
+                </div>
+                <span class="fans-uname">
+                    ${guard["username"]}
+                </span>
+            </span>
+            <span class="support-note">对作者的支持</span>
+        </div>
+    `
+}
+
 function getUserProfileCardHTML(data) {
     return `
         <div id="biliscope-id-card" style="position: absolute;">
@@ -228,6 +309,7 @@ UserProfileCard.prototype.updateData = function (data) {
         this.data["follower"] = d["data"]["follower"];
         this.data["following"] = d["data"]["following"];
     } else if (data["api"] == "info") {
+        this.data["mid"] = d["data"]["mid"];
         this.data["name"] = d["data"]["name"];
         this.data["sex"] = d["data"]["sex"];
         this.data["face"] = d["data"]["face"].replace("http://", "https://");
@@ -241,6 +323,11 @@ UserProfileCard.prototype.updateData = function (data) {
     } else if (data["api"] == "wordcloud") {
         this.data["wordcloud"] = d["word"];
         this.data["video_type"] = d["type"];
+    } else if (data["api"] == "lastVideoTimestamp") {
+        this.data["lastVideoTimestamp"] = d["timestamp"];
+    } else if (data["api"] == "totalVideoInfo") {
+        this.data["lastMonthVideoCount"] = d["lastMonthCount"];
+        this.data["totalVideoLength"] = d["totalLength"];
     }
 
     if (data["api"] == "wordcloud") {
@@ -253,7 +340,7 @@ UserProfileCard.prototype.updateData = function (data) {
             canvas.parentNode.classList.add("biliscope-canvas-show");
 
             WordCloud(canvas, {
-                list: this.data["wordcloud"],
+                list: JSON.parse(JSON.stringify(this.data["wordcloud"])),
                 backgroundColor: "transparent",
                 weightFactor: 100 / this.wordCloudMaxCount(),
                 shrinkToFit: true,
@@ -279,3 +366,14 @@ UserProfileCard.prototype.updateData = function (data) {
 }
 
 userProfileCard = new UserProfileCard();
+
+getGuardInfo(6726252, 245645656).then((data) => {
+    guardInfo = data;
+    // Shuffle guardInfo
+    for (let i = 0; i < guardInfo.length; i++) {
+        let j = Math.floor(Math.random() * guardInfo.length);
+        let t = guardInfo[i];
+        guardInfo[i] = guardInfo[j];
+        guardInfo[j] = t;
+    }
+});
