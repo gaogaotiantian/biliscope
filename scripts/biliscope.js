@@ -12,8 +12,7 @@ chrome.storage.sync.get({
     biliScopeOptions = items;
 });
 
-function getUserIdFromLink(s)
-{
+function getUserIdFromLink(s) {
     let regex = /.*?bilibili.com\/([0-9]*)(\/dynamic)?([^\/]*|\/)$/;
     let userId = null;
 
@@ -23,8 +22,7 @@ function getUserIdFromLink(s)
     return userId;
 }
 
-async function getUserId(userLink)
-{
+async function getUserId(userLink) {
     let userId = null;
 
     if (window.location.href.startsWith(BILIBILI_POPULAR_URL)) {
@@ -48,8 +46,7 @@ async function getUserId(userLink)
     return null;
 }
 
-function getTarget(target)
-{
+function getTarget(target) {
     if (window.location.href.startsWith(BILIBILI_POPULAR_URL)) {
         // popular page, requires special treatment
         for (let userLink of [target, target.parentNode]) {
@@ -72,8 +69,7 @@ function getTarget(target)
     return null;
 }
 
-function showProfile(event)
-{
+function showProfile(event) {
     let target = getTarget(event.target);
 
     if (target && userProfileCard.enable()) {

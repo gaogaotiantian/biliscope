@@ -71,8 +71,7 @@ function getUserProfileCardHTML(data) {
     `
 }
 
-function UserProfileCard()
-{
+function UserProfileCard() {
     this.userId = null;
     this.data = {};
     this.cursorX = 0;
@@ -98,8 +97,7 @@ function UserProfileCard()
     document.body.appendChild(this.el);
 }
 
-UserProfileCard.prototype.disable = function()
-{
+UserProfileCard.prototype.disable = function() {
     this.userId = null;
     this.enabled = false;
     this.data = {};
@@ -114,8 +112,7 @@ UserProfileCard.prototype.disable = function()
     }
 }
 
-UserProfileCard.prototype.enable = function()
-{
+UserProfileCard.prototype.enable = function() {
     if (!this.enabled && Date.now() - this.lastDisable > 50) {
         this.enabled = true;
         this.idCardObserver.observe(document.body, {
@@ -139,8 +136,7 @@ UserProfileCard.prototype.checkTargetValid = function(target) {
     }
 }
 
-UserProfileCard.prototype.clearOriginalCard = function()
-{
+UserProfileCard.prototype.clearOriginalCard = function() {
     while (document.getElementById("id-card")) {
         document.getElementById("id-card").remove();
     }
@@ -154,13 +150,11 @@ UserProfileCard.prototype.clearOriginalCard = function()
     }
 }
 
-UserProfileCard.prototype.updateUserId = function(userId)
-{
+UserProfileCard.prototype.updateUserId = function(userId) {
     this.userId = userId;
 }
 
-UserProfileCard.prototype.updateCursor = function(cursorX, cursorY)
-{
+UserProfileCard.prototype.updateCursor = function(cursorX, cursorY) {
     const cursorPadding = 10;
     const windowPadding = 20;
 
@@ -187,8 +181,7 @@ UserProfileCard.prototype.updateCursor = function(cursorX, cursorY)
     }
 }
 
-UserProfileCard.prototype.updateTarget = function(target)
-{
+UserProfileCard.prototype.updateTarget = function(target) {
     this.target = target;
     upc = this
     this.target.addEventListener("mouseleave", function leaveHandle(ev) {
@@ -198,8 +191,7 @@ UserProfileCard.prototype.updateTarget = function(target)
     })
 }
 
-UserProfileCard.prototype.wordCloudMaxCount = function ()
-{
+UserProfileCard.prototype.wordCloudMaxCount = function() {
     let m = 0;
     for (let d of this.data["wordcloud"]) {
         if (d[1] > m) {
@@ -209,8 +201,7 @@ UserProfileCard.prototype.wordCloudMaxCount = function ()
     return m;
 }
 
-UserProfileCard.prototype.drawVideoTags = function()
-{
+UserProfileCard.prototype.drawVideoTags = function() {
     let tagList = document.getElementById("biliscope-tag-list");
     tagList.innerHTML = "";
     if (this.data["video_type"]) {
@@ -225,8 +216,7 @@ UserProfileCard.prototype.drawVideoTags = function()
     }
 }
 
-UserProfileCard.prototype.updateData = function (data)
-{
+UserProfileCard.prototype.updateData = function (data) {
     let uid = data["uid"];
     let d = data["payload"];
 
