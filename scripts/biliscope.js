@@ -55,12 +55,8 @@ function getTarget(target) {
             }
         }
     } else {
-        for (let userLink of [target, target.parentNode]) {
-            if (userLink.tagName == "A" && userLink.href.startsWith(BILIBILI_SPACE_URL)) {
-                if (userLink.hasAttribute("report-id")) {
-                    // Video page, the uploader name link, avoid overlap
-                    return null;
-                }
+        for (let userLink of [target, target.parentNode, target.parentNode.parentNode]) {
+            if (userLink && userLink.tagName == "A" && userLink.href.startsWith(BILIBILI_SPACE_URL)) {
                 return userLink;
             }
         }

@@ -160,7 +160,6 @@ function UserProfileCard() {
     this.target = null;
     this.enabled = false;
     this.wordCloud = null;
-    this.lastDisable = 0;
     this.el = document.createElement("div");
     this.el.style.position = "absolute";
     this.el.style.display = "none";
@@ -194,7 +193,7 @@ UserProfileCard.prototype.disable = function() {
 }
 
 UserProfileCard.prototype.enable = function() {
-    if (!this.enabled && Date.now() - this.lastDisable > 50) {
+    if (!this.enabled) {
         this.enabled = true;
         this.idCardObserver.observe(document.body, {
             "childList": true,
@@ -267,7 +266,6 @@ UserProfileCard.prototype.updateTarget = function(target) {
     upc = this
     this.target.addEventListener("mouseleave", function leaveHandle(ev) {
         upc.disable();
-        upc.lastDisable = Date.now();
         this.removeEventListener("mouseleave", leaveHandle);
     })
 }
