@@ -18,6 +18,10 @@ function updateWordMap(map, sentence, weight) {
     // Remove all URLs
     sentence = sentence.replace(/(?:https?|ftp):\/\/[\n\S]+/g, '');
 
+    for (let word of IGNORE_WORDS) {
+        sentence = sentence.replaceAll(word, '');
+    }
+
     let results = Array.from(new Intl.Segmenter('cn', { granularity: 'word' }).segment(sentence));
     let wordMap = map.get("word");
 
