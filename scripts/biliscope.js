@@ -10,7 +10,7 @@ chrome.storage.sync.get({
 });
 
 function getUserIdFromLink(s) {
-    let regex = /.*?bilibili.com\/([0-9]*)(\/dynamic)?([^\/]*|\/)$/;
+    let regex = /.*?bilibili.com\/([0-9]*)(\/dynamic)?([^\/]*|\/|\/?.*)$/;
     let userId = null;
 
     if (s && s.match(regex)) {
