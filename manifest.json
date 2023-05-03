@@ -10,11 +10,11 @@
     {
       "js": [
         "scripts/constants.js",
-        "scripts/biliscope.js",
+        "scripts/stopwords.js",
+        "scripts/wordcloud2.min.js",
         "scripts/biliapi.js",
         "scripts/ui.js",
-        "scripts/stopwords.js",
-        "scripts/wordcloud2.min.js"
+        "scripts/biliscope.js"
       ],
       "css": [
         "css/idcard.css"

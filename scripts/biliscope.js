@@ -85,5 +85,3 @@ function showProfile(event) {
         userProfileCard.checkTargetValid(event.target);
     }
 }
-
-var guardInfo = null;

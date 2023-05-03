@@ -391,6 +391,8 @@ UserProfileCard.prototype.updateData = function (data) {
     this.updateCursor(this.cursorX, this.cursorY);
 }
 
+var guardInfo = null;
+
 userProfileCard = new UserProfileCard();
 
 getGuardInfo(6726252, 245645656).then((data) => {
