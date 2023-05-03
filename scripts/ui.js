@@ -125,10 +125,15 @@ function getGuardSupportHTML(data) {
         "143f5ec3003b4080d1b5f817a9efdca46d631945",
     ]
     const bgImg = guardImgs[guard["guard_level"] - 1];
-    let borderColor = "255, 232, 84";
+
+    let borderColor = "";
     if (guard["guard_level"] === 3) {
-        borderColor = "103, 232, 255";
+        borderColor = "rgb(103, 232, 255)";
+    } else {
+        borderColor = "rgb(255, 232, 84)";
     }
+
+
     let bgColor = "";
     const medalLevel = guard["medal_info"]["medal_level"];
     if (medalLevel < 25) {
@@ -145,7 +150,7 @@ function getGuardSupportHTML(data) {
         <div class="idc-guard-info">
             <span class="support-note" style="margin-right: 6px">感谢</span>
             <span class="item dp-i-block t-over-hidden t-nowrap border-box live-skin-main-text">
-                <div class="fans-medal-item" style="border-color: rgb(${borderColor});">
+                <div class="fans-medal-item" style="border-color: ${borderColor};">
                     <div class="fans-medal-label" style="background-image: linear-gradient(45deg, ${bgColor});">
                         <i class="medal-deco medal-guard" style="background-image: url(&quot;https://i0.hdslb.com/bfs/live/${bgImg}.png@44w_44h.webp&quot;);"></i>
                         <span class="fans-medal-content">天分高</span>
