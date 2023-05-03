@@ -68,28 +68,31 @@ function getUserProfileCardDataHTML(data) {
         <div class="idc-theme-img" style="background-image: url(&quot;${data["top_photo"]}@100Q.webp&quot;);">
         </div>
         <div class="idc-info clearfix">
-            <a href="//space.bilibili.com/2051617240/" target="_blank" class="idc-avatar-container">
+            <a class="idc-avatar-container">
                 <img alt="${data["name"]}" src="${data["face"]}@54w_54h_1c.webp" class="idc-avatar">
             </a>
             <div class="idc-content h">
                 <div>
-                    <a href="//space.bilibili.com/2051617240/" target="_blank" class="idc-username">
+                    <a class="idc-username">
                         <b title="${data["name"]}" class="idc-uname" style="${data["vip"] ? "color: rgb(251, 114, 153);": "color: #18191C"}">
                             ${data["name"]}
                         </b>
                     </a>
                     <span class="gender biliscope-icon ${sexToClass(data["sex"])}"></span>
                 </div>
+                <div class="idc-meta" style="${noteData && noteData[data["mid"]] ? "": "display: none"}">
+                    <span class="idc-meta-item">${noteData ? noteData[data["mid"]]: ""}</span>
+                </div>
                 <div class="idc-meta">
                     <span class="idc-meta-item"><data-title>关注</data-title> ${data["following"] || 0}</span>
                     <span class="idc-meta-item"><data-title>粉丝</data-title> ${numberToDisplay(data["follower"]) || 0}</span>
                     <span class="idc-meta-item"><data-title>投稿</data-title> ${data["count"] || 0}</span>
                 </div>
-                <div class="idc-meta" style="${data["count"]} ? "": "display: none"}">
+                <div class="idc-meta" style="${data["count"] ? "": "display: none"}">
                     <span class="idc-meta-item"><data-title>近30天投稿数</data-title> ${data["lastMonthVideoCount"] || 0}</span>
                     <span class="idc-meta-item"><data-title>上次投稿</data-title> ${timestampToDisplay(data["lastVideoTimestamp"])}</span>
                 </div>
-                <div class="idc-meta" style="${data["count"]} ? "": "display: none"}">
+                <div class="idc-meta" style="${data["count"] ? "": "display: none"}">
                     <span class="idc-meta-item"><data-title>平均稿件长度</data-title> ${secondsToDisplay(data["totalVideoLength"] / data["count"])}</span>
                 </div>
             </div>

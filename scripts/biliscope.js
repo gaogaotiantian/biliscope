@@ -1,6 +1,3 @@
-BILIBILI_SPACE_URL = "https://space.bilibili.com/"
-BILIBILI_POPULAR_URL = "https://www.bilibili.com/v/popular"
-
 document.addEventListener("mouseover", showProfile);
 document.addEventListener("mousemove", (ev) => userProfileCard.updateCursor(ev.pageX, ev.pageY));
 

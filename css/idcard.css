@@ -187,6 +187,53 @@
     vertical-align: middle;
 }
 
+#biliscope-profile-note .user-info-title {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    box-sizing: border-box;
+    padding-bottom: 18px;
+    border-bottom: 1px solid #e5e9ef;
+    margin-bottom: 10px;
+}
+
+#biliscope-profile-note .user-info-title .info-title {
+    line-height: 23px;
+    font-size: 14px;
+    color: #222;
+    font-family: Microsoft YaHei;
+}
+
+#biliscope-profile-note .be-textarea {
+    color: #6d757a;
+    line-height: 20px;
+    position: relative;
+    font-size: 14px;
+    border-radius: 4px;
+}
+
+#biliscope-profile-note .be-textarea_inner {
+    width: 306px;
+    height: auto;
+    color: #6d757a;
+    font-size: 12px;
+    font-family: Microsoft Yahei;
+    line-height: 20px;
+    padding: 10px;
+    margin: -10px 0 0 -11px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    box-sizing: content-box;
+    display: block;
+    outline: none;
+    transition: all .3s ease;
+}
+
+#biliscope-profile-note textarea:focus,#biliscope-profile-note textarea:hover {
+    border-color: #00a1d6
+}
+
 .h .gender {
     display: none;
     width: 21px;
