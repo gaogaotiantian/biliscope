@@ -124,17 +124,18 @@ function getGuardSupportHTML(data) {
         // 舰长
         "143f5ec3003b4080d1b5f817a9efdca46d631945",
     ]
-    const bgImg = guardImgs[guard.guard_level - 1];
+    const bgImg = guardImgs[guard["guard_level"] - 1];
     let borderColor = "255, 232, 84";
-    if (guard.guard_level === 3) {
+    if (guard["guard_level"] === 3) {
         borderColor = "103, 232, 255";
     }
     let bgColor = "";
-    if (guard.medal_info.medal_level < 25) {
+    const medalLevel = guard["medal_info"]["medal_level"];
+    if (medalLevel < 25) {
         bgColor = "rgb(26, 84, 75), rgb(82, 157, 146)";
-    } else if (guard.medal_info.medal_level < 29) {
+    } else if (medalLevel  < 29) {
         bgColor = "rgb(6, 21, 76), rgb(104, 136, 241)";
-    } else if (guard.medal_info.medal_level < 33) {
+    } else if (medalLevel < 33) {
         bgColor = "rgb(45, 8, 85), rgb(157, 155, 255)";
     } else {
         bgColor = "rgb(122, 4, 35), rgb(233, 134, 187)";
