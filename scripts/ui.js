@@ -116,14 +116,42 @@ function getGuardSupportHTML(data) {
     }
 
     let guard = guardInfo[data["mid"] % guardInfo.length];
+    const guardImgs = [
+        // 总督
+        "ffcd832b5d7b84ea851cb8156ec0a71940439511",
+        // 提督
+        "98a201c14a64e860a758f089144dcf3f42e7038c",
+        // 舰长
+        "143f5ec3003b4080d1b5f817a9efdca46d631945",
+    ]
+    const bgImg = guardImgs[guard["guard_level"] - 1];
+
+    let borderColor = "";
+    if (guard["guard_level"] === 3) {
+        borderColor = "rgb(103, 232, 255)";
+    } else {
+        borderColor = "rgb(255, 232, 84)";
+    }
+
+    let bgColor = "";
+    const medalLevel = guard["medal_info"]["medal_level"];
+    if (medalLevel < 25) {
+        bgColor = "rgb(26, 84, 75), rgb(82, 157, 146)";
+    } else if (medalLevel  < 29) {
+        bgColor = "rgb(6, 21, 76), rgb(104, 136, 241)";
+    } else if (medalLevel < 33) {
+        bgColor = "rgb(45, 8, 85), rgb(157, 155, 255)";
+    } else {
+        bgColor = "rgb(122, 4, 35), rgb(233, 134, 187)";
+    }
 
     return `
         <div class="idc-guard-info">
             <span class="support-note" style="margin-right: 6px">感谢</span>
             <span class="item dp-i-block t-over-hidden t-nowrap border-box live-skin-main-text">
-                <div class="fans-medal-item" style="border-color: rgb(103, 232, 255);">
-                    <div class="fans-medal-label" style="background-image: linear-gradient(45deg, rgb(26, 84, 75), rgb(82, 157, 146));">
-                        <i class="medal-deco medal-guard" style="background-image: url(&quot;https://i0.hdslb.com/bfs/live/143f5ec3003b4080d1b5f817a9efdca46d631945.png@44w_44h.webp&quot;);"></i>
+                <div class="fans-medal-item" style="border-color: ${borderColor};">
+                    <div class="fans-medal-label" style="background-image: linear-gradient(45deg, ${bgColor});">
+                        <i class="medal-deco medal-guard" style="background-image: url(&quot;https://i0.hdslb.com/bfs/live/${bgImg}.png@44w_44h.webp&quot;);"></i>
                         <span class="fans-medal-content">天分高</span>
                     </div>
                     <div class="fans-medal-level" style="color: rgb(26, 84, 75);">
