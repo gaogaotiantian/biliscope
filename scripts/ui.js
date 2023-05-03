@@ -120,6 +120,11 @@ function getUserProfileCardDataHTML(data) {
                         </b>
                     </a>
                     <span class="gender biliscope-icon ${sexToClass(data["sex"])}"></span>
+                    <span class="lv-wrapper">
+                        <span class="lv-img-wrapper" style="position: relative; top: -${data["level"]*12}px">
+                            <img style="height: 132px; vertical-align: middle" src="${chrome.runtime.getURL("img/bililv.svg")}">
+                        </span>
+                    </span>
                     <span class="biliscope-relation ${relationClass(data)}">${relationDisplay(data)}</span>
                 </div>
                 <div class="idc-meta" style="${noteData && noteData[data["mid"]] ? "": "display: none"}">
@@ -385,6 +390,7 @@ UserProfileCard.prototype.updateData = function (data) {
         this.data["sex"] = d["data"]["sex"];
         this.data["face"] = d["data"]["face"].replace("http://", "https://");
         this.data["sign"] = d["data"]["sign"];
+        this.data["level"] = d["data"]["level"];
         this.data["title"] = d["data"]["official"]["title"];
         this.data["title_type"] = d["data"]["official"]["type"];
         this.data["vip"] = d["data"]["vip"]["status"];

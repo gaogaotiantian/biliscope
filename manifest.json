@@ -32,5 +32,11 @@
   "options_ui": {
     "page": "options/options.html",
     "open_in_tab": false
-  }
+  },
+  "web_accessible_resources": [
+    {
+      "resources": ["img/bililv.svg"],
+      "matches": ["https://*.bilibili.com/*"]
+    }
+  ]
 }

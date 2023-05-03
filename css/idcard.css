@@ -32,7 +32,7 @@
 }
 
 #biliscope-id-card .idc-info {
-    padding: 7px 30px 10px 90px;
+    padding: 7px 25px 10px 90px;
     position: relative
 }
 
@@ -42,6 +42,17 @@
     left: 20px;
     width: 54px;
     height: 54px
+}
+
+#biliscope-id-card .lv-wrapper {
+    display: inline-block;
+    height: 12px;
+    width: 22.2px;
+    line-height: 1;
+    vertical-align: -3px;
+    overflow: hidden;
+    position: relative;
+    pointer-events: none;
 }
 
 #biliscope-id-card .biliscope-relation {
@@ -129,8 +140,9 @@
 }
 
 .biliscope-icon {
+    margin: 0px !important;
     display: inline-block;
-    background-image: url(//s1.hdslb.com/bfs/static/jinkela/space/assets/icons.png)
+    background-image: url(//s1.hdslb.com/bfs/static/jinkela/space/assets/icons.png);
 }
 
 #biliscope-id-card .idc-guard-info {
