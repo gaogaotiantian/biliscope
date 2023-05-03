@@ -9,6 +9,10 @@
     overflow: hidden;
 }
 
+#biliscope-id-card .d-none {
+    display: none;
+}
+
 #biliscope-id-card data-title {
     color: #777;
 }
@@ -38,6 +42,24 @@
     left: 20px;
     width: 54px;
     height: 54px
+}
+
+#biliscope-id-card .biliscope-relation {
+    margin-left: 6px;
+    padding: 3px 10px;
+    font-size: 12px;
+    text-align: center;
+    border-radius: 5px;
+    vertical-align: middle;
+    color:white;
+}
+
+#biliscope-id-card .biliscope-relation-follow {
+    background-color: #f25d8e;
+}
+
+#biliscope-id-card .biliscope-relation-black {
+    background-color: rgba(0,0,0,.45);
 }
 
 #biliscope-id-card .idc-avatar {

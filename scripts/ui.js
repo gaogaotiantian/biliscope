@@ -63,6 +63,50 @@ function sexToClass(sex) {
     return "";
 }
 
+function relationDisplay(data) {
+    if (!data["relation"] || data["relation"]["attribute"] === undefined) {
+        return null;
+    }
+
+    if (data["relation"]["attribute"] == 128) {
+        return "已拉黑";
+    }
+
+    if (data["be_relation"]["attribute"] == 128) {
+        return "已被拉黑";
+    }
+
+    console.log(data["relation"])
+    console.log(data["be_relation"])
+
+    if (data["relation"]["attribute"] == 0) {
+        if (data["be_relation"]["attribute"] == 0) {
+            return null;
+        } else if (data["be_relation"]["attribute"] == 2) {
+            return "关注了你";
+        }
+    }
+
+    if (data["relation"]["attribute"] == 2) {
+        return "已关注";
+    } else if (data["relation"]["attribute"] == 6) {
+        return "已互粉";
+    }
+
+    return null;
+}
+
+function relationClass(data) {
+    text = relationDisplay(data);
+    if (text == null) {
+        return "d-none";
+    } else if (text == "已拉黑" || text == "已被拉黑") {
+        return "biliscope-relation-black";
+    } else {
+        return "biliscope-relation-follow";
+    }
+}
+
 function getUserProfileCardDataHTML(data) {
     return `
         <div class="idc-theme-img" style="background-image: url(&quot;${data["top_photo"]}@100Q.webp&quot;);">
@@ -79,6 +123,7 @@ function getUserProfileCardDataHTML(data) {
                         </b>
                     </a>
                     <span class="gender biliscope-icon ${sexToClass(data["sex"])}"></span>
+                    <span class="biliscope-relation ${relationClass(data)}">${relationDisplay(data)}</span>
                 </div>
                 <div class="idc-meta" style="${noteData && noteData[data["mid"]] ? "": "display: none"}">
                     <span class="idc-meta-item">${noteData ? noteData[data["mid"]]: ""}</span>
@@ -347,6 +392,9 @@ UserProfileCard.prototype.updateData = function (data) {
         this.data["title_type"] = d["data"]["official"]["type"];
         this.data["vip"] = d["data"]["vip"]["status"];
         this.data["top_photo"] = d["data"]["top_photo"].replace("http://", "https://");
+    } else if (data["api"] == "relation") {
+        this.data["relation"] = d["data"]["relation"];
+        this.data["be_relation"] = d["data"]["be_relation"];
     } else if (data["api"] == "count") {
         this.data["count"] = d["count"];
     } else if (data["api"] == "wordcloud") {

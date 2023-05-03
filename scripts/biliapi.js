@@ -171,6 +171,14 @@ function updateUserInfo(userId, callback) {
             .then((response) => response.json())
             .then((data) => cacheAndUpdate(callback, userId, "info", data));
 
+            fetch(`${BILIBILI_API_URL}/x/space/acc/relation?mid=${userId}`, {credentials: "include"})
+            .then((response) => response.json())
+            .then((data) => {
+                if (data["code"] == 0) {
+                    cacheAndUpdate(callback, userId, "relation", data)
+                }
+            });
+
             updateVideoData(userId, callback);
         }
     }
