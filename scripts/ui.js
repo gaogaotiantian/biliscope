@@ -133,7 +133,6 @@ function getGuardSupportHTML(data) {
         borderColor = "rgb(255, 232, 84)";
     }
 
-
     let bgColor = "";
     const medalLevel = guard["medal_info"]["medal_level"];
     if (medalLevel < 25) {
