@@ -76,9 +76,6 @@ function relationDisplay(data) {
         return "已被拉黑";
     }
 
-    console.log(data["relation"])
-    console.log(data["be_relation"])
-
     if (data["relation"]["attribute"] == 0) {
         if (data["be_relation"]["attribute"] == 0) {
             return null;

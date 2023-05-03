@@ -1,4 +1,4 @@
-document.addEventListener("mouseover", showProfile);
+document.addEventListener("mouseover", showProfileDebounce);
 document.addEventListener("mousemove", (ev) => userProfileCard.updateCursor(ev.pageX, ev.pageY));
 
 biliScopeOptions = null;
@@ -81,4 +81,12 @@ function showProfile(event) {
     } else {
         userProfileCard.checkTargetValid(event.target);
     }
+}
+
+function showProfileDebounce(event) {
+    clearTimeout(showProfileDebounce.timer);
+    event.target.addEventListener("mouseout", () => clearTimeout(showProfileDebounce.timer));
+    showProfileDebounce.timer = setTimeout(() => {
+        showProfile(event)
+    }, 200);
 }
