@@ -9,6 +9,10 @@
     overflow: hidden;
 }
 
+#biliscope-id-card * {
+    box-sizing: content-box;
+}
+
 #biliscope-id-card .d-none {
     display: none;
 }
@@ -23,6 +27,28 @@
     height: 120px;
     background-size: cover;
     background-position: 50%
+}
+
+#biliscope-id-card .live-tab {
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    transform: translate(-50%,50%) scale(.9);
+    height: 15px;
+    white-space: nowrap;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-align: center;
+    align-items: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    background: #f69;
+    color: #fff;
+    border-radius: 8px;
+    border: 1.5px solid #fff;
+    padding: 2px 3px;
+    font-size: 12px;
+    z-index: 2;
 }
 
 #biliscope-id-card .idc-content .idc-username {
@@ -42,6 +68,50 @@
     left: 20px;
     width: 54px;
     height: 54px
+}
+
+#biliscope-id-card .live-gif {
+    width: 15px;
+    margin-right: 5px;
+}
+
+#biliscope-id-card .a-cycle {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    width: 50px;
+    height: 50px;
+    border: 1px solid #f69;
+    border-radius: 50%;
+    z-index: 1;
+    opacity: 0;
+    animation: scaleUpCircle 1.5s linear;
+    animation-iteration-count: infinite;
+}
+
+#biliscope-id-card .a-cycle-1 {
+    animation-delay: 0s;
+}
+
+#biliscope-id-card .a-cycle-2 {
+    animation-delay: 0.5s;
+}
+
+#biliscope-id-card .a-cycle-3 {
+    animation-delay: 1s;
+}
+
+@keyframes scaleUpCircle {
+    0% {
+        transform: translate(-50%,-50%) scale(1);
+        opacity: 1
+    }
+
+    to {
+        transform: translate(-50%,-50%) scale(1.5);
+        opacity: 0
+    }
 }
 
 #biliscope-id-card .lv-wrapper {

@@ -111,6 +111,15 @@ function getUserProfileCardDataHTML(data) {
         <div class="idc-info clearfix">
             <a class="idc-avatar-container">
                 <img alt="${data["name"]}" src="${data["face"]}@54w_54h_1c.webp" class="idc-avatar">
+                <div class="${data["live_status"] ? "": "d-none"}">
+                    <div class="live-tab">
+                        <img src="//s1.hdslb.com/bfs/static/jinkela/space/assets/live.gif" alt="live" class="live-gif">
+                        直播中
+                    </div>
+                    <div class="a-cycle a-cycle-1"></div>
+                    <div class="a-cycle a-cycle-2"></div>
+                    <div class="a-cycle a-cycle-3"></div>
+                </div>
             </a>
             <div class="idc-content h">
                 <div>
@@ -393,6 +402,7 @@ UserProfileCard.prototype.updateData = function (data) {
         this.data["level"] = d["data"]["level"];
         this.data["title"] = d["data"]["official"]["title"];
         this.data["title_type"] = d["data"]["official"]["type"];
+        this.data["live_status"] = d["data"]["live_room"]["liveStatus"];
         this.data["vip"] = d["data"]["vip"]["status"];
         this.data["top_photo"] = d["data"]["top_photo"].replace("http://", "https://");
     } else if (data["api"] == "relation") {
