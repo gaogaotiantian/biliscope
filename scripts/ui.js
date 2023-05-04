@@ -341,7 +341,12 @@ UserProfileCard.prototype.updateCursor = function(cursorX, cursorY) {
 
         if (this.cursorY + height + windowPadding > window.scrollY + window.innerHeight) {
             // Will overflow to the bottom, put it on the top
-            this.el.style.top = `${this.cursorY - cursorPadding - height}px`;
+            if (this.cursorY - windowPadding - height < window.scrollY) {
+                // Can't fit on top either, put it in the middle
+                this.el.style.top = `${window.scrollY + (window.innerHeight - height) / 2}px`;
+            } else {
+                this.el.style.top = `${this.cursorY - cursorPadding - height}px`;
+            }
         } else {
             this.el.style.top = `${this.cursorY + cursorPadding}px`;
         }
@@ -402,7 +407,7 @@ UserProfileCard.prototype.updateData = function (data) {
         this.data["level"] = d["data"]["level"];
         this.data["title"] = d["data"]["official"]["title"];
         this.data["title_type"] = d["data"]["official"]["type"];
-        this.data["live_status"] = d["data"]["liveroom"] ? d["data"]["live_room"]["liveStatus"]: 0;
+        this.data["live_status"] = d["data"]["live_room"] ? d["data"]["live_room"]["liveStatus"]: 0;
         this.data["vip"] = d["data"]["vip"]["status"];
         this.data["top_photo"] = d["data"]["top_photo"].replace("http://", "https://");
     } else if (data["api"] == "relation") {
