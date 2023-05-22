@@ -12,6 +12,7 @@
         "scripts/constants.js",
         "scripts/stopwords.js",
         "scripts/wordcloud2.min.js",
+        "scripts/md5.js",
         "scripts/biliapi.js",
         "scripts/note.js",
         "scripts/ui.js",

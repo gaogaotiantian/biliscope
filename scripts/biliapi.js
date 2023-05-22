@@ -1,14 +1,70 @@
 const BILIBILI_API_URL = "https://api.bilibili.com"
 const NUM_PER_PAGE = 50
 
+/*
+ * Bilibili http request util
+ */
+
+var biliMixin = null;
+
+async function getBiliMixin() {
+    const OE = [46, 47, 18, 2, 53, 8, 23, 32, 15, 50, 10, 31, 58, 3, 45,
+                35, 27, 43, 5, 49, 33, 9, 42, 19, 29, 28, 14, 39, 12, 38,
+                41, 13, 37, 48, 7, 16, 24, 55, 40, 61, 26, 17, 0, 1, 60,
+                51, 30, 4, 22, 25, 54, 21, 56, 59, 6, 63, 57, 62, 11, 36,
+                20, 34, 44, 52];
+
+    return fetch("https://api.bilibili.com/x/web-interface/nav")
+        .then((response) => response.json())
+        .then((data) => {
+            let img_val = data.data.wbi_img.img_url.split("/").pop().split(".")[0];
+            let sub_val = data.data.wbi_img.sub_url.split("/").pop().split(".")[0];
+            let val = img_val + sub_val;
+            return OE.reduce((s, v) => s + val[v], "").substring(0, 32);
+        });
+}
+
+async function biliGet(url, params) {
+    if (biliMixin === null) {
+        biliMixin = await getBiliMixin();
+    }
+
+    if (url.indexOf("/wbi/") != -1) {
+        // convert params to url in a sorted order
+        params["wts"] = Math.floor(Date.now() / 1000);
+        let keys = Object.keys(params).sort();
+        let paramsStr = keys.map((key) => `${key}=${params[key]}`).join("&");
+        let sign = md5(paramsStr + biliMixin);
+        url = `${url}?${paramsStr}&w_rid=${sign}`;
+    } else {
+        let keys = Object.keys(params).sort();
+        let paramsStr = keys.map((key) => `${key}=${params[key]}`).join("&");
+        url = `${url}?${paramsStr}`;
+    }
+
+    return fetch(url, {"credentials":"include","mode":"cors"})
+        .then((response) => response.json())
+        .then((data) => {
+            if (data['code'] == -403) {
+                biliMixin = null;
+            }
+            return data;
+        });
+}
+
+/*
+ * Data requests
+ */
+
 async function getUserIdFromVideoLink(videoLink) {
     let regex = /.*?bilibili.com\/video\/(.*)$/;
     let bvid = videoLink.match(regex)[1];
 
-    return await fetch(`${BILIBILI_API_URL}/x/web-interface/view?bvid=${bvid}`)
-        .then((response) => response.json())
+    return await biliGet(`${BILIBILI_API_URL}/x/web-interface/view`, {
+            bvid: bvid
+        })
         .then((data) => {
-            return  data["data"]["owner"]["mid"];
+            return data["data"]["owner"]["mid"];
         })
 }
 
@@ -70,8 +126,14 @@ function convertVideoData(map) {
 }
 
 async function requestSearchPage(userId, pn, map) {
-    return fetch(`${BILIBILI_API_URL}/x/space/wbi/arc/search?mid=${userId}&pn=${pn}&ps=${NUM_PER_PAGE}&index=1&order=pubdate&order_avoided=true`)
-        .then((response) => response.json())
+    return biliGet(`${BILIBILI_API_URL}/x/space/wbi/arc/search`, {
+            mid: userId,
+            pn: pn,
+            ps: NUM_PER_PAGE,
+            index: 1,
+            order: "pubdate",
+            order_avoided: "true"
+        })
         .then((data) => {
             if (data["code"] == 0) {
                 for (let v of data["data"]["list"]["vlist"]) {
@@ -167,16 +229,20 @@ function updateUserInfo(userId, callback) {
                 callback({"uid": userId, "api": api, "payload": cache[api]});
             }
         } else {
-            fetch(`${BILIBILI_API_URL}/x/relation/stat?vmid=${userId}&jsonp=jsonp`,)
-            .then((response) => response.json())
+            biliGet(`${BILIBILI_API_URL}/x/relation/stat`, {
+                vmid: userId,
+                jsonp: "jsonp",
+            })
             .then((data) => cacheAndUpdate(callback, userId, "stat", data));
 
-            fetch(`${BILIBILI_API_URL}/x/space/wbi/acc/info?mid=${userId}`,)
-            .then((response) => response.json())
+            biliGet(`${BILIBILI_API_URL}/x/space/wbi/acc/info`, {
+                mid: userId,
+            })
             .then((data) => cacheAndUpdate(callback, userId, "info", data));
 
-            fetch(`${BILIBILI_API_URL}/x/space/acc/relation?mid=${userId}`, {credentials: "include"})
-            .then((response) => response.json())
+            biliGet(`${BILIBILI_API_URL}/x/space/acc/relation`, {
+                mid: userId,
+            })
             .then((data) => {
                 if (data["code"] == 0) {
                     cacheAndUpdate(callback, userId, "relation", data)
@@ -189,9 +255,13 @@ function updateUserInfo(userId, callback) {
 }
 
 
-async function requestGuardPage(roomId, uid, pn, map) {
-    return fetch(`https://api.live.bilibili.com/xlive/app-room/v2/guardTab/topList?roomid=${roomId}&page=${pn}&ruid=${uid}&page_size=30`)
-        .then((response) => response.json())
+async function requestGuardPage(roomid, uid, pn, map) {
+    return biliGet(`https://api.live.bilibili.com/xlive/app-room/v2/guardTab/topList`, {
+            roomid: roomid,
+            page: pn,
+            ruid: uid,
+            page_size: 30,
+        })
         .then((data) => {
             if (data["code"] == 0) {
                 for (let u of data["data"]["top3"]) {
