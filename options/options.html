@@ -3,17 +3,72 @@
 <head>
   <meta charset="UTF-8">
   <title>BiliScope设置</title>
+  <style>
+    button{
+      padding: 5px 10px;
+      border-width: 0px;
+      border-radius: 3px;
+      background: #1E90FF;
+      cursor: pointer;
+      outline: none;
+      color: white;
+      font-size: 14px;
+    }
+    label{
+      font-size: 14px;
+    }
+    #enable-word-cloud{
+      cursor: pointer;
+    }
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+      -webkit-appearance: none !important;
+    }
+    input[type="number"] {
+      -moz-appearance: textfield;
+    }
+    #min-number{
+      text-align: center;
+      height: 30px;
+      padding: 0;
+      outline: none;
+      border: 1px solid #eee;
+      width: 80px;
+    }
+    .btn{
+      height: 30px;
+      width: 30px;
+      text-align: center;
+      border-radius: 0;
+    }
+    #status{
+      height: 24px;
+      font-size: 14px;
+    }
+    #save{
+      margin-top: 5px;
+    }
+    .desc{
+      font-size: 12px;
+      color: #666;
+    }
+  </style>
 </head>
 <body>
 
-<label style="padding: 5px; font-size: 14px">
-  <input type="checkbox" id="enable-word-cloud">
-  使用词云
-</label>
-
-<div id="status" style="padding: 5px; min-height: 20px"></div>
-
-<button id="save" style="margin: 10px; padding: 5px 10px; font-size: 16px;">保存</button>
+  <div>
+    <label for="enable-word-cloud">使用词云:</label>
+    <input type="checkbox" id="enable-word-cloud">
+  </div>
+  <div class="number-selector">
+    <label for="min-number">最小字号:</label>
+    <button id="decrement" class="btn">-</button><input type="number" id="min-number" value="5" min="5" max="50"><button class="btn" id="increment">+</button>
+    <p class="desc">(小于此设置字号的将不会显示)</p>
+  </div>
+  <div id="status"></div>
+  <div>
+    <button id="save">保存</button>
+  </div>
 
 <script src="options.js"></script>
 </body>

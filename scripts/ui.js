@@ -4,6 +4,12 @@ function numberToDisplay(number) {
     }
     return number;
 }
+let minSize = 5
+chrome.storage.sync.get(['minSize'], function(result) {
+    if (result.minSize) {
+        minSize = result.minSize
+    }
+});
 
 function timestampToDisplay(timestamp) {
     if (timestamp == null) {
@@ -363,13 +369,7 @@ UserProfileCard.prototype.updateTarget = function(target) {
 }
 
 UserProfileCard.prototype.wordCloudMaxCount = function() {
-    let m = 0;
-    for (let d of this.data["wordcloud"]) {
-        if (d[1] > m) {
-            m = d[1];
-        }
-    }
-    return m;
+    return Math.max(...this.data["wordcloud"].map(item => item[1]))
 }
 
 UserProfileCard.prototype.drawVideoTags = function() {
@@ -439,7 +439,7 @@ UserProfileCard.prototype.updateData = function (data) {
                 backgroundColor: "transparent",
                 weightFactor: 100 / this.wordCloudMaxCount(),
                 shrinkToFit: true,
-                minSize: 5
+                minSize
             });
             this.drawVideoTags();
         } else {
