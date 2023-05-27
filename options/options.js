@@ -5,11 +5,11 @@ function save_options() {
     chrome.storage.sync.set({
         enableWordCloud: enableWordCloud,
         minSize
-    }, function() {
+    }, function () {
         // Update status to let user know options were saved.
         var status = document.getElementById('status');
         status.textContent = '保存成功';
-        setTimeout(function() {
+        setTimeout(function () {
             status.textContent = '';
         }, 750);
     });
@@ -21,7 +21,7 @@ function restore_options() {
     chrome.storage.sync.get({
         enableWordCloud: true,
         minSize: 5
-    }, function(items) {
+    }, function (items) {
         document.getElementById('enable-word-cloud').checked = items.enableWordCloud;
         document.getElementById('min-number').value = items.minSize;
     });
@@ -32,14 +32,14 @@ const decrementBtn = document.getElementById('decrement');
 const incrementBtn = document.getElementById('increment');
 const minNumberInput = document.getElementById('min-number');
 
-decrementBtn.addEventListener('click', function() {
+decrementBtn.addEventListener('click', function () {
     const currentValue = parseInt(minNumberInput.value);
-  if (currentValue > 5) {
-    minNumberInput.value = currentValue - 1;
-  }
+    if (currentValue > 5) {
+        minNumberInput.value = currentValue - 1;
+    }
 });
 
-incrementBtn.addEventListener('click', function() {
+incrementBtn.addEventListener('click', function () {
     const currentValue = parseInt(minNumberInput.value);
-  minNumberInput.value = currentValue + 1;
+    minNumberInput.value = currentValue + 1;
 });

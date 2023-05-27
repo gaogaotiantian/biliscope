@@ -4,7 +4,8 @@ document.addEventListener("mousemove", (ev) => userProfileCard.updateCursor(ev.p
 biliScopeOptions = null;
 
 chrome.storage.sync.get({
-    enableWordCloud: true
+    enableWordCloud: true,
+    minSize: 5
 }, function(items) {
     biliScopeOptions = items;
 });

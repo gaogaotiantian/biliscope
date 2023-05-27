@@ -4,12 +4,6 @@ function numberToDisplay(number) {
     }
     return number;
 }
-let minSize = 5
-chrome.storage.sync.get(['minSize'], function(result) {
-    if (result.minSize) {
-        minSize = result.minSize
-    }
-});
 
 function timestampToDisplay(timestamp) {
     if (timestamp == null) {
@@ -433,13 +427,13 @@ UserProfileCard.prototype.updateData = function (data) {
             canvas.height = canvas.offsetHeight;
 
             canvas.parentNode.classList.add("biliscope-canvas-show");
-
+            
             WordCloud(canvas, {
                 list: JSON.parse(JSON.stringify(this.data["wordcloud"])),
                 backgroundColor: "transparent",
                 weightFactor: 100 / this.wordCloudMaxCount(),
                 shrinkToFit: true,
-                minSize
+                minSize: biliScopeOptions.minSize
             });
             this.drawVideoTags();
         } else {
