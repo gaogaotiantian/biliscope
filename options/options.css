@@ -31,6 +31,7 @@ input::-webkit-inner-spin-button {
 
 input[type="number"] {
     -moz-appearance: textfield;
+    box-sizing: border-box;
 }
 
 #min-number {
@@ -83,7 +84,8 @@ input[type="number"] {
 #increment,#decrement{
     border-radius: 0px;
     font-size: 18px;
-    padding: 0 12px;
+    width: 32px;
+    padding: 0;
 }
 
 input[type='checkbox'] {
