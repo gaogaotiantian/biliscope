@@ -1,3 +1,56 @@
+function show_status(text, time) {
+    var status = document.getElementById('status');
+    status.textContent = text;
+    setTimeout(function() {
+        status.textContent = '';
+    }, time);
+}
+
+function export_notes() {
+    chrome.storage.local.get({
+        noteData: {}
+    }, function(result) {
+        noteData = result.noteData;
+        const blob = new Blob([JSON.stringify(noteData)], {'type': 'application/json'});
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'note.json';
+        a.style = 'display: none';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        show_status('导出成功', 1500);
+    });
+}
+
+function import_notes() {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.style = 'display: none';
+    input.accept = '.json';
+    input.addEventListener("change", () => {
+        const file = input.files[0];
+        const reader = new FileReader();
+        reader.addEventListener("loadend", () => {
+            let noteData = JSON.parse(reader.result);
+            if (noteData) {
+                chrome.storage.local.set({
+                    noteData: noteData
+                });
+                show_status('导入成功', 1500);
+            } else {
+                show_status('非法文件', 1500);
+            }
+        })
+        reader.readAsText(file);
+    })
+
+    document.body.appendChild(input);
+    input.click()
+    document.body.removeChild(input);
+}
+
 // Saves options to chrome.storage
 function save_options() {
     const enableWordCloud = document.getElementById('enable-word-cloud').checked;
@@ -7,11 +60,7 @@ function save_options() {
         minSize: minSize
     }, function () {
         // Update status to let user know options were saved.
-        var status = document.getElementById('status');
-        status.textContent = '保存成功';
-        setTimeout(function () {
-            status.textContent = '';
-        }, 750);
+        show_status('保存成功', 750);
     });
 }
 
@@ -43,3 +92,5 @@ incrementBtn.addEventListener('click', function () {
     const currentValue = parseInt(minNumberInput.value);
     minNumberInput.value = currentValue + 1;
 });
+document.getElementById('export-note').addEventListener('click', export_notes);
+document.getElementById('import-note').addEventListener('click', import_notes);
