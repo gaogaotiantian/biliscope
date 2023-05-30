@@ -1,20 +1,28 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <meta charset="UTF-8">
   <title>BiliScope设置</title>
+  <link rel="stylesheet" href="./options.css">
 </head>
+
 <body>
-
-<label style="padding: 5px; font-size: 14px">
-  <input type="checkbox" id="enable-word-cloud">
-  使用词云
-</label>
-
-<div id="status" style="padding: 5px; min-height: 20px"></div>
-
-<button id="save" style="margin: 10px; padding: 5px 10px; font-size: 16px;">保存</button>
-
-<script src="options.js"></script>
+  <div class="item">
+    <label for="enable-word-cloud">使用词云:</label>
+    <input type="checkbox" id="enable-word-cloud">
+  </div>
+  <div class="number-selector item">
+    <label for="min-number">最小字号:</label>
+    <button id="decrement" class="btn btn-primary">-</button><input type="number" id="min-number" value="5" min="5" max="50"><button
+      class="btn btn-primary" id="increment">+</button>
+    <p class="desc">(小于此设置字号的词将不会显示)</p>
+  </div>
+  <div id="status item"></div>
+  <div class="item">
+    <button id="save" class="btn btn-primary">保存</button>
+  </div>
+  <script src="options.js"></script>
 </body>
+
 </html>
