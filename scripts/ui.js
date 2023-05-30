@@ -425,7 +425,9 @@ UserProfileCard.prototype.updateData = function (data) {
             canvas.style.height = `${canvas.offsetWidth / 2}px`;
             canvas.width = canvas.offsetWidth;
             canvas.height = canvas.offsetHeight;
+            
             canvas.parentNode.classList.add("biliscope-canvas-show");
+            
             WordCloud(canvas, {
                 list: JSON.parse(JSON.stringify(this.data["wordcloud"])),
                 backgroundColor: "transparent",
