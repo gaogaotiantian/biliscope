@@ -36,11 +36,11 @@ input[type="number"] {
 
 #min-number {
     text-align: center;
-    height: 32px;
+    height: 20px;
     padding: 0;
     outline: none;
     border: 1px solid #eee;
-    width: 80px;
+    width: 60px;
 }
 
 #status {
@@ -81,10 +81,12 @@ input[type="number"] {
     -ms-user-select: none;
     user-select: none;
 }
-#increment,#decrement{
+
+.btn-change {
     border-radius: 0px;
     font-size: 18px;
-    width: 32px;
+    width: 20px;
+    height: 20px;
     padding: 0;
 }
 
@@ -99,7 +101,8 @@ input[type='checkbox'] {
     position: relative;
     left: -3px;
 }
-input[type='checkbox']::after{
+
+input[type='checkbox']::after {
     content: '';
     display: block;
     width: 18px;
@@ -113,7 +116,7 @@ input[type='checkbox']::after{
     transition: 240ms;
 }
 
-input[type='checkbox']:checked:before{
+input[type='checkbox']:checked:before {
     content: '';
     position: absolute;
     top: 0;
@@ -130,11 +133,11 @@ input[type='checkbox']:checked:before{
     transform: rotate(45deg);
 }
 
-input[type='checkbox']:checked::after{
+input[type='checkbox']:checked::after {
     background-color: #2196f3;
     border-color: #2196f3;
 }
 
-.item{
+.item {
     padding: 4px 0;
 }
