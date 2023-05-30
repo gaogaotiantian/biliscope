@@ -4,7 +4,7 @@ function save_options() {
     const minSize = document.getElementById('min-number').value;
     chrome.storage.sync.set({
         enableWordCloud: enableWordCloud,
-        minSize
+        minSize: minSize
     }, function () {
         // Update status to let user know options were saved.
         var status = document.getElementById('status');
