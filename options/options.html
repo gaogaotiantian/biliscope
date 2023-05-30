@@ -8,18 +8,6 @@
 </head>
 <body>
 
-<label style="padding: 5px; font-size: 14px">
-  <input type="checkbox" id="enable-word-cloud">
-  使用词云
-</label>
-
-<div>
-  <button id="export-note">导出备注</button>
-  <button id="import-note">导入备注</button>
-</div>
-
-<div id="status" style="padding: 5px; min-height: 20px"></div>
-
 <body>
   <div class="item">
     <label for="enable-word-cloud">使用词云:</label>
@@ -31,7 +19,13 @@
       class="btn btn-primary" id="increment">+</button>
     <p class="desc">(小于此设置字号的词将不会显示)</p>
   </div>
-  <div id="status item"></div>
+
+  <div>
+    <button id="export-note">导出备注</button>
+    <button id="import-note">导入备注</button>
+  </div>
+
+  <div id="status" class="item"></div>
   <div class="item">
     <button id="save" class="btn btn-primary">保存</button>
   </div>
