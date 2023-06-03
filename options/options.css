@@ -141,3 +141,12 @@ input[type='checkbox']:checked::after {
 .item {
     padding: 4px 0;
 }
+
+.option-group {
+    padding: 8px 3px;
+    border: 1px solid #eee;
+}
+
+.item-line {
+    margin: 2px;
+}

@@ -15,7 +15,7 @@
   <div class="number-selector item">
     <label for="min-number">最小字号:</label>
     <button id="decrement" class="btn btn-change">-</button>
-      <input type="number" id="min-number" value="5" min="5" max="50">
+    <input type="number" id="min-number" value="5" min="5" max="50">
     <button id="increment" class="btn btn-change">+</button>
     <p class="desc">(小于此设置字号的词将不会显示)</p>
   </div>
@@ -25,10 +25,28 @@
     <button id="import-note">导入备注</button>
   </div>
 
+  <div class="option-group">
+    <div class="item-line">Gitee配置</div>
+    <div class="item-line">
+      <input id="gitee-owner" placeholder="登录名" />
+    </div>
+    <div class="item-line">
+      <input id="gitee-token" placeholder="token" />
+    </div>
+    <div class="item-line">
+      <input id="gitee-repo" placeholder="仓库名" />
+    </div>
+    <div class="item-line">
+      <button id="upload-gitee">上传 gitee</button>
+      <button id="download-gitee">下载 gitee</button>
+    </div>
+  </div>
+
   <div id="status" class="item"></div>
   <div class="item">
     <button id="save" class="btn btn-primary">保存</button>
   </div>
   <script src="options.js"></script>
 </body>
+
 </html>
