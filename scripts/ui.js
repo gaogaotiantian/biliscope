@@ -309,11 +309,15 @@ UserProfileCard.prototype.clearOriginalCard = function() {
     }
 
     for (let card of document.getElementsByClassName("user-card")) {
-        card.remove();
+        card.hidden = true;
     }
 
     for (let card of document.getElementsByClassName("card-loaded")) {
-        card.remove();
+        card.hidden = true;
+    }
+
+    for (let card of document.getElementsByClassName("bili-user-profile")) {
+        card.hidden = true;
     }
 }
 
