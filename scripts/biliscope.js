@@ -35,14 +35,10 @@ function showProfile(event) {
     if (target && userProfileCard.enable()) {
         userProfileCard.updateCursor(event.pageX, event.pageY);
         userProfileCard.updateTarget(target);
-        let userId = target.getAttribute("biliscope-userid")
-        if (userId) {
-            if (userId != userProfileCard.userId) {
-                userProfileCard.updateUserId(userId);
-                updateUserInfo(userId, (data) => userProfileCard.updateData(data));
-            }
-        } else {
-            userProfileCard.disable();
+        let userId = target.getAttribute("biliscope-userid");
+        if (userId != userProfileCard.userId) {
+            userProfileCard.updateUserId(userId);
+            updateUserInfo(userId, (data) => userProfileCard.updateData(data));
         }
     } else {
         userProfileCard.checkTargetValid(event.target);

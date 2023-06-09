@@ -44,5 +44,5 @@ var noteObserver = new MutationObserver((mutationList, observer) => {
 
 noteObserver.observe(document.body, {
     childList: true,
-    subtree: true,
+    subtree: true
 });
