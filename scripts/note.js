@@ -6,8 +6,18 @@ chrome.storage.local.get({
     noteData = result.noteData;
 });
 
+function getUserIdFromLink(s) {
+    let regex = /.*?bilibili.com\/([0-9]*)(\/dynamic)?([^\/]*|\/|\/\?.*)$/;
+    let userId = null;
+
+    if (s && s.match(regex)) {
+        return s.match(regex)[1];
+    }
+    return userId;
+}
+
 var noteObserver = new MutationObserver((mutationList, observer) => {
-    if (window.location.href.startsWith(BILIBILI_SPACE_URL) && noteData != null) {
+    if (window.location.href.startsWith(BILIBILI_SPACE_URL) && noteData != null && document.getElementById("biliscope-profile-note") == null) {
         let userInfoNode = document.getElementsByClassName("section user-info")[0];
         let userNoteNode = document.getElementById("biliscope-profile-note");
         let userId = getUserIdFromLink(window.location.href);
