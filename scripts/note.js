@@ -18,26 +18,38 @@ function getUserIdFromLink(s) {
 
 var noteObserver = new MutationObserver((mutationList, observer) => {
     if (window.location.href.startsWith(BILIBILI_SPACE_URL) && noteData != null && document.getElementById("biliscope-profile-note") == null) {
-        let userInfoNode = document.getElementsByClassName("section user-info")[0];
+        let userInfoWrapper = document.querySelector("#page-index > div.col-2");
         let userNoteNode = document.getElementById("biliscope-profile-note");
         let userId = getUserIdFromLink(window.location.href);
-        if (userInfoNode && !userNoteNode) {
+        if (userInfoWrapper && !userNoteNode) {
             let noteNode = document.createElement("div");
             noteNode.id = "biliscope-profile-note"
             noteNode.className = "section user-info"
             noteNode.innerHTML = `
                 <p class="user-info-title"><span class="info-title">备注</span></div>
                 <div class="be-textarea be-input--append">
-                    <textarea rows="3" type="textarea" maxlength="150" class="be-textarea_inner" id="biliscope-note-textarea">${noteData[userId] || ""}</textarea>
+                    <textarea
+                        rows="${Math.max(3, (noteData[userId] || "").split("\n").length)}"
+                        placeholder="请输入备注\n换行后的内容将不显示在卡片上，只能在主页中查看"
+                        type="textarea"
+                        maxlength="5000"
+                        class="be-textarea_inner"
+                        style="resize: vertical"
+                        id="biliscope-note-textarea">${noteData[userId] || ""}</textarea>
                 </div>
             `;
             noteNode.getElementsByTagName("textarea")[0].addEventListener("blur", (ev) => {
-                noteData[userId] = ev.target.value;
+                // if the value is empty, delete the key
+                if (ev.target.value == "") {
+                    delete noteData[userId];
+                } else {
+                    noteData[userId] = ev.target.value;
+                }
                 chrome.storage.local.set({
                     noteData: noteData
                 });
             })
-            userInfoNode.parentNode.appendChild(noteNode);
+            userInfoWrapper.appendChild(noteNode);
         }
     }
 });
