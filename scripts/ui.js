@@ -106,7 +106,7 @@ function relationClass(data) {
 
 function noteDataToDisplay(noteData, mid) {
     if (noteData && noteData[mid]) {
-        return noteData[mid].split("\n")[0];
+        return noteData[mid].split("\n", 1)[0];
     }
     return "";
 }
