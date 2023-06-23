@@ -19,7 +19,7 @@ s.onload = function() { this.remove(); };
 function getTarget(target) {
     let maxDepth = 5;
     userLink = target;
-    while (userLink && maxDepth-- > 0 && userLink.getAttribute) {
+    while (userLink && maxDepth-- >= 0 && userLink.getAttribute) {
         if (userLink.getAttribute("biliscope-userid")) {
             return userLink;
         }
