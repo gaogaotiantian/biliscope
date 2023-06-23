@@ -104,6 +104,13 @@ function relationClass(data) {
     }
 }
 
+function noteDataToDisplay(noteData, mid) {
+    if (noteData && noteData[mid]) {
+        return noteData[mid].split("\n", 1)[0];
+    }
+    return "";
+}
+
 function getUserProfileCardDataHTML(data) {
     return `
         <div class="idc-theme-img" style="background-image: url(&quot;${data["top_photo"]}@100Q.webp&quot;);">
@@ -136,8 +143,8 @@ function getUserProfileCardDataHTML(data) {
                     </span>
                     <span class="biliscope-relation ${relationClass(data)}">${relationDisplay(data)}</span>
                 </div>
-                <div class="idc-meta" style="${noteData && noteData[data["mid"]] ? "": "display: none"}">
-                    <span class="idc-meta-item">${noteData ? noteData[data["mid"]]: ""}</span>
+                <div class="idc-meta" style="${noteDataToDisplay(noteData, data["mid"]) ? "": "display: none"}">
+                    <span class="idc-meta-item">${noteDataToDisplay(noteData, data["mid"])}</span>
                 </div>
                 <div class="idc-meta">
                     <span class="idc-meta-item"><data-title>关注</data-title> ${data["following"] || 0}</span>
