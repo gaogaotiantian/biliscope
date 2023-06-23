@@ -358,6 +358,20 @@ UserProfileCard.prototype.updateCursor = function(cursorX, cursorY) {
 }
 
 UserProfileCard.prototype.updateTarget = function(target) {
+    if (target != this.target) {
+        // Calculate z-index for the card
+        let node = target
+        let zIndex = 1002;
+        while (node && node != document) {
+            let containerIndex = window.getComputedStyle(node).getPropertyValue("z-index");
+            if (containerIndex && containerIndex != "auto" && containerIndex > zIndex) {
+                zIndex = containerIndex;
+            }
+            node = node.parentNode;
+        } 
+        this.el.style.zIndex = zIndex + 1;
+    }
+
     this.target = target;
     upc = this
     this.target.addEventListener("mouseleave", function leaveHandle(ev) {
