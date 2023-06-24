@@ -28,9 +28,6 @@ function getUserCard(data) {
                 <p class="b_text fs_5 text2 text_ellipsis">${data.sign}
                     <span style="margin-left: 3px; ${data.official.title ? "": "display: none"}">${data.official.title}</span>
                 </p>
-                <div class="user-actions">
-                    <button class="vui_button vui_button--blue" data-v-313a3d44="" style="display: none;">+ 关注</button>
-                </div>
             </div>
         </div>
     </div>
