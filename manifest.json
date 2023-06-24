@@ -10,20 +10,25 @@
     {
       "js": [
         "scripts/constants.js",
+        "scripts/globals.js",
         "scripts/stopwords.js",
         "scripts/wordcloud2.min.js",
         "scripts/md5.js",
+        "scripts/util.js",
         "scripts/biliapi.js",
+        "scripts/searchpage.js",
         "scripts/note.js",
         "scripts/ui.js",
         "scripts/biliscope.js"
       ],
       "css": [
-        "css/idcard.css"
+        "css/idcard.css",
+        "css/searchpage.css"
       ],
       "matches": [
         "https://*.bilibili.com/*"
-      ]
+      ],
+      "run_at": "document_start"
     }
   ],
   "author": "gaogaotiantian@hotmail.com",

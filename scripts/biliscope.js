@@ -1,8 +1,3 @@
-document.addEventListener("mouseover", showProfileDebounce);
-document.addEventListener("mousemove", (ev) => userProfileCard.updateCursor(ev.pageX, ev.pageY));
-
-biliScopeOptions = null;
-
 chrome.storage.sync.get({
     enableWordCloud: true,
     minSize: 5
@@ -11,10 +6,15 @@ chrome.storage.sync.get({
 });
 
 // Load the site script to label the user links
-var s = document.createElement('script');
-s.src = chrome.runtime.getURL('scripts/sitescript.js');
-s.onload = function() { this.remove(); };
-(document.head || document.documentElement).appendChild(s);
+window.addEventListener("load", function() {
+    document.addEventListener("mouseover", showProfileDebounce);
+    document.addEventListener("mousemove", (ev) => userProfileCard.updateCursor(ev.pageX, ev.pageY));
+
+    var s = document.createElement('script');
+    s.src = chrome.runtime.getURL('scripts/sitescript.js');
+    s.onload = function() { this.remove(); };
+    (document.head || document.documentElement).appendChild(s);
+});
 
 function getTarget(target) {
     let maxDepth = 5;
