@@ -250,18 +250,6 @@ UserProfileCard.prototype.enable = function() {
     return false;
 }
 
-UserProfileCard.prototype.checkTargetValid = function(target) {
-    if (this.enabled && this.target) {
-        while (target) {
-            if (target == this.target) {
-                return;
-            }
-            target = target.parentNode;
-        }
-        this.disable();
-    }
-}
-
 UserProfileCard.prototype.clearOriginalCard = function() {
     while (document.getElementById("id-card")) {
         document.getElementById("id-card").remove();
@@ -332,11 +320,35 @@ UserProfileCard.prototype.updateTarget = function(target) {
     }
 
     this.target = target;
-    upc = this
-    this.target.addEventListener("mouseleave", function leaveHandle(ev) {
+    this.setLeaveEvent();
+}
+
+UserProfileCard.prototype.setLeaveEvent = function() {
+    let validTargets = [this.el, this.target];
+    upc = this;
+
+    function leaveCallback() {
         upc.disable();
-        this.removeEventListener("mouseleave", leaveHandle);
-    })
+        for (let target of validTargets) {
+            target.removeEventListener("mouseleave", disableDebounce);
+            target.removeEventListener("mouseenter", enterCallback);
+        }
+    }
+
+    function enterCallback() {
+        clearTimeout(disableDebounce.timer);
+    }
+
+    function disableDebounce() {
+        disableDebounce.timer = setTimeout(() => {
+            leaveCallback();
+        }, 200);
+    }
+
+    for (let target of validTargets) {
+        target.addEventListener("mouseleave", disableDebounce);
+        target.addEventListener("mouseenter", enterCallback);
+    }
 }
 
 UserProfileCard.prototype.wordCloudMaxCount = function() {
