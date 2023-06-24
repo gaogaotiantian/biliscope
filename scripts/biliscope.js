@@ -8,7 +8,6 @@ chrome.storage.sync.get({
 // Load the site script to label the user links
 window.addEventListener("load", function() {
     document.addEventListener("mouseover", showProfileDebounce);
-    document.addEventListener("mousemove", (ev) => userProfileCard.updateCursor(ev.pageX, ev.pageY));
 
     var s = document.createElement('script');
     s.src = chrome.runtime.getURL('scripts/sitescript.js');
@@ -40,8 +39,6 @@ function showProfile(event) {
             userProfileCard.updateUserId(userId);
             updateUserInfo(userId, (data) => userProfileCard.updateData(data));
         }
-    } else {
-        userProfileCard.checkTargetValid(event.target);
     }
 }
 
