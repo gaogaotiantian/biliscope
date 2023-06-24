@@ -1,5 +1,3 @@
-var noteData = null;
-
 chrome.storage.local.get({
     noteData: {}
 }, function(result) {
@@ -54,7 +52,9 @@ var noteObserver = new MutationObserver((mutationList, observer) => {
     }
 });
 
-noteObserver.observe(document.body, {
-    childList: true,
-    subtree: true
+window.addEventListener("load", function() {
+    noteObserver.observe(document.body, {
+        childList: true,
+        subtree: true
+    });
 });

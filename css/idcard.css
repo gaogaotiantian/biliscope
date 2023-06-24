@@ -371,8 +371,15 @@
     font-size: 12px;
     font-weight: 600;
     border-radius: 6px;
-    background-color: #00a1d6;
     margin-right: 5px;
+}
+
+#biliscope-id-card .biliscope-badge-video-tag {
+    background-color: #00a1d6;
+}
+
+#biliscope-id-card .biliscope-badge-note-tag {
+    background-color: #fb7299;
 }
 
 #word-cloud-canvas-wrapper {

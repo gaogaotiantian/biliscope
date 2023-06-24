@@ -1,51 +1,3 @@
-function numberToDisplay(number) {
-    if (number > 10000) {
-        return `${(number / 10000).toFixed(1)}万`;
-    }
-    return number;
-}
-
-function timestampToDisplay(timestamp) {
-    if (timestamp == null) {
-        return ""
-    }
-    let date = new Date(timestamp * 1000);
-    let timediff = Date.now() / 1000 - timestamp;
-    const hour = 60 * 60;
-    const day = 24 * hour;
-
-    if (timediff < hour) {
-        return "刚刚";
-    } else if (timediff < day) {
-        return `${Math.floor(timediff / hour)}小时前`;
-    } else if (timediff < 30 * day) {
-        return `${Math.floor(timediff / day)}天前`;
-    } else {
-        return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
-    }
-}
-
-function secondsToDisplay(sec) {
-    if (!sec) {
-        return 0;
-    }
-
-    function digitToStr(n) {
-        n = Math.floor(n);
-        return n < 10 ? "0" + n : n;
-    }
-
-    sec = Math.floor(sec);
-
-    if (sec < 60) {
-        return `00:${digitToStr(sec)}`;
-    } else if (sec < 60 * 60) {
-        return `${digitToStr(sec / 60)}:${digitToStr(sec % 60)}`;
-    } else {
-        return `${digitToStr(sec / 60 / 60)}:${digitToStr(sec / 60) % 60}:${digitToStr(sec % 60)}`;
-    }
-}
-
 function titleTypeToClass(titleType) {
     if (titleType == 0) {
         return "biliscope-personal-auth-icon";
@@ -394,11 +346,18 @@ UserProfileCard.prototype.wordCloudMaxCount = function() {
 UserProfileCard.prototype.drawVideoTags = function() {
     let tagList = document.getElementById("biliscope-tag-list");
     tagList.innerHTML = "";
-    if (this.data["video_type"]) {
+    if (this.data["mid"] && getTags(this.data["mid"]).length > 0) {
+        for (let tag of getTags(this.data["mid"])) {
+            let el = document.createElement("span");
+            el.className = "biliscope-badge biliscope-badge-note-tag";
+            el.innerHTML = tag;
+            tagList.appendChild(el);
+        }
+    } else if (this.data["video_type"]) {
         for (let d of this.data["video_type"]) {
             if (BILIBILI_VIDEO_TYPE_MAP[d[0]]) {
                 let el = document.createElement("span");
-                el.className = "biliscope-badge";
+                el.className = "biliscope-badge biliscope-badge-video-tag";
                 el.innerHTML = BILIBILI_VIDEO_TYPE_MAP[d[0]];
                 tagList.appendChild(el);
             }
@@ -481,15 +440,17 @@ UserProfileCard.prototype.updateData = function (data) {
 
 var guardInfo = null;
 
-userProfileCard = new UserProfileCard();
+window.addEventListener("load", function() {
+    userProfileCard = new UserProfileCard();
 
-getGuardInfo(6726252, 245645656).then((data) => {
-    guardInfo = data;
-    // Shuffle guardInfo
-    for (let i = 0; i < guardInfo.length; i++) {
-        let j = Math.floor(Math.random() * guardInfo.length);
-        let t = guardInfo[i];
-        guardInfo[i] = guardInfo[j];
-        guardInfo[j] = t;
-    }
+    getGuardInfo(6726252, 245645656).then((data) => {
+        guardInfo = data;
+        // Shuffle guardInfo
+        for (let i = 0; i < guardInfo.length; i++) {
+            let j = Math.floor(Math.random() * guardInfo.length);
+            let t = guardInfo[i];
+            guardInfo[i] = guardInfo[j];
+            guardInfo[j] = t;
+        }
+    });
 });

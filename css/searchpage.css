@@ -1,0 +1,38 @@
+.biliscope-search-wrapper .mb_x60 {
+    margin-bottom: 60px;
+}
+
+.biliscope-search-wrapper .b-user-info-card .user-content {
+    width: calc(100% - 101px);
+}
+
+.biliscope-search-wrapper .b-user-info-card .user-content .i_card_title>a {
+    max-width: calc(100% - 40px);
+}
+
+.biliscope-search-wrapper .level-icon {
+    width: 26px;
+    height: 14px;
+}
+
+.biliscope-search-wrapper .search-nodata-container .no-data .no-data-img {
+    width: 320px;
+}
+
+.biliscope-search-wrapper .search-nodata-container {
+    height: calc(100vh - 690px);
+    min-height: 340px;
+}
+
+.biliscope-search-wrapper .biliscope-search-tag {
+    color: white;
+    display: inline-block;
+    padding: 0px 10px;
+    line-height: 24px;
+    vertical-align: top;
+    font-size: 12px;
+    font-weight: 600;
+    border-radius: 6px;
+    background-color: #fb7299;
+    margin-right: 5px;
+}
