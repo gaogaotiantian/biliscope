@@ -28,12 +28,12 @@ var noteObserver = new MutationObserver((mutationList, observer) => {
                 <div class="be-textarea be-input--append">
                     <textarea
                         rows="${Math.max(3, (noteData[userId] || "").split("\n").length)}"
-                        placeholder="请输入备注\n换行后的内容将不显示在卡片上，只能在主页中查看"
+                        placeholder="请输入备注\n手动换行后的内容将不显示在卡片上，只能在主页中查看\n还可以加入#标签#"
                         type="textarea"
                         maxlength="5000"
                         class="be-textarea_inner"
                         style="resize: vertical"
-                        id="biliscope-note-textarea">${noteData[userId] || ""}</textarea>
+                        id="biliscope-note-textarea">\n${noteData[userId] || ""}</textarea>
                 </div>
             `;
             noteNode.getElementsByTagName("textarea")[0].addEventListener("blur", (ev) => {
