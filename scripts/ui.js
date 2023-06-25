@@ -97,14 +97,15 @@ function getUserProfileCardDataHTML(data) {
                 </div>
                 <div class="idc-meta" id="biliscope-note-wrapper">
                     <div class="idc-meta-item"
-                          id="biliscope-note-text"
+                          id="biliscope-card-note-text"
                           ${noteDataToDisplay(noteData, data["mid"]) ? "": "hidden"}>${noteDataToDisplay(noteData, data["mid"])}</div>
                     <textarea class="idc-meta-item"
-                              id="biliscope-note-textarea"
+                              id="biliscope-card-note-textarea"
                               rows="3"
                               hidden
                               maxlength="5000"
-                              style="resize: vertical; width: 100%">${noteData[data["mid"]] || ""}</textarea>
+                              placeholder="给up加个备注（手动换行前的内容都将显示在卡片上）\n或者加几个#标签#"
+                              style="resize: vertical; width: 100%">\n${noteData[data["mid"]] || ""}</textarea>
                 </div>
                 <div class="idc-meta">
                     <span class="idc-meta-item"><data-title>关注</data-title> ${data["following"] || 0}</span>
@@ -390,8 +391,8 @@ UserProfileCard.prototype.drawVideoTags = function() {
 
 UserProfileCard.prototype.setupTriggers = function() {
     let userWrapper = document.getElementById("biliscope-username-wrapper");
-    let text = document.getElementById("biliscope-note-text");
-    let textarea = document.getElementById("biliscope-note-textarea");
+    let text = document.getElementById("biliscope-card-note-text");
+    let textarea = document.getElementById("biliscope-card-note-textarea");
 
     userWrapper.addEventListener("click", (ev) => {
         text.hidden = true;
