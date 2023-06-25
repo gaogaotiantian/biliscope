@@ -81,7 +81,7 @@ function getUserProfileCardDataHTML(data) {
                 </div>
             </a>
             <div class="idc-content h">
-                <div>
+                <div id="biliscope-username-wrapper">
                     <a class="idc-username">
                         <b title="${data["name"]}" class="idc-uname" style="${data["vip"] ? "color: rgb(251, 114, 153);": "color: #18191C"}">
                             ${data["name"]}
@@ -95,8 +95,16 @@ function getUserProfileCardDataHTML(data) {
                     </span>
                     <span class="biliscope-relation ${relationClass(data)}">${relationDisplay(data)}</span>
                 </div>
-                <div class="idc-meta" style="${noteDataToDisplay(noteData, data["mid"]) ? "": "display: none"}">
-                    <span class="idc-meta-item">${noteDataToDisplay(noteData, data["mid"])}</span>
+                <div class="idc-meta" id="biliscope-note-wrapper">
+                    <div class="idc-meta-item"
+                          id="biliscope-note-text"
+                          ${noteDataToDisplay(noteData, data["mid"]) ? "": "hidden"}>${noteDataToDisplay(noteData, data["mid"])}</div>
+                    <textarea class="idc-meta-item"
+                              id="biliscope-note-textarea"
+                              rows="3"
+                              hidden
+                              maxlength="5000"
+                              style="resize: vertical; width: 100%">${noteData[data["mid"]] || ""}</textarea>
                 </div>
                 <div class="idc-meta">
                     <span class="idc-meta-item"><data-title>关注</data-title> ${data["following"] || 0}</span>
@@ -360,10 +368,13 @@ UserProfileCard.prototype.drawVideoTags = function() {
     tagList.innerHTML = "";
     if (this.data["mid"] && getTags(this.data["mid"]).length > 0) {
         for (let tag of getTags(this.data["mid"])) {
+            let a = document.createElement("a");
             let el = document.createElement("span");
             el.className = "biliscope-badge biliscope-badge-note-tag";
             el.innerHTML = tag;
-            tagList.appendChild(el);
+            a.href = `https://search.bilibili.com/upuser?keyword=%23${encodeURIComponent(tag)}`;
+            a.appendChild(el);
+            tagList.appendChild(a);
         }
     } else if (this.data["video_type"]) {
         for (let d of this.data["video_type"]) {
@@ -375,6 +386,47 @@ UserProfileCard.prototype.drawVideoTags = function() {
             }
         }
     }
+}
+
+UserProfileCard.prototype.setupTriggers = function() {
+    let userWrapper = document.getElementById("biliscope-username-wrapper");
+    let text = document.getElementById("biliscope-note-text");
+    let textarea = document.getElementById("biliscope-note-textarea");
+
+    userWrapper.addEventListener("click", (ev) => {
+        text.hidden = true;
+        textarea.hidden = false;
+        textarea.focus();
+    });
+
+    text.addEventListener("click", (ev) => {
+        text.hidden = true;
+        textarea.hidden = false;
+        textarea.focus();
+    });
+
+    textarea.addEventListener("blur", (ev) => {
+        let mid = this.data["mid"];
+        // if the value is empty, delete the key
+        if (mid) {
+            if (textarea.value == "") {
+                delete noteData[mid];
+            } else {
+                noteData[mid] = textarea.value;
+            }
+            text.innerHTML = noteDataToDisplay(noteData, mid);
+            chrome.storage.local.set({
+                noteData: noteData
+            });
+            this.drawVideoTags();
+        }
+        if (text.innerHTML == "") {
+            text.hidden = true;
+        } else {
+            text.hidden = false;
+        }
+        textarea.hidden = true;
+    });
 }
 
 UserProfileCard.prototype.updateData = function (data) {
@@ -439,6 +491,7 @@ UserProfileCard.prototype.updateData = function (data) {
     } else if (this.data['name']) {
         // wait until name is ready
         document.getElementById("biliscope-id-card-data").innerHTML = getUserProfileCardDataHTML(this.data);
+        this.setupTriggers();
         this.drawVideoTags();
     }
 
