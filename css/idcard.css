@@ -291,6 +291,14 @@
     vertical-align: middle;
 }
 
+#biliscope-id-card #biliscope-note-textarea {
+    padding: 3px;
+    border: 1px solid black;
+    border-radius: 4px;
+    outline: none;
+    transition: all .3s ease;
+}
+
 #biliscope-profile-note .user-info-title {
     display: -ms-flexbox;
     display: flex;

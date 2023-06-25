@@ -34,7 +34,7 @@ function getUserCard(data) {
     `
 }
 function updatePage() {
-    if (window.location.search.includes("keyword=%23")) {
+    if (window.location.search.includes("keyword=%23") && myWrapper) {
         const params = new URLSearchParams(window.location.search);
         const keywords = params.get("keyword").split(" ");
         let users = [];
@@ -68,7 +68,7 @@ function updatePage() {
                 for (let d of data.data) {
                     let tagInner = "";
                     for (let tag of getTags(d.mid)) {
-                        tagInner += `<a href="//search.bilibili.com/upuser?keyword=%23${tag}"><span class="biliscope-search-tag">${tag}</span></a>`;
+                        tagInner += `<a href="//search.bilibili.com/upuser?keyword=%23${encodeURIComponent(tag)}"><span class="biliscope-search-tag">${tag}</span></a>`;
                     }
                     d.tagInner = tagInner;
                     if ([1, 2, 7, 9].includes(d.official.role)) {
@@ -92,22 +92,38 @@ if (window.location.href.startsWith(`${BILIBILI_SEARCH_URL}`)) {
     let observer = new MutationObserver((mutationList, observer) => {
         if (window.location.href.startsWith(`${BILIBILI_SEARCH_URL}upuser`)) {
             let wrapper = document.getElementsByClassName("search-page-upuser")[0];
+            // If the wrapper for custom search result is not created, create it
             if (wrapper && document.getElementsByClassName("biliscope-search-wrapper").length == 0) {
                 myWrapper = document.createElement("div");
                 myWrapper.className = "search-page search-page-upuser i_page_container i_wrapper biliscope-search-wrapper"
                 document.getElementsByClassName("search-page-wrapper")[0].appendChild(myWrapper);
                 updatePage();
             }
-            if (window.location.href != prevHref && wrapper) {
-                if (window.location.search.includes("keyword=%23")) {
-                    wrapper.hidden = true;
-                    myWrapper.hidden = false;
-                } else {
-                    wrapper.hidden = false;
-                    myWrapper.hidden = true;
-                }
+
+            if (window.location.href != prevHref) {
                 updatePage();
                 prevHref = window.location.href;
+            }
+
+            // Display the wrappers based on whether the custom search is enabled
+            if (window.location.search.includes("keyword=%23")) {
+                if (wrapper) {
+                    wrapper.hidden = true;
+                }
+                if (myWrapper) {
+                    myWrapper.hidden = false;
+                }
+            } else {
+                if (wrapper) {
+                    wrapper.hidden = false;
+                }
+                if (myWrapper) {
+                    myWrapper.hidden = true;
+                }
+            }
+        } else {
+            if (myWrapper) {
+                myWrapper.hidden = true;
             }
         }
     })
