@@ -413,7 +413,7 @@ UserProfileCard.prototype.setupTriggers = function() {
         text.hidden = true;
         textarea.hidden = false;
         textarea.focus();
-        this.fixed = false;
+        this.fixed = true;
     });
 
     textarea.addEventListener("blur", (ev) => {
