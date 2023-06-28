@@ -68,7 +68,7 @@ function getUserProfileCardDataHTML(data) {
         <div class="idc-theme-img" style="background-image: url(&quot;${data["top_photo"]}@100Q.webp&quot;);">
         </div>
         <div class="idc-info clearfix">
-            <a class="idc-avatar-container">
+            <a class="idc-avatar-container" href="https://space.bilibili.com/${data["mid"]}" target="_blank">
                 <img alt="${data["name"]}" src="${data["face"]}@54w_54h_1c.webp" class="idc-avatar">
                 <div class="${data["live_status"] ? "": "d-none"}">
                     <div class="live-tab">
@@ -83,7 +83,7 @@ function getUserProfileCardDataHTML(data) {
             <div class="idc-content h">
                 <div id="biliscope-username-wrapper">
                     <a class="idc-username">
-                        <b title="${data["name"]}" class="idc-uname" style="${data["vip"] ? "color: rgb(251, 114, 153);": "color: #18191C"}">
+                        <b title="点击添加备注" class="idc-uname" style="${data["vip"] ? "color: rgb(251, 114, 153);": "color: #18191C"}">
                             ${data["name"]}
                         </b>
                     </a>
