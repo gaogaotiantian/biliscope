@@ -215,6 +215,8 @@ function UserProfileCard() {
     this.target = null;
     this.enabled = false;
     this.wordCloud = null;
+    this.fixed = false;
+    this.cursorInside = false;
     this.el = document.createElement("div");
     this.el.style.position = "absolute";
     this.el.style.display = "none";
@@ -236,6 +238,9 @@ UserProfileCard.prototype.disable = function() {
     this.userId = null;
     this.enabled = false;
     this.data = {};
+    if (this.fixed) {
+        return false;
+    }
     if (this.el) {
         this.el.style.display = "none";
         let canvas = document.getElementById("word-cloud-canvas");
@@ -245,6 +250,7 @@ UserProfileCard.prototype.disable = function() {
         }
         this.idCardObserver.disconnect();
     }
+    return true;
 }
 
 UserProfileCard.prototype.enable = function() {
@@ -334,29 +340,31 @@ UserProfileCard.prototype.updateTarget = function(target) {
 
 UserProfileCard.prototype.setLeaveEvent = function() {
     let validTargets = [this.el, this.target];
-    upc = this;
 
-    function leaveCallback() {
-        upc.disable();
-        for (let target of validTargets) {
-            target.removeEventListener("mouseleave", disableDebounce);
-            target.removeEventListener("mouseenter", enterCallback);
+    this.leaveCallback = () => {
+        if (this.disable()) {
+            for (let target of validTargets) {
+                target.removeEventListener("mouseleave", this.disableDebounce);
+                target.removeEventListener("mouseenter", this.enterCallback);
+            }
         }
+        this.cursorInside = false;
     }
 
-    function enterCallback() {
-        clearTimeout(disableDebounce.timer);
+    this.enterCallback = () => {
+        clearTimeout(this.disableDebounce.timer);
+        this.cursorInside = true;
     }
 
-    function disableDebounce() {
-        disableDebounce.timer = setTimeout(() => {
-            leaveCallback();
+    this.disableDebounce = () => {
+        this.disableDebounce.timer = setTimeout(() => {
+            this.leaveCallback();
         }, 200);
     }
 
     for (let target of validTargets) {
-        target.addEventListener("mouseleave", disableDebounce);
-        target.addEventListener("mouseenter", enterCallback);
+        target.addEventListener("mouseleave", this.disableDebounce);
+        target.addEventListener("mouseenter", this.enterCallback);
     }
 }
 
@@ -398,12 +406,14 @@ UserProfileCard.prototype.setupTriggers = function() {
         text.hidden = true;
         textarea.hidden = false;
         textarea.focus();
+        this.fixed = true;
     });
 
     text.addEventListener("click", (ev) => {
         text.hidden = true;
         textarea.hidden = false;
         textarea.focus();
+        this.fixed = false;
     });
 
     textarea.addEventListener("blur", (ev) => {
@@ -427,6 +437,10 @@ UserProfileCard.prototype.setupTriggers = function() {
             text.hidden = false;
         }
         textarea.hidden = true;
+        this.fixed = false;
+        if (!this.cursorInside) {
+            this.leaveCallback();
+        }
     });
 }
 
