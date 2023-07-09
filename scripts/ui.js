@@ -228,6 +228,7 @@ function UserProfileCard() {
     this.idCardObserver = new MutationObserver((mutationList, observer) => {
         this.clearOriginalCard();
     })
+    
     this.disable();
 
     document.body.appendChild(this.el);
