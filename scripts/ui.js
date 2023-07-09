@@ -228,7 +228,6 @@ function UserProfileCard() {
     this.idCardObserver = new MutationObserver((mutationList, observer) => {
         this.clearOriginalCard();
     })
-
     this.disable();
 
     document.body.appendChild(this.el);
@@ -389,9 +388,12 @@ UserProfileCard.prototype.drawVideoTags = function() {
         for (let d of this.data["video_type"]) {
             if (BILIBILI_VIDEO_TYPE_MAP[d[0]]) {
                 let el = document.createElement("span");
+                let a = document.createElement("a");
                 el.className = "biliscope-badge biliscope-badge-video-tag";
                 el.innerHTML = BILIBILI_VIDEO_TYPE_MAP[d[0]];
-                tagList.appendChild(el);
+                a.href = `https://www.bilibili.com/v/${BILIBILI_VIDEO_TYPE_LINK[d[0]]}`;
+                a.appendChild(el);
+                tagList.appendChild(a);
             }
         }
     }
