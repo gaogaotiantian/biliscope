@@ -31,20 +31,17 @@ async function biliGet(url, params, retry = 5) {
         biliMixin = await getBiliMixin();
     }
 
-    if (url.indexOf("?" == -1)) {
-        // If we never set up the params, we need to add the params
-        if (url.indexOf("/wbi/") != -1) {
-            // convert params to url in a sorted order
-            params["wts"] = Math.floor(Date.now() / 1000);
-            let keys = Object.keys(params).sort();
-            let paramsStr = keys.map((key) => `${key}=${params[key]}`).join("&");
-            let sign = md5(paramsStr + biliMixin);
-            url = `${url}?${paramsStr}&w_rid=${sign}`;
-        } else {
-            let keys = Object.keys(params).sort();
-            let paramsStr = keys.map((key) => `${key}=${params[key]}`).join("&");
-            url = `${url}?${paramsStr}`;
-        }
+    if (url.indexOf("/wbi/") != -1) {
+        // convert params to url in a sorted order
+        params["wts"] = Math.floor(Date.now() / 1000);
+        let keys = Object.keys(params).sort();
+        let paramsStr = keys.map((key) => `${key}=${params[key]}`).join("&");
+        let sign = md5(paramsStr + biliMixin);
+        url = `${url}?${paramsStr}&w_rid=${sign}`;
+    } else {
+        let keys = Object.keys(params).sort();
+        let paramsStr = keys.map((key) => `${key}=${params[key]}`).join("&");
+        url = `${url}?${paramsStr}`;
     }
 
     return fetch(url, {"credentials": "include", "mode": "cors"})
