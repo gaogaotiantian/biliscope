@@ -30,7 +30,7 @@ function relationDisplay(data) {
 
     if (data["relation"]["attribute"] == 0) {
         if (data["be_relation"]["attribute"] == 0) {
-            return null;
+            return "+ 关注";
         } else if (data["be_relation"]["attribute"] == 2) {
             return "关注了你";
         }
@@ -51,8 +51,10 @@ function relationClass(data) {
         return "d-none";
     } else if (text == "已拉黑" || text == "已被拉黑") {
         return "biliscope-relation-black";
-    } else {
+    } else if (text == "+ 关注" || text == "关注了你") {
         return "biliscope-relation-follow";
+    } else if (text == "已关注" || text == "已互粉") {
+        return "biliscope-relation-followed";
     }
 }
 
@@ -93,7 +95,7 @@ function getUserProfileCardDataHTML(data) {
                             <img style="height: 132px; vertical-align: middle" src="${chrome.runtime.getURL("img/bililv.svg")}">
                         </span>
                     </span>
-                    <span class="biliscope-relation ${relationClass(data)}">${relationDisplay(data)}</span>
+                    <a><span id="biliscope-follow-button" class="biliscope-relation ${relationClass(data)}">${relationDisplay(data)}</span></a>
                 </div>
                 <div class="idc-meta" id="biliscope-note-wrapper">
                     <div class="idc-meta-item"
@@ -401,6 +403,7 @@ UserProfileCard.prototype.setupTriggers = function() {
     let userWrapper = document.getElementById("biliscope-username-wrapper");
     let text = document.getElementById("biliscope-card-note-text");
     let textarea = document.getElementById("biliscope-card-note-textarea");
+    let followButton = document.getElementById("biliscope-follow-button");
 
     userWrapper.addEventListener("click", (ev) => {
         text.hidden = true;
@@ -440,6 +443,33 @@ UserProfileCard.prototype.setupTriggers = function() {
         this.fixed = false;
         if (!this.cursorInside) {
             this.leaveCallback();
+        }
+    });
+
+    followButton.addEventListener("click", (ev) => {
+        ev.stopPropagation();
+
+        let followAction = null;
+        if (ev.target.classList.contains("biliscope-relation-follow")) {
+            // Follow
+            followAction = 1;
+        } else if (ev.target.classList.contains("biliscope-relation-followed")) {
+            // Unfollow
+            followAction = 2;
+        }
+
+        if (followAction) {
+            biliPost("https://api.bilibili.com/x/relation/modify", {
+                fid: this.data["mid"],
+                act: followAction,
+                re_src: 11
+            })
+            .then((data) => {
+                console.log(data)
+                if (data["code"] == 0) {
+                    updateRelation(this.userId, (data) => this.updateData(data));
+                }
+            });
         }
     });
 }
