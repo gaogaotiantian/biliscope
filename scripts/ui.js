@@ -202,8 +202,18 @@ function getUserProfileCardHTML(data) {
             <div id="biliscope-id-card-data">
                 ${getUserProfileCardDataHTML(data)}
             </div>
-            <div id="word-cloud-canvas-wrapper">
-                <canvas id="word-cloud-canvas" style="width: 100%; height: 0"></canvas>
+            <div id="biliscope-wordcloud-wrapper">
+                <div id="word-cloud-canvas-wrapper" ${biliScopeOptions.enableWordCloud ? "": "hidden"}>
+                    <canvas id="word-cloud-canvas" style="width: 100%; height: 0"></canvas>
+                </div>
+                <div id="word-cloud-toggler" hidden>
+                    <div class="arrow-up">
+                        <svg xmlns="http://www.w3.org/2000/svg" height="12px" viewBox="0 0 512 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><style>svg{fill:#adadad}</style><path d="M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z"/></svg>
+                    </div>
+                    <div class="arrow-down">
+                        <svg xmlns="http://www.w3.org/2000/svg" height="12px" viewBox="0 0 512 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><style>svg{fill:#adadad}</style><path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z"/></svg>
+                    </div>
+                </div>
             </div>
         </div>
     `
@@ -234,6 +244,8 @@ function UserProfileCard() {
     this.disable();
 
     document.body.appendChild(this.el);
+
+    this.initEvents();
 }
 
 UserProfileCard.prototype.disable = function() {
@@ -285,8 +297,48 @@ UserProfileCard.prototype.clearOriginalCard = function() {
     }
 }
 
+UserProfileCard.prototype.initEvents = function() {
+    let wordCloudCanvasWrapper = document.getElementById("word-cloud-canvas-wrapper");
+    let wordCloudWrapper = document.getElementById("biliscope-wordcloud-wrapper");
+
+    wordCloudWrapper.addEventListener("mouseenter", (ev) => {
+        document.getElementById("word-cloud-toggler").hidden = false;
+        if (biliScopeOptions.enableWordCloud) {
+            ev.target.getElementsByClassName("arrow-up")[0].hidden = false;
+            ev.target.getElementsByClassName("arrow-down")[0].hidden = true;
+        } else {
+            ev.target.getElementsByClassName("arrow-up")[0].hidden = true;
+            ev.target.getElementsByClassName("arrow-down")[0].hidden = false;
+        }
+    });
+
+    wordCloudWrapper.addEventListener("mouseleave", (ev) => {
+        document.getElementById("word-cloud-toggler").hidden = true;
+    });
+
+    wordCloudWrapper.getElementsByClassName("arrow-up")[0].addEventListener("click", (ev) => {
+        biliScopeOptions.enableWordCloud = false;
+        wordCloudCanvasWrapper.hidden = true;
+        saveOptions();
+        wordCloudWrapper.getElementsByClassName("arrow-up")[0].hidden = true;
+        wordCloudWrapper.getElementsByClassName("arrow-down")[0].hidden = false;
+    });
+
+    wordCloudWrapper.getElementsByClassName("arrow-down")[0].addEventListener("click", (ev) => {
+        let canvas = document.getElementById("word-cloud-canvas");
+        biliScopeOptions.enableWordCloud = true;
+        wordCloudCanvasWrapper.hidden = false;
+        saveOptions();
+        wordCloudWrapper.getElementsByClassName("arrow-up")[0].hidden = false;
+        wordCloudWrapper.getElementsByClassName("arrow-down")[0].hidden = true;
+        this.drawWordCloud(canvas);
+    });
+}
+
 UserProfileCard.prototype.updateUserId = function(userId) {
+    let updated = this.userId != userId;
     this.userId = userId;
+    return updated;
 }
 
 UserProfileCard.prototype.updateCursor = function(cursorX, cursorY) {
@@ -350,7 +402,6 @@ UserProfileCard.prototype.setLeaveEvent = function() {
                 target.removeEventListener("mouseenter", this.enterCallback);
             }
         }
-        this.cursorInside = false;
     }
 
     this.enterCallback = () => {
@@ -359,9 +410,10 @@ UserProfileCard.prototype.setLeaveEvent = function() {
     }
 
     this.disableDebounce = () => {
+        this.cursorInside = false;
         this.disableDebounce.timer = setTimeout(() => {
             this.leaveCallback();
-        }, 200);
+        }, 400);
     }
 
     for (let target of validTargets) {
@@ -474,6 +526,23 @@ UserProfileCard.prototype.setupTriggers = function() {
             });
         }
     });
+
+}
+
+UserProfileCard.prototype.drawWordCloud = function(canvas) {
+    canvas.style.height = `${canvas.offsetWidth / 2}px`;
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+
+    canvas.parentNode.classList.add("biliscope-canvas-show");
+
+    WordCloud(canvas, {
+        list: JSON.parse(JSON.stringify(this.data["wordcloud"])),
+        backgroundColor: "transparent",
+        weightFactor: 100 / this.wordCloudMaxCount(),
+        shrinkToFit: true,
+        minSize: biliScopeOptions.minSize
+    });
 }
 
 UserProfileCard.prototype.updateData = function (data) {
@@ -517,19 +586,7 @@ UserProfileCard.prototype.updateData = function (data) {
     if (data["api"] == "wordcloud") {
         let canvas = document.getElementById("word-cloud-canvas");
         if (this.data["wordcloud"].length > 0) {
-            canvas.style.height = `${canvas.offsetWidth / 2}px`;
-            canvas.width = canvas.offsetWidth;
-            canvas.height = canvas.offsetHeight;
-
-            canvas.parentNode.classList.add("biliscope-canvas-show");
-
-            WordCloud(canvas, {
-                list: JSON.parse(JSON.stringify(this.data["wordcloud"])),
-                backgroundColor: "transparent",
-                weightFactor: 100 / this.wordCloudMaxCount(),
-                shrinkToFit: true,
-                minSize: biliScopeOptions.minSize
-            });
+            this.drawWordCloud(canvas);
             this.drawVideoTags();
         } else {
             canvas.style.height = "0px";

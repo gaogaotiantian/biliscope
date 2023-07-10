@@ -1,10 +1,3 @@
-chrome.storage.sync.get({
-    enableWordCloud: true,
-    minSize: 5
-}, function(items) {
-    biliScopeOptions = items;
-});
-
 // Load the site script to label the user links
 window.addEventListener("load", function() {
     document.addEventListener("mouseover", showProfileDebounce);
@@ -32,11 +25,11 @@ function showProfile(event) {
     let target = getTarget(event.target);
 
     if (target && userProfileCard.enable()) {
-        userProfileCard.updateCursor(event.pageX, event.pageY);
-        userProfileCard.updateTarget(target);
         let userId = target.getAttribute("biliscope-userid");
-        if (userId != userProfileCard.userId) {
-            userProfileCard.updateUserId(userId);
+        let updated = userProfileCard.updateUserId(userId);
+        userProfileCard.updateCursor(event.pageX, event.pageY);
+        userProfileCard.updateTarget(target)
+        if (updated) {
             updateUserInfo(userId, (data) => userProfileCard.updateData(data));
         }
     }
@@ -47,5 +40,5 @@ function showProfileDebounce(event) {
     event.target.addEventListener("mouseout", () => clearTimeout(showProfileDebounce.timer));
     showProfileDebounce.timer = setTimeout(() => {
         showProfile(event)
-    }, 200);
+    }, 300);
 }
