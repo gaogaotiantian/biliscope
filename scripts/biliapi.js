@@ -24,7 +24,9 @@ async function getBiliMixin() {
         });
 }
 
-async function biliGet(url, params) {
+async function biliGet(url, params, retry = 5) {
+    const origUrl = url;
+
     if (biliMixin === null) {
         biliMixin = await getBiliMixin();
     }
@@ -42,12 +44,30 @@ async function biliGet(url, params) {
         url = `${url}?${paramsStr}`;
     }
 
-    return fetch(url, {"credentials":"include","mode":"cors"})
+    return fetch(url, {"credentials": "include", "mode": "cors"})
         .then((response) => response.json())
         .then((data) => {
             if (data['code'] == -403) {
                 biliMixin = null;
             }
+            if (data['code'] == -799 && retry > 0) {
+                return new Promise(resolve => setTimeout(resolve, 1000))
+                    .then(() => biliGet(origUrl, params, retry - 1));
+            }
+            return data;
+        });
+}
+
+async function biliPost(url, params) {
+    let cookieData = parseCookie(document.cookie);
+    let csrf = cookieData["bili_jct"];
+    let keys = Object.keys(params).sort();
+    let paramsStr = keys.map((key) => `${key}=${params[key]}`).join("&");
+    url = `${url}?${paramsStr}&csrf=${csrf}`;
+
+    return fetch(url, {"method": "POST", "credentials": "include", "mode": "cors"})
+        .then((response) => response.json())
+        .then((data) => {
             return data;
         });
 }
@@ -219,6 +239,17 @@ function cacheAndUpdate(callback, userId, api, payload) {
     callback({"uid": userId, "api": api, "payload": payload});
 }
 
+function updateRelation(userId, callback) {
+    biliGet(`${BILIBILI_API_URL}/x/space/acc/relation`, {
+        mid: userId,
+    })
+    .then((data) => {
+        if (data["code"] == 0) {
+            cacheAndUpdate(callback, userId, "relation", data);
+        }
+    });
+}
+
 function updateUserInfo(userId, callback) {
     this._prevUserId = null;
 
@@ -240,14 +271,7 @@ function updateUserInfo(userId, callback) {
             })
             .then((data) => cacheAndUpdate(callback, userId, "info", data));
 
-            biliGet(`${BILIBILI_API_URL}/x/space/acc/relation`, {
-                mid: userId,
-            })
-            .then((data) => {
-                if (data["code"] == 0) {
-                    cacheAndUpdate(callback, userId, "relation", data)
-                }
-            });
+            updateRelation(userId, callback);
 
             updateVideoData(userId, callback);
         }

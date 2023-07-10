@@ -65,3 +65,16 @@ function getTags(mid) {
     }
     return [];
 }
+
+// ===========================================================================
+// =========================== Cookie Parser =================================
+// ===========================================================================
+
+function parseCookie(cookie) {
+    let ret = {};
+    for (let line of cookie.split(";")) {
+        let [key, value] = line.split("=");
+        ret[key.trim()] = value.trim();
+    }
+    return ret;
+}

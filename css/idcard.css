@@ -139,6 +139,18 @@
     background-color: #f25d8e;
 }
 
+#biliscope-id-card .biliscope-relation-follow:hover {
+    background-color: #fa1964;
+}
+
+#biliscope-id-card .biliscope-relation-followed {
+    background-color: #f25d8e;
+}
+
+#biliscope-id-card .biliscope-relation-followed:hover {
+    background-color: #fa1964;
+}
+
 #biliscope-id-card .biliscope-relation-black {
     background-color: rgba(0,0,0,.45);
 }
