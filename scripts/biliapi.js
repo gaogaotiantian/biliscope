@@ -189,26 +189,24 @@ function updateVideoData(userId, callback) {
                 cacheAndUpdate(callback, userId, "lastVideoTimestamp", {"timestamp": null});
             }
 
-            if (biliScopeOptions.enableWordCloud) {
-                let promises = [];
-                if (count > NUM_PER_PAGE) {
-                    let pn = 2;
-                    while (pn * NUM_PER_PAGE < count) {
-                        promises.push(requestSearchPage(userId, pn, map));
-                        pn += 1;
-                    }
-                    Promise.all(promises).then((values) => {
-                        cacheAndUpdate(callback, userId, "wordcloud", convertVideoData(map));
-                        cacheAndUpdate(callback, userId, "totalVideoInfo", {
-                            "lastMonthCount": map.get("lastMonthVideoCount"),
-                            "totalLength": map.get("totalVideoLength")});
-                    })
-                } else {
+            let promises = [];
+            if (count > NUM_PER_PAGE) {
+                let pn = 2;
+                while (pn * NUM_PER_PAGE < count) {
+                    promises.push(requestSearchPage(userId, pn, map));
+                    pn += 1;
+                }
+                Promise.all(promises).then((values) => {
                     cacheAndUpdate(callback, userId, "wordcloud", convertVideoData(map));
                     cacheAndUpdate(callback, userId, "totalVideoInfo", {
                         "lastMonthCount": map.get("lastMonthVideoCount"),
                         "totalLength": map.get("totalVideoLength")});
-                }
+                })
+            } else {
+                cacheAndUpdate(callback, userId, "wordcloud", convertVideoData(map));
+                cacheAndUpdate(callback, userId, "totalVideoInfo", {
+                    "lastMonthCount": map.get("lastMonthVideoCount"),
+                    "totalLength": map.get("totalVideoLength")});
             }
         } else {
             cacheAndUpdate(callback, userId, "count", {"count": null});

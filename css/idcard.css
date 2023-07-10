@@ -402,6 +402,10 @@
     background-color: #fb7299;
 }
 
+#biliscope-wordcloud-wrapper {
+    min-height: 8px;
+}
+
 #word-cloud-canvas-wrapper {
     height: 0px;
     overflow: hidden;
@@ -412,4 +416,14 @@
 
 #word-cloud-canvas-wrapper.biliscope-canvas-show {
     height: 187.5px;
+}
+
+#biliscope-id-card #word-cloud-toggler {
+    text-align: center;
+    line-height: 0px;
+}
+
+#biliscope-id-card #word-cloud-toggler svg {
+    position: relative;
+    padding: 2px 0px;
 }
