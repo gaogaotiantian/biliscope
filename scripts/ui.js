@@ -465,7 +465,6 @@ UserProfileCard.prototype.setupTriggers = function() {
                 re_src: 11
             })
             .then((data) => {
-                console.log(data)
                 if (data["code"] == 0) {
                     updateRelation(this.userId, (data) => this.updateData(data));
                 }
