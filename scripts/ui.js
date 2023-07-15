@@ -460,7 +460,23 @@ UserProfileCard.prototype.setupTriggers = function() {
     let textarea = document.getElementById("biliscope-card-note-textarea");
     let followButton = document.getElementById("biliscope-follow-button");
 
-    userWrapper.addEventListener("click", (ev) => {
+    userWrapper.addEventListener("mousedown", (ev) => {
+        ev.preventDefault();
+
+        // not left-click
+        if (ev.button !== 0) {
+            return;
+        }
+
+        if (!textarea.hidden) {
+            textarea.blur();
+            return;
+        }
+
+        if (ev.target.id === "biliscope-follow-button") {
+            return;
+        }
+
         text.hidden = true;
         textarea.hidden = false;
         textarea.focus();
