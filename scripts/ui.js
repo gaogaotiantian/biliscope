@@ -460,7 +460,9 @@ UserProfileCard.prototype.setupTriggers = function() {
     let textarea = document.getElementById("biliscope-card-note-textarea");
     let followButton = document.getElementById("biliscope-follow-button");
 
+    // This event uses mousedown because the event trigger sequence click event will be later than blur
     userWrapper.addEventListener("mousedown", (ev) => {
+        // Blur is triggered by the default behavior of mousedown, so if there is no preventDefault here, it will be blurred immediately and the input box will never be opened
         ev.preventDefault();
 
         // not left-click
@@ -468,6 +470,7 @@ UserProfileCard.prototype.setupTriggers = function() {
             return;
         }
 
+        // The follow button click event will be later than the mousedown so the stopPropagation inside the follow button does not work
         if (ev.target.id === "biliscope-follow-button") {
             return;
         }
