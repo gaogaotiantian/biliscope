@@ -468,12 +468,12 @@ UserProfileCard.prototype.setupTriggers = function() {
             return;
         }
 
-        if (!textarea.hidden) {
-            textarea.blur();
+        if (ev.target.id === "biliscope-follow-button") {
             return;
         }
 
-        if (ev.target.id === "biliscope-follow-button") {
+        if (!textarea.hidden) {
+            textarea.blur();
             return;
         }
 
