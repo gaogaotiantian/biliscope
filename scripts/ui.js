@@ -83,18 +83,20 @@ function getUserProfileCardDataHTML(data) {
                 </div>
             </a>
             <div class="idc-content h">
-                <div id="biliscope-username-wrapper">
-                    <a class="idc-username">
-                        <b title="点击添加备注" class="idc-uname" style="${data["vip"] ? "color: rgb(251, 114, 153);": "color: #18191C"}">
-                            ${data["name"]}
-                        </b>
-                    </a>
-                    <span class="gender biliscope-icon ${sexToClass(data["sex"])}"></span>
-                    <span class="lv-wrapper">
-                        <span class="lv-img-wrapper" style="position: relative; top: -${data["level"]*12}px">
-                            <img style="height: 132px; vertical-align: middle" src="${chrome.runtime.getURL("img/bililv.svg")}">
+                <div>
+                    <div id="biliscope-username-wrapper" style="display: inline-block">
+                        <a class="idc-username">
+                            <b title="点击添加备注" class="idc-uname" style="${data["vip"] ? "color: rgb(251, 114, 153);": "color: #18191C"}">
+                                ${data["name"]}
+                            </b>
+                        </a>
+                        <span class="gender biliscope-icon ${sexToClass(data["sex"])}"></span>
+                        <span class="lv-wrapper">
+                            <span class="lv-img-wrapper" style="position: relative; top: -${data["level"]*12}px">
+                                <img style="height: 132px; vertical-align: middle" src="${chrome.runtime.getURL("img/bililv.svg")}">
+                            </span>
                         </span>
-                    </span>
+                    </div>
                     <a><span id="biliscope-follow-button" class="biliscope-relation ${relationClass(data)}">${relationDisplay(data)}</span></a>
                 </div>
                 <div class="idc-meta" id="biliscope-note-wrapper">
@@ -467,11 +469,6 @@ UserProfileCard.prototype.setupTriggers = function() {
 
         // not left-click
         if (ev.button !== 0) {
-            return;
-        }
-
-        // The follow button click event will be later than the mousedown so the stopPropagation inside the follow button does not work
-        if (ev.target.id === "biliscope-follow-button") {
             return;
         }
 
