@@ -183,7 +183,8 @@
 }
 
 #biliscope-id-card .idc-meta-item {
-    margin-right: 20px
+    margin-right: 20px;
+    color: var(--text1)
 }
 
 #biliscope-id-card .idc-tag-list {

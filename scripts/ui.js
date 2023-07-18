@@ -112,8 +112,12 @@ function getUserProfileCardDataHTML(data) {
                               style="resize: vertical; width: 100%">\n${noteData[data["mid"]] || ""}</textarea>
                 </div>
                 <div class="idc-meta">
-                    <span class="idc-meta-item"><data-title>关注</data-title> ${data["following"] || 0}</span>
-                    <span class="idc-meta-item"><data-title>粉丝</data-title> ${numberToDisplay(data["follower"]) || 0}</span>
+                    <a href="https://space.bilibili.com/${data["mid"]}/fans/follow" target="_blank">
+                        <span class="idc-meta-item"><data-title>关注</data-title> ${data["following"] || 0}</span>
+                    </a>
+                    <a href="https://space.bilibili.com/${data["mid"]}/fans/fans" target="_blank">
+                        <span class="idc-meta-item"><data-title>粉丝</data-title> ${numberToDisplay(data["follower"]) || 0}</span>
+                    </a>
                     <span class="idc-meta-item"><data-title>投稿</data-title> ${data["count"] || 0}</span>
                 </div>
                 <div class="idc-meta" style="${data["count"] ? "": "display: none"}">
