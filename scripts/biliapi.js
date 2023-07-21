@@ -94,6 +94,9 @@ function updateWordMap(map, sentence, weight) {
     // Remove all URLs
     sentence = sentence.replace(/(?:https?|ftp):\/\/[\n\S]+/g, '');
 
+    // Remove date format like (YYYY-MM-DD hh:mm:ss | YYYY-MM-DD | YYYY-MM-D | YYYY-M-DD | YYYY-M-D | YYYY-M)
+    sentence = sentence.replace(/\d{4}[-./]\d{1,2}([-./]\d{0,2})?(\s\d{2}:\d{2}:\d{2})?/g, '');
+
     for (let word of IGNORE_WORDS) {
         sentence = sentence.replaceAll(word, '');
     }
