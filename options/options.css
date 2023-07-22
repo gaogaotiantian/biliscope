@@ -8,6 +8,10 @@ button {
     color: white;
     font-size: 14px;
 }
+.btn-danger {
+    background: #dc3545;
+}
+
 input[type="checkbox"] {
     box-sizing: border-box;
     padding: 0;
