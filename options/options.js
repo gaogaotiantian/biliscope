@@ -6,6 +6,14 @@ function show_status(text, time) {
     }, time);
 }
 
+function clear_notes() {
+    chrome.storage.local.set({
+        noteData: {}
+    }, function() {
+        show_status('清空成功', 1500);
+    });
+}
+
 function export_notes() {
     chrome.storage.local.get({
         noteData: {}
@@ -22,6 +30,43 @@ function export_notes() {
         document.body.removeChild(a);
         show_status('导出成功', 1500);
     });
+}
+
+function extend_notes() {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.style = 'display: none';
+    input.accept = '.json';
+    input.addEventListener("change", () => {
+        const file = input.files[0];
+        const reader = new FileReader();
+        reader.addEventListener("loadend", () => {
+            let noteData = JSON.parse(reader.result);
+            if (!noteData) {
+                show_status('非法文件', 1500);
+                return;
+            }
+            chrome.storage.local.get({
+                noteData: {}
+            }, function(result) {
+                let origNoteData = result.noteData;
+                for (let key in noteData) {
+                    if (!key in origNoteData) {
+                        origNoteData[key] = noteData[key];
+                    }
+                }
+                chrome.storage.local.set({
+                    noteData:origNoteData
+                });
+                show_status('添加成功', 1500);
+            });
+        })
+        reader.readAsText(file);
+    })
+
+    document.body.appendChild(input);
+    input.click()
+    document.body.removeChild(input);
 }
 
 function import_notes() {
@@ -94,3 +139,17 @@ incrementBtn.addEventListener('click', function () {
 });
 document.getElementById('export-note').addEventListener('click', export_notes);
 document.getElementById('import-note').addEventListener('click', import_notes);
+document.getElementById('extend-note').addEventListener('click', extend_notes);
+document.getElementById('clear-note').addEventListener('click', () => {
+    document.getElementById('clear-note-confirm-div').hidden = false;
+    document.getElementById('clear-note-button-div').hidden = true;
+});
+document.getElementById('clear-note-cancel').addEventListener('click', () => {
+    document.getElementById('clear-note-confirm-div').hidden = true;
+    document.getElementById('clear-note-button-div').hidden = false;
+});
+document.getElementById('clear-note-confirm').addEventListener('click', () => {
+    clear_notes();
+    document.getElementById('clear-note-confirm-div').hidden = true;
+    document.getElementById('clear-note-button-div').hidden = false;
+});
