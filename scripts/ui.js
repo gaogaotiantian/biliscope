@@ -255,12 +255,13 @@ function UserProfileCard() {
 }
 
 UserProfileCard.prototype.disable = function() {
-    this.userId = null;
-    this.enabled = false;
-    this.data = {};
     if (this.fixed) {
         return false;
     }
+
+    this.userId = null;
+    this.enabled = false;
+    this.data = {};
     if (this.el) {
         this.el.style.display = "none";
         let canvas = document.getElementById("word-cloud-canvas");
