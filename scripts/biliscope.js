@@ -24,7 +24,7 @@ function getTarget(target) {
 function showProfile(event) {
     let target = getTarget(event.target);
 
-    if (target && userProfileCard.enable()) {
+    if (target && userProfileCard && userProfileCard.enable()) {
         let userId = target.getAttribute("biliscope-userid");
         let updated = userProfileCard.updateUserId(userId);
         userProfileCard.updateCursor(event.pageX, event.pageY);
