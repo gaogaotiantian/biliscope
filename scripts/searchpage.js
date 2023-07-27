@@ -33,27 +33,41 @@ function getUserCard(data) {
     </div>
     `
 }
-function updatePage() {
+function updatePage(clear=true) {
+    if (!this.users || clear) {
+        this.users = new Set();
+    }
+
     if (window.location.search.includes("keyword=%23") && myWrapper) {
         const params = new URLSearchParams(window.location.search);
         const keywords = params.get("keyword").split(" ");
-        let users = [];
+        let newUsers = [];
 
         for (let uid in noteData) {
-            let tags = getTags(uid);
-            if (keywords.every(keyword => tags.includes(keyword.replaceAll("#", "")))) {
-                users.push(uid);
-                if (users.length >= 50) {
-                    // the API can take 50 users at most
-                    break;
+            if (!(this.users.has(uid))) {
+                let tags = getTags(uid);
+                if (keywords.every(keyword => tags.includes(keyword.replaceAll("#", "")))) {
+                    this.users.add(uid);
+                    newUsers.push(uid);
+                    if (newUsers.length >= 50) {
+                        // the API can take 50 users at most
+                        break;
+                    }
                 }
             }
         }
 
-        let container = document.createElement("div");
-        container.className = "media-list row mt_x40";
+        let container = document.getElementById("biliscope-tag-search-result");
 
-        if (users.length == 0) {
+        if (!container || clear) {
+            container = document.createElement("div");
+            container.className = "media-list row mt_x40";
+            container.id = "biliscope-tag-search-result";
+            myWrapper.innerHTML = "";
+            myWrapper.appendChild(container);
+        }
+
+        if (this.users.length == 0) {
             myWrapper.innerHTML = `
             <div class="search-nodata-container p_relative">
                 <div class="no-data p_center text_center">
@@ -62,8 +76,8 @@ function updatePage() {
                 </div>
             </div>
             `
-        } else {
-            biliGet("https://api.vc.bilibili.com/account/v1/user/cards", {"uids": users.join()})
+        } else if (newUsers.length > 0) {
+            biliGet("https://api.vc.bilibili.com/account/v1/user/cards", {"uids": newUsers.join()})
             .then(data => {
                 for (let d of data.data) {
                     let tagInner = "";
@@ -81,9 +95,13 @@ function updatePage() {
                     container.innerHTML += getUserCard(d);
                 }
             })
-            myWrapper.innerHTML = "";
-            myWrapper.appendChild(container);
         }
+    }
+}
+
+function scrollBottomCallback(event) {
+    if (window.innerHeight + window.scrollY >= document.body.scrollHeight - 1) {
+        updatePage(false);
     }
 }
 
@@ -113,6 +131,7 @@ if (window.location.href.startsWith(`${BILIBILI_SEARCH_URL}`)) {
                 if (myWrapper) {
                     myWrapper.hidden = false;
                 }
+                window.addEventListener("scroll", scrollBottomCallback);
             } else {
                 if (wrapper) {
                     wrapper.hidden = false;
@@ -120,6 +139,7 @@ if (window.location.href.startsWith(`${BILIBILI_SEARCH_URL}`)) {
                 if (myWrapper) {
                     myWrapper.hidden = true;
                 }
+                window.removeEventListener("scroll", scrollBottomCallback);
             }
         } else {
             if (myWrapper) {

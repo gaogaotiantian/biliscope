@@ -51,7 +51,7 @@ function extend_notes() {
             }, function(result) {
                 let origNoteData = result.noteData;
                 for (let key in noteData) {
-                    if (!key in origNoteData) {
+                    if (!(key in origNoteData)) {
                         origNoteData[key] = noteData[key];
                     }
                 }
