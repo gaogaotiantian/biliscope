@@ -137,6 +137,7 @@
 
 #biliscope-id-card .biliscope-relation-follow {
     background-color: #f25d8e;
+    cursor: pointer;
 }
 
 #biliscope-id-card .biliscope-relation-follow:hover {
@@ -145,6 +146,7 @@
 
 #biliscope-id-card .biliscope-relation-followed {
     background-color: #f25d8e;
+    cursor: pointer;
 }
 
 #biliscope-id-card .biliscope-relation-followed:hover {
