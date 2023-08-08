@@ -386,8 +386,9 @@
 #biliscope-id-card .biliscope-badge {
     color: white;
     display: inline-block;
-    padding: 0px 10px;
-    line-height: 24px;
+    padding: 5px 7px;
+    margin: 2px;
+    line-height: 12px;
     vertical-align: top;
     font-size: 12px;
     font-weight: 600;
@@ -396,7 +397,7 @@
 }
 
 #biliscope-id-card .biliscope-badge-video-tag {
-    background-color: #00a1d6;
+    background-color: #00aeec;
 }
 
 #biliscope-id-card .biliscope-badge-note-tag {
