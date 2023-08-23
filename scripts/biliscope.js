@@ -21,16 +21,23 @@ function getTarget(target) {
     return null;
 }
 
-function showProfile(event) {
+async function showProfile(event) {
     let target = getTarget(event.target);
 
-    if (target && userProfileCard && userProfileCard.enable()) {
+    if (target && userProfileCard) {
         let userId = target.getAttribute("biliscope-userid");
-        let updated = userProfileCard.updateUserId(userId);
-        userProfileCard.updateCursor(event.pageX, event.pageY);
-        userProfileCard.updateTarget(target)
-        if (updated) {
-            updateUserInfo(userId, (data) => userProfileCard.updateData(data));
+
+        if (await isDeregistration(userId)) {
+            return
+        }
+
+        if (userProfileCard.enable()) {
+            let updated = userProfileCard.updateUserId(userId);
+            userProfileCard.updateCursor(event.pageX, event.pageY);
+            userProfileCard.updateTarget(target)
+            if (updated) {
+                updateUserInfo(userId, (data) => userProfileCard.updateData(data));
+            }
         }
     }
 }

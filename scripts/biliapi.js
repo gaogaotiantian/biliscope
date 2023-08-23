@@ -1,4 +1,5 @@
 const BILIBILI_API_URL = "https://api.bilibili.com"
+const BILIBILI_API_GET_ACCOUNT_INFO_URL = `${BILIBILI_API_URL}/x/space/wbi/acc/info`
 const NUM_PER_PAGE = 50
 
 /*
@@ -228,7 +229,7 @@ function cacheValid(cache) {
     return true;
 }
 
-function cacheAndUpdate(callback, userId, api, payload) {
+function saveCache(userId, api, payload) {
     let cache = {};
     if (!userInfoCache.has(userId)) {
         userInfoCache.set(userId, cache);
@@ -236,6 +237,10 @@ function cacheAndUpdate(callback, userId, api, payload) {
         cache = userInfoCache.get(userId);
     }
     cache[api] = payload;
+}
+
+function cacheAndUpdate(callback, userId, api, payload) {
+    saveCache(userId, api, payload)
 
     callback({"uid": userId, "api": api, "payload": payload});
 }
@@ -249,6 +254,23 @@ function updateRelation(userId, callback) {
             cacheAndUpdate(callback, userId, "relation", data);
         }
     });
+}
+
+async function isDeregistration(userId) {
+    if (userInfoCache.has(userId)) {
+        let cache = userInfoCache.get(userId);
+        if (cache["info"]) {
+            return cache["info"]["code"] === -404
+        }
+    }
+
+    let data = await biliGet(BILIBILI_API_GET_ACCOUNT_INFO_URL, {
+        mid: userId,
+    });
+
+    saveCache(userId, "info", data)
+
+    return data["code"] === -404
 }
 
 function updateUserInfo(userId, callback) {
@@ -267,7 +289,7 @@ function updateUserInfo(userId, callback) {
             })
             .then((data) => cacheAndUpdate(callback, userId, "stat", data));
 
-            biliGet(`${BILIBILI_API_URL}/x/space/wbi/acc/info`, {
+            biliGet(BILIBILI_API_GET_ACCOUNT_INFO_URL, {
                 mid: userId,
             })
             .then((data) => cacheAndUpdate(callback, userId, "info", data));
