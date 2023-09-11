@@ -146,7 +146,7 @@ function getUserProfileCardDataHTML(data) {
 }
 
 function getGuardSupportHTML(data) {
-    if (guardInfo == null) {
+    if (guardInfo == null || guardInfo.length === 0) {
         return "";
     }
 
