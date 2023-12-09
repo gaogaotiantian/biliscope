@@ -439,9 +439,9 @@ UserProfileCard.prototype.drawVideoTags = function() {
     tagList.innerHTML = "";
 
     let groupTagIds = this.data["relation"]["tag"].filter(tagId => biliTags[tagId] !== undefined)
-    let customTags = groupTagIds.concat(getTags(this.data["mid"]));
+    let noteTags = getTags(this.data["mid"]);
 
-    if (this.data["mid"] && customTags.length > 0) {
+    if (this.data["mid"] && groupTagIds.length + noteTags.length > 0) {
         for (let tagId of groupTagIds) {
             let tag = biliTags[tagId];
             let a = document.createElement("a");
@@ -452,7 +452,7 @@ UserProfileCard.prototype.drawVideoTags = function() {
             a.appendChild(el);
             tagList.appendChild(a);
         }
-        for (let tag of getTags(this.data["mid"])) {
+        for (let tag of noteTags) {
             let a = document.createElement("a");
             let el = document.createElement("span");
             el.className = "biliscope-badge biliscope-badge-note-tag";
