@@ -232,6 +232,7 @@ function UserProfileCard() {
     this.cursorY = 0;
     this.target = null;
     this.enabled = false;
+    this.valid = true;
     this.wordCloud = null;
     this.fixed = false;
     this.cursorInside = false;
@@ -578,6 +579,11 @@ UserProfileCard.prototype.updateData = function (data) {
         this.data["follower"] = d["data"]["follower"];
         this.data["following"] = d["data"]["following"];
     } else if (data["api"] == "info") {
+        if (d["code"] == -404) {
+            this.valid = false;
+            return;
+        }
+        this.valid = true;
         this.data["mid"] = d["data"]["mid"];
         this.data["name"] = d["data"]["name"];
         this.data["sex"] = d["data"]["sex"];
@@ -620,7 +626,7 @@ UserProfileCard.prototype.updateData = function (data) {
         this.drawVideoTags();
     }
 
-    if (this.enabled && this.el && this.el.style.display != "flex") {
+    if (this.enabled && this.valid && this.el && this.el.style.display != "flex") {
         this.clearOriginalCard();
         this.el.style.display = "flex";
     }
