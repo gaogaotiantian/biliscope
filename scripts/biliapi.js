@@ -325,3 +325,19 @@ async function getGuardInfo(roomId, uid) {
         }
     });
 }
+
+async function getTagsInfo() {
+    let tags = {};
+    return biliGet(`${BILIBILI_API_URL}/x/relation/tags`, {}).then((data) => {
+        for (let tag of data["data"]) {
+            tags[tag["tagid"]] = tag["name"];
+        }
+        return tags;
+    });
+}
+
+async function getMyInfo() {
+    return biliGet(`${BILIBILI_API_URL}/x/space/v2/myinfo`, {}).then((data) => {
+        return data["data"];
+    });
+}

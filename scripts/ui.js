@@ -437,8 +437,22 @@ UserProfileCard.prototype.wordCloudMaxCount = function() {
 UserProfileCard.prototype.drawVideoTags = function() {
     let tagList = document.getElementById("biliscope-tag-list");
     tagList.innerHTML = "";
-    if (this.data["mid"] && getTags(this.data["mid"]).length > 0) {
-        for (let tag of getTags(this.data["mid"])) {
+
+    let groupTagIds = this.data["relation"]["tag"].filter(tagId => biliTags[tagId] !== undefined)
+    let noteTags = getTags(this.data["mid"]);
+
+    if (this.data["mid"] && groupTagIds.length + noteTags.length > 0) {
+        for (let tagId of groupTagIds) {
+            let tag = biliTags[tagId];
+            let a = document.createElement("a");
+            let el = document.createElement("span");
+            el.className = "biliscope-badge biliscope-badge-group-tag";
+            el.innerHTML = tag;
+            a.href = `https://space.bilibili.com/${myMid}/fans/follow?tagid=${tagId}`;
+            a.appendChild(el);
+            tagList.appendChild(a);
+        }
+        for (let tag of noteTags) {
             let a = document.createElement("a");
             let el = document.createElement("span");
             el.className = "biliscope-badge biliscope-badge-note-tag";
@@ -649,4 +663,13 @@ window.addEventListener("load", function() {
             guardInfo[j] = t;
         }
     });
+
+    getTagsInfo().then((data) => {
+        biliTags = data;
+    });
+
+    getMyInfo().then((data) => {
+        myMid = data["profile"]["mid"];
+    })
+
 });

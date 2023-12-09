@@ -406,6 +406,10 @@
     background-color: #fb7299;
 }
 
+#biliscope-id-card .biliscope-badge-group-tag {
+    background-color: #99a2aa;
+}
+
 #biliscope-wordcloud-wrapper {
     min-height: 8px;
 }
