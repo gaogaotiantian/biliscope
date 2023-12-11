@@ -436,10 +436,13 @@ UserProfileCard.prototype.wordCloudMaxCount = function() {
 
 UserProfileCard.prototype.drawVideoTags = function() {
     let tagList = document.getElementById("biliscope-tag-list");
+    let groupTagIds = [];
+    let noteTags = getTags(this.data["mid"]);
     tagList.innerHTML = "";
 
-    let groupTagIds = this.data["relation"]["tag"].filter(tagId => biliTags[tagId] !== undefined)
-    let noteTags = getTags(this.data["mid"]);
+    if (this.data["relation"]["tag"]) {
+        groupTagIds = this.data["relation"]["tag"].filter(tagId => biliTags[tagId] !== undefined)
+    }
 
     if (this.data["mid"] && groupTagIds.length + noteTags.length > 0) {
         for (let tagId of groupTagIds) {
