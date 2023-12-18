@@ -109,7 +109,7 @@ function getUserProfileCardDataHTML(data) {
                               hidden
                               maxlength="5000"
                               placeholder="给up加个备注（手动换行前的内容都将显示在卡片上）\n或者加几个#标签#"
-                              style="resize: vertical; width: 100%">\n${noteData[data["mid"]] || ""}</textarea>
+                              style="resize: vertical; width: 100%">\n${(data["mid"] && noteData[data["mid"]]) || ""}</textarea>
                 </div>
                 <div class="idc-meta">
                     <a href="https://space.bilibili.com/${data["mid"]}/fans/follow" target="_blank">
@@ -440,7 +440,7 @@ UserProfileCard.prototype.drawVideoTags = function() {
     let noteTags = getTags(this.data["mid"]);
     tagList.innerHTML = "";
 
-    if (this.data["relation"]["tag"]) {
+    if (this.data?.relation?.tag) {
         groupTagIds = this.data["relation"]["tag"].filter(tagId => biliTags[tagId] !== undefined)
     }
 
