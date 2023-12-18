@@ -146,6 +146,29 @@ input[type='checkbox']:checked::after {
     border-color: #2196f3;
 }
 
+input[type='color'] {
+    border: none;
+    background: transparent;
+    width: 24px;
+    height: 24px;
+}
+
 .item {
     padding: 4px 0;
+}
+
+#tag-color-setting-toggler {
+    text-align: center;
+    line-height: 0px;
+}
+
+#tag-color-setting-toggler svg {
+    padding: 2px 0px;
+}
+
+.tag-color-setting-item {
+    display: inline-flex;
+    padding-right: 10px;
+    align-items: center;
+    font-size: 14px;
 }

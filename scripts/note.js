@@ -4,6 +4,14 @@ chrome.storage.local.get({
     noteData = result.noteData;
 });
 
+chrome.storage.sync.get({
+    tagColors: {},
+    enableTagColor: false,
+}, function(result) {
+    tagColors = result.tagColors;
+    enableTagColor = result.enableTagColor;
+});
+
 function getUserIdFromLink(s) {
     let regex = /.*?bilibili.com\/([0-9]*)(\/dynamic)?([^\/]*|\/|\/\?.*)$/;
     let userId = null;
@@ -52,8 +60,45 @@ var noteObserver = new MutationObserver((mutationList, observer) => {
     }
 });
 
+function changeUsernameColor(element, userId) {
+    if (enableTagColor && noteData[userId]) {
+        let tags = getTags(userId);
+        for (let tag of tags) {
+            if (tagColors[tag]) {
+                if (element.classList.contains("up-name__text")) {
+                    // Popular page
+                    element.style.color = tagColors[tag];
+                } else {
+                    // Other pages
+                    let authorElements = element.querySelectorAll(".bili-video-card__info--author, .name");
+                    Array.from(authorElements).forEach((el) => {
+                        el.style.color = tagColors[tag];
+                    });
+                }
+                return;
+            }
+        }
+    }
+}
+
+var userNameObserver = new MutationObserver((mutationList, observer) => {
+    if (enableTagColor) {
+        for (let el of document.querySelectorAll("[biliscope-userid]")) {
+            let userId = el.getAttribute("biliscope-userid");
+            if (userId) {
+                changeUsernameColor(el, userId);
+            }
+        }
+    }
+});
+
 window.addEventListener("load", function() {
     noteObserver.observe(document.body, {
+        childList: true,
+        subtree: true
+    });
+
+    userNameObserver.observe(document.body, {
         childList: true,
         subtree: true
     });
