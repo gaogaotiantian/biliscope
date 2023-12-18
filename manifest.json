@@ -36,6 +36,10 @@
   "permissions": [
     "storage"
   ],
+  "action": {
+    "default_popup": "options/options.html",
+    "default_title": "BiliScope - Bilibili插件，知道TA是个什么UP主"
+  },
   "options_ui": {
     "page": "options/options.html",
     "open_in_tab": false
