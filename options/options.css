@@ -157,15 +157,6 @@ input[type='color'] {
     padding: 4px 0;
 }
 
-#tag-color-setting-toggler {
-    text-align: center;
-    line-height: 0px;
-}
-
-#tag-color-setting-toggler svg {
-    padding: 2px 0px;
-}
-
 .tag-color-setting-item {
     display: inline-flex;
     padding-right: 10px;
