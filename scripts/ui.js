@@ -460,6 +460,9 @@ UserProfileCard.prototype.drawVideoTags = function() {
             let el = document.createElement("span");
             el.className = "biliscope-badge biliscope-badge-note-tag";
             el.innerHTML = tag;
+            if (tagColors[tag]) {
+                el.style.backgroundColor = tagColors[tag];
+            }
             a.href = `https://search.bilibili.com/upuser?keyword=%23${encodeURIComponent(tag)}`;
             a.appendChild(el);
             tagList.appendChild(a);

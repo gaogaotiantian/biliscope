@@ -20,6 +20,27 @@
     <p class="desc">(小于此设置字号的词将不会显示)</p>
   </div>
 
+  <hr>
+
+  <div class="item">
+    <label for="enable-tag-color">根据标签修改用户名颜色:</label>
+    <input type="checkbox" id="enable-tag-color">
+    <div>
+      <div id="tag-color-setting-div">
+        <div id="tag-color-setting-display-div">
+        </div>
+
+        <div id="tag-color-setting-input-div" class="tag-color-setting-item">
+          <input type="text" id="tag-color-setting-add-text" placeholder="标签名">
+          <input type="color" id="tag-color-setting-add-color" value="#000000">
+          <svg id="tag-color-setting-add-button" xmlns="http://www.w3.org/2000/svg" height="16px" viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2023 Fonticons, Inc.--><path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z"/></svg>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr>
+
   <div class="item">
     <div>
       <button id="export-note">导出备注</button>
@@ -39,6 +60,8 @@
       </div>
     </div>
   </div>
+
+  <hr>
 
   <div id="status" class="item"></div>
   <div class="item">
