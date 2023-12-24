@@ -118,7 +118,9 @@ function getUserProfileCardDataHTML(data) {
                     <a href="https://space.bilibili.com/${data["mid"]}/fans/fans" target="_blank">
                         <span class="idc-meta-item"><data-title>粉丝</data-title> ${numberToDisplay(data["follower"]) || 0}</span>
                     </a>
-                    <span class="idc-meta-item"><data-title>投稿</data-title> ${data["count"] || 0}</span>
+                    <a href="https://space.bilibili.com/${data["mid"]}/video" target="_blank">
+                        <span class="idc-meta-item"><data-title>投稿</data-title> ${data["count"] || 0}</span>
+                    </a>
                 </div>
                 <div class="idc-meta" style="${data["count"] ? "": "display: none"}">
                     <span class="idc-meta-item"><data-title>近30天投稿数</data-title> ${data["lastMonthVideoCount"] || 0}</span>
