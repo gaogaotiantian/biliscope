@@ -434,3 +434,7 @@
 #biliscope-id-card #word-cloud-toggler svg {
     padding: 2px 0px;
 }
+
+.arrow-up, .arrow-down {
+    cursor: pointer;
+}
