@@ -14,7 +14,7 @@ BiliScope是一个为B站打造的Chrome/Edge插件。它可以让你在B站的�
 
 *微软审核的速度比Google慢很多，所以版本可能有差别*
 
-你也可以直接clone这个project，`make`，就会打包出一个`biliscope.zip`文件，可以在`chrome://extensions`中加载（需要打开开发者模式） 
+你也可以直接clone这个project，`make`（powershell中请使用`./make`），就会打包出一个`biliscope.zip`文件，可以在`chrome://extensions`中加载（需要打开开发者模式）
 
 
 ## 功能
