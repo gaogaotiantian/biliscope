@@ -357,7 +357,8 @@
     transition: all .3s ease;
 }
 
-#biliscope-profile-note textarea:focus,#biliscope-profile-note textarea:hover {
+#biliscope-profile-note textarea:focus,
+#biliscope-profile-note textarea:hover {
     border-color: #00a1d6
 }
 
@@ -433,4 +434,9 @@
 
 #biliscope-id-card #word-cloud-toggler svg {
     padding: 2px 0px;
+}
+
+#biliscope-id-card .arrow-up,
+#biliscope-id-card .arrow-down {
+    cursor: pointer;
 }
