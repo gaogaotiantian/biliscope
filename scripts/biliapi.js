@@ -76,19 +76,7 @@ async function biliPost(url, params) {
  * Data requests
  */
 
-async function getUserIdFromVideoLink(videoLink) {
-    let regex = /.*?bilibili.com\/video\/(.*)$/;
-    let bvid = videoLink.match(regex)[1];
-
-    return await biliGet(`${BILIBILI_API_URL}/x/web-interface/view`, {
-            bvid: bvid
-        })
-        .then((data) => {
-            return data["data"]["owner"]["mid"];
-        })
-}
-
-userInfoCache = new Map();
+var userInfoCache = new Map();
 
 function updateWordMap(map, sentence, weight) {
     // Remove all URLs
