@@ -9,7 +9,7 @@ function getUserCard(data) {
                     <div class="avatar-wrap p_relative">
                         <div class="avatar-inner">
                             <div class="bili-avatar" style="width: 86px;height:86px;transform: translate(0px, 0px);">
-                                <img class="bili-avatar-img bili-avatar-face bili-avatar-img-radius" src="${data.face}@240w_240h_1c_1s_!web-avatar-search-user.avif">
+                                <img class="bili-avatar-img bili-avatar-face bili-avatar-img-radius" src="${data.face}@240w_240h_1c_1s_!web-avatar-search-user.webp">
                                 <span class="bili-avatar-icon bili-avatar-right-icon ${data.avatarIconClass} bili-avatar-size-86"></span>
                             </div>
                         </div>
