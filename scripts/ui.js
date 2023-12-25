@@ -70,7 +70,7 @@ function getUserProfileCardDataHTML(data) {
         <div class="idc-theme-img" style="background-image: url(&quot;${data["top_photo"]}@100Q.webp&quot;);">
         </div>
         <div class="idc-info clearfix">
-            <a class="idc-avatar-container" href="https://space.bilibili.com/${data["mid"]}" target="_blank">
+            <a class="idc-avatar-container" href="${BILIBILI_SPACE_URL + data["mid"]}" target="_blank">
                 <img alt="${data["name"]}" src="${data["face"]}@54w_54h_1c.webp" class="idc-avatar">
                 <div class="${data["live_status"] ? "": "d-none"}">
                     <div class="live-tab">
@@ -112,13 +112,13 @@ function getUserProfileCardDataHTML(data) {
                               style="resize: vertical; width: 100%">\n${(data["mid"] && noteData[data["mid"]]) || ""}</textarea>
                 </div>
                 <div class="idc-meta">
-                    <a href="https://space.bilibili.com/${data["mid"]}/fans/follow" target="_blank">
+                    <a href="${BILIBILI_SPACE_URL + data["mid"]}/fans/follow" target="_blank">
                         <span class="idc-meta-item"><data-title>关注</data-title> ${data["following"] || 0}</span>
                     </a>
-                    <a href="https://space.bilibili.com/${data["mid"]}/fans/fans" target="_blank">
+                    <a href="${BILIBILI_SPACE_URL + data["mid"]}/fans/fans" target="_blank">
                         <span class="idc-meta-item"><data-title>粉丝</data-title> ${numberToDisplay(data["follower"]) || 0}</span>
                     </a>
-                    <a href="https://space.bilibili.com/${data["mid"]}/video" target="_blank">
+                    <a href="${BILIBILI_SPACE_URL + data["mid"]}/video" target="_blank">
                         <span class="idc-meta-item"><data-title>投稿</data-title> ${data["count"] || 0}</span>
                     </a>
                 </div>
@@ -453,7 +453,7 @@ UserProfileCard.prototype.drawVideoTags = function() {
             let el = document.createElement("span");
             el.className = "biliscope-badge biliscope-badge-group-tag";
             el.innerHTML = tag;
-            a.href = `https://space.bilibili.com/${myMid}/fans/follow?tagid=${tagId}`;
+            a.href = `${BILIBILI_SPACE_URL + myMid}/fans/follow?tagid=${tagId}`;
             a.appendChild(el);
             tagList.appendChild(a);
         }
@@ -465,7 +465,7 @@ UserProfileCard.prototype.drawVideoTags = function() {
             if (tagColors[tag]) {
                 el.style.backgroundColor = tagColors[tag];
             }
-            a.href = `https://search.bilibili.com/upuser?keyword=%23${encodeURIComponent(tag)}`;
+            a.href = `${BILIBILI_SEARCH_URL}upuser?keyword=%23${encodeURIComponent(tag)}`;
             a.appendChild(el);
             tagList.appendChild(a);
         }
