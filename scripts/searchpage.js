@@ -105,10 +105,10 @@ function scrollBottomCallback(event) {
     }
 }
 
-if (window.location.href.startsWith(`${BILIBILI_SEARCH_URL}`)) {
+if (window.location.href.startsWith(BILIBILI_SEARCH_URL)) {
     let prevHref = null;
     let observer = new MutationObserver((mutationList, observer) => {
-        if (window.location.href.startsWith(`${BILIBILI_SEARCH_URL}upuser`)) {
+        if (window.location.href.startsWith(`${BILIBILI_SEARCH_URL}/upuser`)) {
             let wrapper = document.getElementsByClassName("search-page-upuser")[0];
             // If the wrapper for custom search result is not created, create it
             if (wrapper && document.getElementsByClassName("biliscope-search-wrapper").length == 0) {
