@@ -106,8 +106,8 @@ function scrollBottomCallback(event) {
 }
 
 if (window.location.href.startsWith(BILIBILI_SEARCH_URL)) {
-    // Redirect to `upuser` if keyword startsWith `#` or `@`
-    if (window.location.pathname != '/upuser' && (window.location.search.includes("keyword=%23") || window.location.search.includes("keyword=%40"))) {
+    // Redirect to `upuser` if keyword startsWith `#`
+    if (window.location.pathname != '/upuser' && window.location.pathname == '/all' && window.location.search.includes("keyword=%23")) {
         window.location.pathname = '/upuser';
     }
 
