@@ -9,7 +9,7 @@ function getUserCard(data) {
                     <div class="avatar-wrap p_relative">
                         <div class="avatar-inner">
                             <div class="bili-avatar" style="width: 86px;height:86px;transform: translate(0px, 0px);">
-                                <img class="bili-avatar-img bili-avatar-face bili-avatar-img-radius" src="${data.face}@240w_240h_1c_1s_!web-avatar-search-user.avif">
+                                <img class="bili-avatar-img bili-avatar-face bili-avatar-img-radius" src="${data.face}@240w_240h_1c_1s_!web-avatar-search-user.webp">
                                 <span class="bili-avatar-icon bili-avatar-right-icon ${data.avatarIconClass} bili-avatar-size-86"></span>
                             </div>
                         </div>
@@ -105,7 +105,7 @@ function scrollBottomCallback(event) {
     }
 }
 
-if (window.location.href.startsWith(`${BILIBILI_SEARCH_URL}`)) {
+if (window.location.href.startsWith(BILIBILI_SEARCH_URL)) {
     // Redirect to `upuser` if keyword startsWith `#` or `@`
     if (window.location.pathname != '/upuser' && (window.location.search.includes("keyword=%23") || window.location.search.includes("keyword=%40"))) {
         window.location.pathname = '/upuser';
@@ -113,7 +113,7 @@ if (window.location.href.startsWith(`${BILIBILI_SEARCH_URL}`)) {
 
     let prevHref = null;
     let observer = new MutationObserver((mutationList, observer) => {
-        if (window.location.href.startsWith(`${BILIBILI_SEARCH_URL}upuser`)) {
+        if (window.location.href.startsWith(`${BILIBILI_SEARCH_URL}/upuser`)) {
             let wrapper = document.getElementsByClassName("search-page-upuser")[0];
             // If the wrapper for custom search result is not created, create it
             if (wrapper && document.getElementsByClassName("biliscope-search-wrapper").length == 0) {

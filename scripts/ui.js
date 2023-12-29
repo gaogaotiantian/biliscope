@@ -134,7 +134,7 @@ function getUserProfileCardDataHTML(data) {
             </div>
             <div class="idc-auth-description" style="${data["title"] ? "": "display: none"}">
                 <span style="display: flex">
-                    ${data["title"] ? `<a class="biliscope-auth-icon ${titleTypeToClass(data["title_type"])}"></a>` + data["title"] : ""}
+                    ${data["title"] ? `<a class="biliscope-auth-icon ${titleTypeToClass(data["title_type"])}"></a>${data["title"]}`: ""}
                 </span>
             </div>
             <div class="idc-auth-description">
@@ -453,7 +453,7 @@ UserProfileCard.prototype.drawVideoTags = function() {
             let el = document.createElement("span");
             el.className = "biliscope-badge biliscope-badge-group-tag";
             el.innerHTML = tag;
-            a.href = `https://space.bilibili.com/${myMid}/fans/follow?tagid=${tagId}`;
+            a.href = `${BILIBILI_SPACE_URL}/${myMid}/fans/follow?tagid=${tagId}`;
             a.appendChild(el);
             tagList.appendChild(a);
         }
@@ -465,7 +465,7 @@ UserProfileCard.prototype.drawVideoTags = function() {
             if (tagColors[tag]) {
                 el.style.backgroundColor = tagColors[tag];
             }
-            a.href = `https://search.bilibili.com/upuser?keyword=%23${encodeURIComponent(tag)}`;
+            a.href = `${BILIBILI_SEARCH_URL}/upuser?keyword=%23${encodeURIComponent(tag)}`;
             a.appendChild(el);
             tagList.appendChild(a);
         }
