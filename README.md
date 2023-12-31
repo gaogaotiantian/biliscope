@@ -58,11 +58,9 @@ BiliScope是一个为B站打造的Chrome/Edge插件。它可以让你在B站的�
 
 <summary>使用软链接备份备注</summary>
 
-> [!TIP]
-> 在`chrome://extensions/`里找到BiliScope，点击详细信息就能找到biliscope扩展ID。
+> :bulb: 在`chrome://extensions/`里找到BiliScope，点击详细信息就能找到biliscope扩展ID。
 
-> [!IMPORTANT]
-> 如果在浏览器里使用了多用户，下面路径的`Default`需要改成其他名字。
+> :warning: 如果在浏览器里使用了多用户，下面路径的`Default`需要改成其他名字。
 
 Edge的本地扩展数据路径：
 `%LOCALAPPDATA%\Microsoft\Edge\User Data\Default\Local Extension Settings\你的biliscope扩展ID`
