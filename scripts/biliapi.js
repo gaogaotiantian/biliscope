@@ -17,8 +17,8 @@ async function getBiliMixin() {
     return fetch("https://api.bilibili.com/x/web-interface/nav")
         .then((response) => response.json())
         .then((data) => {
-            let img_val = data.data.wbi_img.img_url.split("/").pop().split(".")[0];
-            let sub_val = data.data.wbi_img.sub_url.split("/").pop().split(".")[0];
+            let img_val = data["data"]["wbi_img"]["img_url"].split("/").pop().split(".")[0];
+            let sub_val = data["data"]["wbi_img"]["sub_url"].split("/").pop().split(".")[0];
             let val = img_val + sub_val;
             return OE.reduce((s, v) => s + val[v], "").substring(0, 32);
         });
@@ -89,30 +89,21 @@ function updateWordMap(map, sentence, weight) {
         sentence = sentence.replaceAll(word, '');
     }
 
-    let results = Array.from(new Intl.Segmenter('cn', { granularity: 'word' }).segment(sentence));
+    let words = Array.from(new Intl.Segmenter('cn', { granularity: 'word' }).segment(sentence))
+        .filter(segment => segment.isWordLike)
+        .map(segment => segment["segment"]);
     let wordMap = map.get("word");
 
-    for (let result of results) {
-        if (result.isWordLike) {
-            let word = result["segment"];
-            if (word && !STOP_WORDS.has(word)) {
-                if (wordMap.has(word)) {
-                    wordMap.set(word, wordMap.get(word) + weight);
-                } else {
-                    wordMap.set(word, weight);
-                }
-            }
+    for (let word of words) {
+        if (!STOP_WORDS.has(word)) {
+            wordMap.set(word, wordMap.get(word) || 0 + weight);
         }
     }
 }
 
 function updateTypeMap(map, type) {
     let typeMap = map.get("type");
-    if (typeMap.has(type)) {
-        typeMap.set(type, typeMap.get(type) + 1);
-    } else {
-        typeMap.set(type, 1);
-    }
+    typeMap.set(type, typeMap.get(type) || 0 + 1);
 }
 
 function videoLengthStringToSeconds(s) {
@@ -208,22 +199,21 @@ function updateVideoData(userId, callback) {
 }
 
 function cacheValid(cache) {
-    for (let key of ["stat", "info", "wordcloud", "count"]) {
-        if (!cache[key]) {
-            return false;
-        }
+    if (!cache) {
+        return false;
     }
-    return true;
+
+    return ["stat", "info", "wordcloud", "count"].every((key) => cache[key]);
 }
 
 function cacheAndUpdate(callback, userId, api, payload) {
-    let cache = {};
+    let cache = userInfoCache.get(userId) || {};
+
+    cache[api] = payload;
+
     if (!userInfoCache.has(userId)) {
         userInfoCache.set(userId, cache);
-    } else {
-        cache = userInfoCache.get(userId);
     }
-    cache[api] = payload;
 
     callback({"uid": userId, "api": api, "payload": payload});
 }
@@ -243,8 +233,8 @@ function updateUserInfo(userId, callback) {
     this._prevUserId = null;
 
     if (this._prevUserId != userId) {
-        if (userInfoCache.has(userId) && cacheValid(userInfoCache.get(userId))) {
-            let cache = userInfoCache.get(userId);
+        let cache = userInfoCache.get(userId);
+        if (cacheValid(cache)) {
             for (let api in cache) {
                 callback({"uid": userId, "api": api, "payload": cache[api]});
             }
@@ -291,26 +281,24 @@ async function requestGuardPage(roomid, uid, pn, map) {
 async function getGuardInfo(roomId, uid) {
     let map = new Map();
     let promises = [];
-    let pn = 1;
-    return requestGuardPage(roomId, uid, pn, map).then((data) => {
-        if (data["code"] == 0) {
-            let count = data["data"]["info"]["num"];
-            if (count > 30) {
-                let pn = 2;
-                while (pn * 30 < count) {
-                    promises.push(requestGuardPage(roomId, uid, pn, map));
-                    pn += 1;
-                }
-                return Promise.all(promises).then((values) => {
-                    let data = Array.from(map.values());
-                    return data
-                })
-            } else {
-                return Array.from(map.values());
-            }
-        } else {
+    return requestGuardPage(roomId, uid, 1, map).then((data) => {
+        if (data["code"] != 0) {
             return [];
         }
+
+        let count = data["data"]["info"]["num"];
+        if (count <= 30) {
+            return Array.from(map.values());
+        }
+
+        let pn = 2;
+        while (pn * 30 < count) {
+            promises.push(requestGuardPage(roomId, uid, pn, map));
+            pn += 1;
+        }
+        return Promise.all(promises).then((values) => {
+            return Array.from(map.values());
+        })
     });
 }
 
