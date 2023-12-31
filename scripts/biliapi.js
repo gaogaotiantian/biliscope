@@ -268,10 +268,10 @@ async function requestGuardPage(roomid, uid, pn, map) {
         .then((data) => {
             if (data["code"] == 0) {
                 for (let u of data["data"]["top3"]) {
-                    map.set(u.uid, u);
+                    map.set(u["uid"], u);
                 }
                 for (let u of data["data"]["list"]) {
-                    map.set(u.uid, u);
+                    map.set(u["uid"], u);
                 }
             }
             return data;
