@@ -44,7 +44,35 @@ BiliScope是一个为B站打造的Chrome/Edge插件。它可以让你在B站的�
 
 你可以在B站以`#标签名`为关键词进行用户搜索，可以搜索到标签对应的up主。
 
-在设置（点击浏览器中Biliscope的图标）中可以添加标签对应的颜色，也可以开启让up主的名字显示成标签对应的颜色的功能。
+在设置（点击浏览器扩展栏上的Biliscope图标）中可以添加标签对应的颜色，也可以开启让up主的名字显示成标签对应的颜色的功能。
+
+## 备份备注
+
+### 基础操作
+
+在设置（点击浏览器扩展栏上的Biliscope图标）中点击导出/导入备注
+
+### 高级操作
+
+<details>
+
+<summary>使用软链接备份备注</summary>
+
+> [!TIP]
+> 在`chrome://extensions/`里找到BiliScope，点击详细信息就能找到biliscope扩展ID。
+
+> [!IMPORTANT]
+> 如果在浏览器里使用了多用户，下面路径的`Default`需要改成其他名字。
+
+Edge的本地扩展数据路径：
+`%LOCALAPPDATA%\Microsoft\Edge\User Data\Default\Local Extension Settings\你的biliscope扩展ID`
+
+Chrome的本地扩展数据路径：
+`%LOCALAPPDATA%\Google\Chrome\User Data\Default\Local Extension Settings\你的biliscope扩展ID`
+
+自行使用`软链接`将biliscope的本地数据路径链接至你信任的文件夹，完成备份。
+
+</details>
 
 ## LICENSE
 
