@@ -96,14 +96,14 @@ function updateWordMap(map, sentence, weight) {
 
     for (let word of words) {
         if (!STOP_WORDS.has(word)) {
-            wordMap.set(word, wordMap.get(word) || 0 + weight);
+            wordMap.set(word, wordMap.get(word) ?? 0 + weight);
         }
     }
 }
 
 function updateTypeMap(map, type) {
     let typeMap = map.get("type");
-    typeMap.set(type, typeMap.get(type) || 0 + 1);
+    typeMap.set(type, typeMap.get(type) ?? 0 + 1);
 }
 
 function videoLengthStringToSeconds(s) {
@@ -207,7 +207,7 @@ function cacheValid(cache) {
 }
 
 function cacheAndUpdate(callback, userId, api, payload) {
-    let cache = userInfoCache.get(userId) || {};
+    let cache = userInfoCache.get(userId) ?? {};
 
     cache[api] = payload;
 
