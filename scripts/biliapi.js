@@ -163,12 +163,13 @@ async function requestSearchPage(userId, pn, map) {
 
 function updateVideoData(userId, callback) {
     let map = new Map();
+    let pn = 1;
     map.set("word", new Map());
     map.set("type", new Map());
     map.set("lastMonthVideoCount", 0);
     map.set("totalVideoLength", 0);
 
-    requestSearchPage(userId, 1, map).then((data) => {
+    requestSearchPage(userId, pn, map).then((data) => {
         if (data["code"] == 0) {
             let count = data["data"]["page"]["count"];
             cacheAndUpdate(callback, userId, "count", {"count": count});
@@ -182,10 +183,9 @@ function updateVideoData(userId, callback) {
 
             let promises = [];
             if (count > NUM_PER_PAGE) {
-                let pn = 2;
                 while (pn * NUM_PER_PAGE < count) {
-                    promises.push(requestSearchPage(userId, pn, map));
                     pn += 1;
+                    promises.push(requestSearchPage(userId, pn, map));
                 }
                 Promise.all(promises).then((values) => {
                     cacheAndUpdate(callback, userId, "wordcloud", convertVideoData(map));
@@ -296,10 +296,9 @@ async function getGuardInfo(roomId, uid) {
         if (data["code"] == 0) {
             let count = data["data"]["info"]["num"];
             if (count > 30) {
-                let pn = 2;
                 while (pn * 30 < count) {
-                    promises.push(requestGuardPage(roomId, uid, pn, map));
                     pn += 1;
+                    promises.push(requestGuardPage(roomId, uid, pn, map));
                 }
                 return Promise.all(promises).then((values) => {
                     let data = Array.from(map.values());
