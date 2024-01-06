@@ -665,7 +665,7 @@ window.addEventListener("load", function() {
         guardInfo = data;
         // Shuffle guardInfo
         let i = guardInfo.length;
-        while(i) {
+        while (i) {
             let j = Math.floor(Math.random() * i--);
             [guardInfo[i], guardInfo[j]] = [guardInfo[j], guardInfo[i]];
         }
