@@ -254,8 +254,7 @@ function UserProfileCard() {
 
     document.body.appendChild(this.el);
 
-    this.setEvents();
-    this.createEvents();
+    this.initEvents();
 }
 
 UserProfileCard.prototype.disable = function() {
@@ -308,13 +307,13 @@ UserProfileCard.prototype.clearOriginalCard = function() {
     }
 }
 
-UserProfileCard.prototype.setEvents = function() {
+UserProfileCard.prototype.initEvents = function() {
     let wordCloudCanvasWrapper = document.getElementById("word-cloud-canvas-wrapper");
     let wordCloudWrapper = document.getElementById("biliscope-wordcloud-wrapper");
     let arrowUp = wordCloudWrapper.getElementsByClassName("arrow-up")[0];
     let arrowDown = wordCloudWrapper.getElementsByClassName("arrow-down")[0];
 
-    this.wordCloudWrapperMouseEnter = (ev) => {
+    wordCloudWrapper.addEventListener("mouseenter", (ev) => {
         document.getElementById("word-cloud-toggler").hidden = false;
         if (biliScopeOptions.enableWordCloud) {
             arrowUp.hidden = false;
@@ -323,21 +322,21 @@ UserProfileCard.prototype.setEvents = function() {
             arrowUp.hidden = true;
             arrowDown.hidden = false;
         }
-    }
+    });
 
-    this.wordCloudWrapperMouseLeave = (ev) => {
+    wordCloudWrapper.addEventListener("mouseleave", (ev) => {
         document.getElementById("word-cloud-toggler").hidden = true;
-    }
+    });
 
-    this.arrowUpClick = (ev) => {
+    arrowUp.addEventListener("click", (ev) => {
         biliScopeOptions.enableWordCloud = false;
         wordCloudCanvasWrapper.hidden = true;
         saveOptions();
         arrowUp.hidden = true;
         arrowDown.hidden = false;
-    }
+    });
 
-    this.arrowDownClick = (ev) => {
+    arrowDown.addEventListener("click", (ev) => {
         let canvas = document.getElementById("word-cloud-canvas");
         biliScopeOptions.enableWordCloud = true;
         wordCloudCanvasWrapper.hidden = false;
@@ -345,21 +344,7 @@ UserProfileCard.prototype.setEvents = function() {
         arrowUp.hidden = false;
         arrowDown.hidden = true;
         this.drawWordCloud(canvas);
-    }
-
-    this.createEvents = () => {
-        wordCloudWrapper.addEventListener("mouseenter", this.wordCloudWrapperMouseEnter);
-        wordCloudWrapper.addEventListener("mouseleave", this.wordCloudWrapperMouseLeave);
-        arrowUp.addEventListener("click", this.arrowUpClick);
-        arrowDown.addEventListener("click", this.arrowDownClick);
-    }
-
-    this.removeEvents = () => {
-        wordCloudWrapper.removeEventListener("mouseenter", this.wordCloudWrapperMouseEnter);
-        wordCloudWrapper.removeEventListener("mouseleave", this.wordCloudWrapperMouseLeave);
-        arrowUp.removeEventListener("click", this.arrowUpClick);
-        arrowDown.removeEventListener("click", this.arrowDownClick);
-    }
+    });
 }
 
 UserProfileCard.prototype.updateUserId = function(userId) {
@@ -526,7 +511,6 @@ UserProfileCard.prototype.setupTriggers = function() {
         textarea.hidden = false;
         textarea.focus();
         this.fixed = true;
-        this.removeEvents();
     });
 
     text.addEventListener("click", (ev) => {
@@ -534,7 +518,6 @@ UserProfileCard.prototype.setupTriggers = function() {
         textarea.hidden = false;
         textarea.focus();
         this.fixed = true;
-        this.removeEvents();
     });
 
     textarea.addEventListener("blur", (ev) => {
@@ -559,7 +542,6 @@ UserProfileCard.prototype.setupTriggers = function() {
         }
         textarea.hidden = true;
         this.fixed = false;
-        this.createEvents();
         if (!this.cursorInside) {
             this.leaveCallback();
         }
