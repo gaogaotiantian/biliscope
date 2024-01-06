@@ -44,15 +44,17 @@ function updatePage(clear=true) {
         let newUsers = [];
 
         for (let uid in noteData) {
-            if (!(this.users.has(uid))) {
-                let tags = getTags(uid);
-                if (keywords.every(keyword => tags.includes(keyword.replaceAll("#", "")))) {
-                    this.users.add(uid);
-                    newUsers.push(uid);
-                    if (newUsers.length >= 50) {
-                        // the API can take 50 users at most
-                        break;
-                    }
+            if (this.users.has(uid)) {
+                continue;
+            }
+
+            let tags = getTags(uid);
+            if (keywords.every(keyword => tags.includes(keyword.replaceAll("#", "")))) {
+                this.users.add(uid);
+                newUsers.push(uid);
+                if (newUsers.length >= 50) {
+                    // the API can take 50 users at most
+                    break;
                 }
             }
         }
@@ -67,7 +69,7 @@ function updatePage(clear=true) {
             myWrapper.appendChild(container);
         }
 
-        if (this.users.length == 0) {
+        if (this.users.size == 0) {
             myWrapper.innerHTML = `
             <div class="search-nodata-container p_relative">
                 <div class="no-data p_center text_center">
