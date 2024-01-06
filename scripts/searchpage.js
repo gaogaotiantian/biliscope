@@ -57,7 +57,7 @@ function updatePage(clear=true) {
             }
         }
 
-        let vuiTabs = Array.from(document.querySelectorAll(".vui_tabs--nav-link"));
+        let vuiTabs = Array.from(document.getElementsByClassName("vui_tabs--nav-link"));
         for (let vuiTab of vuiTabs.reverse()) {
             let texts = vuiTab.getElementsByClassName("vui_tabs--nav-text");
             let nums = vuiTab.getElementsByClassName("vui_tabs--nav-num");
