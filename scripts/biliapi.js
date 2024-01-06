@@ -211,9 +211,7 @@ function cacheAndUpdate(callback, userId, api, payload) {
 
     cache[api] = payload;
 
-    if (!userInfoCache.has(userId)) {
-        userInfoCache.set(userId, cache);
-    }
+    userInfoCache.set(userId, cache);
 
     callback({"uid": userId, "api": api, "payload": payload});
 }
@@ -281,24 +279,26 @@ async function requestGuardPage(roomid, uid, pn, map) {
 async function getGuardInfo(roomId, uid) {
     let map = new Map();
     let promises = [];
-    return requestGuardPage(roomId, uid, 1, map).then((data) => {
-        if (data["code"] != 0) {
+    let pn = 1;
+    return requestGuardPage(roomId, uid, pn, map).then((data) => {
+        if (data["code"] == 0) {
+            let count = data["data"]["info"]["num"];
+            if (count > 30) {
+                let pn = 2;
+                while (pn * 30 < count) {
+                    promises.push(requestGuardPage(roomId, uid, pn, map));
+                    pn += 1;
+                }
+                return Promise.all(promises).then((values) => {
+                    let data = Array.from(map.values());
+                    return data
+                })
+            } else {
+                return Array.from(map.values());
+            }
+        } else {
             return [];
         }
-
-        let count = data["data"]["info"]["num"];
-        if (count <= 30) {
-            return Array.from(map.values());
-        }
-
-        let pn = 2;
-        while (pn * 30 < count) {
-            promises.push(requestGuardPage(roomId, uid, pn, map));
-            pn += 1;
-        }
-        return Promise.all(promises).then((values) => {
-            return Array.from(map.values());
-        })
     });
 }
 
