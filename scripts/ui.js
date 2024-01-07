@@ -15,7 +15,7 @@ function sexToClass(sex) {
     return "";
 }
 
-function relationDisplay(data) {
+function getRelationText(data) {
     if (!data?.["relation"]?.["attribute"]) {
         return null;
     }
@@ -45,17 +45,22 @@ function relationDisplay(data) {
     return null;
 }
 
-function relationClass(data) {
-    text = relationDisplay(data);
+function getRelationHTML(data) {
+    let text = getRelationText(data);
     if (text == null) {
-        return "d-none";
-    } else if (text == "已拉黑" || text == "已被拉黑") {
-        return "biliscope-relation-black";
-    } else if (text == "+ 关注" || text == "关注了你") {
-        return "biliscope-relation-follow";
-    } else if (text == "已关注" || text == "已互粉") {
-        return "biliscope-relation-followed";
+        return "";
     }
+
+    let relationClass;
+    if (text == "已拉黑" || text == "已被拉黑") {
+        relationClass = "biliscope-relation-black";
+    } else if (text == "+ 关注" || text == "关注了你") {
+        relationClass =  "biliscope-relation-follow";
+    } else if (text == "已关注" || text == "已互粉") {
+        relationClass =  "biliscope-relation-followed";
+    }
+
+    return `<a><span id="biliscope-follow-button" class="biliscope-relation ${relationClass}">${text}</span></a>`;
 }
 
 function noteDataToDisplay(noteData, mid) {
@@ -97,7 +102,7 @@ function getUserProfileCardDataHTML(data) {
                             </span>
                         </span>
                     </div>
-                    <a><span id="biliscope-follow-button" class="biliscope-relation ${relationClass(data)}">${relationDisplay(data) ?? ""}</span></a>
+                    ${getRelationHTML(data)}
                 </div>
                 <div class="idc-meta" id="biliscope-note-wrapper">
                     <div class="idc-meta-item"
