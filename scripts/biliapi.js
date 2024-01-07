@@ -17,8 +17,8 @@ async function getBiliMixin() {
     return fetch("https://api.bilibili.com/x/web-interface/nav")
         .then((response) => response.json())
         .then((data) => {
-            let img_val = data.data.wbi_img.img_url.split("/").pop().split(".")[0];
-            let sub_val = data.data.wbi_img.sub_url.split("/").pop().split(".")[0];
+            let img_val = data["data"]["wbi_img"]["img_url"].split("/").pop().split(".")[0];
+            let sub_val = data["data"]["wbi_img"]["sub_url"].split("/").pop().split(".")[0];
             let val = img_val + sub_val;
             return OE.reduce((s, v) => s + val[v], "").substring(0, 32);
         });
@@ -100,29 +100,20 @@ function updateWordMap(map, sentence, weight) {
     wordMap.set(currentUserName, (wordMap.get(currentUserName) ?? 0) + count * weight);
     sentence = sentence.replaceAll(currentUserName, '');
 
-    let results = Array.from(new Intl.Segmenter('cn', { granularity: 'word' }).segment(sentence));
+    let words = Array.from(new Intl.Segmenter('cn', { granularity: 'word' }).segment(sentence))
+        .filter(segment => segment.isWordLike)
+        .map(segment => segment["segment"]);
 
-    for (let result of results) {
-        if (result.isWordLike) {
-            let word = result["segment"];
-            if (word && !STOP_WORDS.has(word)) {
-                if (wordMap.has(word)) {
-                    wordMap.set(word, wordMap.get(word) + weight);
-                } else {
-                    wordMap.set(word, weight);
-                }
-            }
+    for (let word of words) {
+        if (!STOP_WORDS.has(word)) {
+            wordMap.set(word, (wordMap.get(word) ?? 0) + weight);
         }
     }
 }
 
 function updateTypeMap(map, type) {
     let typeMap = map.get("type");
-    if (typeMap.has(type)) {
-        typeMap.set(type, typeMap.get(type) + 1);
-    } else {
-        typeMap.set(type, 1);
-    }
+    typeMap.set(type, (typeMap.get(type) ?? 0) + 1);
 }
 
 function videoLengthStringToSeconds(s) {
@@ -190,25 +181,18 @@ function updateVideoData(userId, callback) {
                 cacheAndUpdate(callback, userId, "lastVideoTimestamp", {"timestamp": null});
             }
 
+            let pn = 1;
             let promises = [];
-            if (count > NUM_PER_PAGE) {
-                let pn = 2;
-                while (pn * NUM_PER_PAGE < count) {
-                    promises.push(requestSearchPage(userId, pn, map));
-                    pn += 1;
-                }
-                Promise.all(promises).then((values) => {
-                    cacheAndUpdate(callback, userId, "wordcloud", convertVideoData(map));
-                    cacheAndUpdate(callback, userId, "totalVideoInfo", {
-                        "lastMonthCount": map.get("lastMonthVideoCount"),
-                        "totalLength": map.get("totalVideoLength")});
-                })
-            } else {
+            while (pn * NUM_PER_PAGE < count) {
+                pn += 1;
+                promises.push(requestSearchPage(userId, pn, map));
+            }
+            Promise.all(promises).then((values) => {
                 cacheAndUpdate(callback, userId, "wordcloud", convertVideoData(map));
                 cacheAndUpdate(callback, userId, "totalVideoInfo", {
                     "lastMonthCount": map.get("lastMonthVideoCount"),
                     "totalLength": map.get("totalVideoLength")});
-            }
+            })
         } else {
             cacheAndUpdate(callback, userId, "count", {"count": null});
             cacheAndUpdate(callback, userId, "wordcloud", {"word": [], "type": []});
@@ -218,22 +202,19 @@ function updateVideoData(userId, callback) {
 }
 
 function cacheValid(cache) {
-    for (let key of ["stat", "info", "wordcloud", "count"]) {
-        if (!cache[key]) {
-            return false;
-        }
+    if (!cache) {
+        return false;
     }
-    return true;
+
+    return ["stat", "info", "wordcloud", "count"].every((key) => cache[key]);
 }
 
 function cacheAndUpdate(callback, userId, api, payload) {
-    let cache = {};
-    if (!userInfoCache.has(userId)) {
-        userInfoCache.set(userId, cache);
-    } else {
-        cache = userInfoCache.get(userId);
-    }
+    let cache = userInfoCache.get(userId) ?? {};
+
     cache[api] = payload;
+
+    userInfoCache.set(userId, cache);
 
     callback({"uid": userId, "api": api, "payload": payload});
 }
@@ -250,34 +231,31 @@ function updateRelation(userId, callback) {
 }
 
 function updateUserInfo(userId, callback) {
-    this._prevUserId = null;
-
-    if (this._prevUserId != userId) {
-        if (userInfoCache.has(userId) && cacheValid(userInfoCache.get(userId))) {
-            let cache = userInfoCache.get(userId);
-            for (let api in cache) {
-                callback({"uid": userId, "api": api, "payload": cache[api]});
-            }
-        } else {
-            biliGet(`${BILIBILI_API_URL}/x/relation/stat`, {
-                vmid: userId,
-                jsonp: "jsonp",
-            })
-            .then((data) => cacheAndUpdate(callback, userId, "stat", data));
-
-            biliGet(`${BILIBILI_API_URL}/x/space/wbi/acc/info`, {
-                mid: userId,
-            })
-            .then((data) => {
-                cacheAndUpdate(callback, userId, "info", data);
-                // currentUserName refresh
-
-                updateRelation(userId, callback);
-
-                updateVideoData(userId, callback);
-            })
+    let cache = userInfoCache.get(userId);
+    if (cacheValid(cache)) {
+        for (let api in cache) {
+            callback({"uid": userId, "api": api, "payload": cache[api]});
         }
+        return;
     }
+
+    biliGet(`${BILIBILI_API_URL}/x/relation/stat`, {
+        vmid: userId,
+        jsonp: "jsonp",
+    })
+    .then((data) => cacheAndUpdate(callback, userId, "stat", data));
+
+    biliGet(`${BILIBILI_API_URL}/x/space/wbi/acc/info`, {
+        mid: userId,
+    })
+    .then((data) => {
+        cacheAndUpdate(callback, userId, "info", data);
+        // currentUserName refresh
+
+        updateRelation(userId, callback);
+
+        updateVideoData(userId, callback);
+    })
 }
 
 
@@ -291,10 +269,10 @@ async function requestGuardPage(roomid, uid, pn, map) {
         .then((data) => {
             if (data["code"] == 0) {
                 for (let u of data["data"]["top3"]) {
-                    map.set(u.uid, u);
+                    map.set(u["uid"], u);
                 }
                 for (let u of data["data"]["list"]) {
-                    map.set(u.uid, u);
+                    map.set(u["uid"], u);
                 }
             }
             return data;
@@ -303,27 +281,21 @@ async function requestGuardPage(roomid, uid, pn, map) {
 
 async function getGuardInfo(roomId, uid) {
     let map = new Map();
-    let promises = [];
-    let pn = 1;
-    return requestGuardPage(roomId, uid, pn, map).then((data) => {
-        if (data["code"] == 0) {
-            let count = data["data"]["info"]["num"];
-            if (count > 30) {
-                let pn = 2;
-                while (pn * 30 < count) {
-                    promises.push(requestGuardPage(roomId, uid, pn, map));
-                    pn += 1;
-                }
-                return Promise.all(promises).then((values) => {
-                    let data = Array.from(map.values());
-                    return data
-                })
-            } else {
-                return Array.from(map.values());
-            }
-        } else {
+    return requestGuardPage(roomId, uid, 1, map).then((data) => {
+        if (data["code"] != 0) {
             return [];
         }
+        let count = data["data"]["info"]["num"];
+        let pn = 1;
+        let promises = [];
+        while (pn * 30 < count) {
+            pn += 1;
+            promises.push(requestGuardPage(roomId, uid, pn, map));
+        }
+        return Promise.all(promises).then((values) => {
+            let data = Array.from(map.values());
+            return data
+        })
     });
 }
 
