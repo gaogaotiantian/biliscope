@@ -638,7 +638,6 @@ UserProfileCard.prototype.updateData = function (data) {
         let canvas = document.getElementById("word-cloud-canvas");
         if (this.data["wordcloud"].length > 0) {
             this.drawWordCloud(canvas);
-            this.drawVideoTags();
         } else {
             canvas.style.height = "0px";
             canvas.height = 0;
@@ -646,6 +645,7 @@ UserProfileCard.prototype.updateData = function (data) {
     } else if (data["data"]["name"]) {
         document.getElementById("biliscope-id-card-data").innerHTML = getUserProfileCardDataHTML(this.data);
         this.setupTriggers();
+        this.drawVideoTags();
     }
 
     if (this.enabled && this.valid && this.el?.style.display != "flex") {
