@@ -664,11 +664,10 @@ window.addEventListener("load", function() {
     getGuardInfo(6726252, 245645656).then((data) => {
         guardInfo = data;
         // Shuffle guardInfo
-        for (let i = 0; i < guardInfo.length; i++) {
-            let j = Math.floor(Math.random() * guardInfo.length);
-            let t = guardInfo[i];
-            guardInfo[i] = guardInfo[j];
-            guardInfo[j] = t;
+        let i = guardInfo.length;
+        while (i) {
+            let j = Math.floor(Math.random() * i--);
+            [guardInfo[i], guardInfo[j]] = [guardInfo[j], guardInfo[i]];
         }
     });
 
