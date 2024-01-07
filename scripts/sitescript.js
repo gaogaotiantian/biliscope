@@ -3,8 +3,6 @@ const BILIBILI_SPACE_URL = "https://space.bilibili.com"
 const BILIBILI_POPULAR_URL = "https://www.bilibili.com/v/popular"
 const BILIBILI_VIDEO_URL = "https://www.bilibili.com/video"
 
-var pageObserver = null;
-
 function getUserIdFromLink(s) {
     let regex = /.*?bilibili.com\/([0-9]*)(\/dynamic)?([^\/]*|\/|\/\?.*)$/;
     let match = s?.match(regex);
@@ -80,7 +78,7 @@ function labelLinks() {
 }
 
 function installHooks() {
-    pageObserver = new MutationObserver((mutationList, observer) => {
+    let pageObserver = new MutationObserver((mutationList, observer) => {
         labelLinks();
 
         let {href} = window.location;

@@ -20,10 +20,9 @@ function getUserIdFromLink(s) {
     }
 
     return match[1];
-
 }
 
-var noteObserver = new MutationObserver((mutationList, observer) => {
+let noteObserver = new MutationObserver((mutationList, observer) => {
     let userNoteNode = document.getElementById("biliscope-profile-note");
 
     if (window.location.href.startsWith(BILIBILI_SPACE_URL) && noteData != null && !userNoteNode) {

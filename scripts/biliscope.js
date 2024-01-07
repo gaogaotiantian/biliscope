@@ -2,7 +2,7 @@
 window.addEventListener("load", function() {
     document.addEventListener("mouseover", showProfileDebounce);
 
-    var s = document.createElement('script');
+    let s = document.createElement('script');
     s.src = chrome.runtime.getURL('scripts/sitescript.js');
     s.onload = function() { this.remove(); };
     (document.head || document.documentElement).appendChild(s);

@@ -1,5 +1,5 @@
 function show_status(text, time) {
-    var status = document.getElementById('status');
+    let status = document.getElementById('status');
     status.textContent = text;
     setTimeout(function() {
         status.textContent = '';
