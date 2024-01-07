@@ -16,7 +16,7 @@ function sexToClass(sex) {
 }
 
 function relationDisplay(data) {
-    if (!data["relation"] || data["relation"]["attribute"] === undefined) {
+    if (!data?.["relation"]?.["attribute"]) {
         return null;
     }
 
@@ -97,7 +97,7 @@ function getUserProfileCardDataHTML(data) {
                             </span>
                         </span>
                     </div>
-                    <a><span id="biliscope-follow-button" class="biliscope-relation ${relationClass(data)}">${relationDisplay(data)}</span></a>
+                    <a><span id="biliscope-follow-button" class="biliscope-relation ${relationClass(data)}">${relationDisplay(data) ?? ""}</span></a>
                 </div>
                 <div class="idc-meta" id="biliscope-note-wrapper">
                     <div class="idc-meta-item"
@@ -109,21 +109,21 @@ function getUserProfileCardDataHTML(data) {
                               hidden
                               maxlength="5000"
                               placeholder="给up加个备注（手动换行前的内容都将显示在卡片上）\n或者加几个#标签#"
-                              style="resize: vertical; width: 100%">\n${(data["mid"] && noteData[data["mid"]]) || ""}</textarea>
+                              style="resize: vertical; width: 100%">\n${noteData[data["mid"]] ?? ""}</textarea>
                 </div>
                 <div class="idc-meta">
                     <a href="https://space.bilibili.com/${data["mid"]}/fans/follow" target="_blank">
-                        <span class="idc-meta-item"><data-title>关注</data-title> ${data["following"] || 0}</span>
+                        <span class="idc-meta-item"><data-title>关注</data-title> ${data["following"] ?? 0}</span>
                     </a>
                     <a href="https://space.bilibili.com/${data["mid"]}/fans/fans" target="_blank">
-                        <span class="idc-meta-item"><data-title>粉丝</data-title> ${numberToDisplay(data["follower"]) || 0}</span>
+                        <span class="idc-meta-item"><data-title>粉丝</data-title> ${numberToDisplay(data["follower"]) ?? 0}</span>
                     </a>
                     <a href="https://space.bilibili.com/${data["mid"]}/video" target="_blank">
-                        <span class="idc-meta-item"><data-title>投稿</data-title> ${data["count"] || 0}</span>
+                        <span class="idc-meta-item"><data-title>投稿</data-title> ${data["count"] ?? 0}</span>
                     </a>
                 </div>
                 <div class="idc-meta" style="${data["count"] ? "": "display: none"}">
-                    <span class="idc-meta-item"><data-title>近30天投稿数</data-title> ${data["lastMonthVideoCount"] || 0}</span>
+                    <span class="idc-meta-item"><data-title>近30天投稿数</data-title> ${data["lastMonthVideoCount"] ?? 0}</span>
                     <span class="idc-meta-item"><data-title>上次投稿</data-title> ${timestampToDisplay(data["lastVideoTimestamp"])}</span>
                 </div>
                 <div class="idc-meta" style="${data["count"] ? "": "display: none"}">
@@ -148,7 +148,7 @@ function getUserProfileCardDataHTML(data) {
 }
 
 function getGuardSupportHTML(data) {
-    if (guardInfo == null || guardInfo.length === 0) {
+    if (!guardInfo?.length) {
         return "";
     }
 

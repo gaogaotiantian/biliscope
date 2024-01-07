@@ -108,11 +108,12 @@ function updateTypeMap(map, type) {
 
 function videoLengthStringToSeconds(s) {
     let regex = /([0-9]*):([0-9]*)/;
-    let match = s.match(regex);
-    if (match) {
-        return parseInt(match[1]) * 60 + parseInt(match[2]);
+    let match = s?.match(regex);
+    if (!match) {
+        return 0;
     }
-    return 0;
+
+    return parseInt(match[1]) * 60 + parseInt(match[2]);
 }
 
 function convertVideoData(map) {
@@ -272,6 +273,7 @@ async function getGuardInfo(roomId, uid) {
         if (data["code"] != 0) {
             return [];
         }
+
         let count = data["data"]["info"]["num"];
         let pn = 1;
         let promises = [];
