@@ -173,8 +173,12 @@ function updateVideoData(userId, callback) {
             let count = data["data"]["page"]["count"];
             cacheAndUpdate(callback, userId, "count", {"count": count});
 
-            let lastVideoTimestamp = count > 0 ? data["data"]["list"]["vlist"][0]["created"] : null;
-            cacheAndUpdate(callback, userId, "lastVideoTimestamp", {"timestamp": lastVideoTimestamp});
+            if (count > 0) {
+                let lastVideoTimestamp = data["data"]["list"]["vlist"][0]["created"];
+                cacheAndUpdate(callback, userId, "lastVideoTimestamp", { "timestamp": lastVideoTimestamp });
+            } else {
+                cacheAndUpdate(callback, userId, "lastVideoTimestamp", { "timestamp": null });
+            }
 
             let pn = 1;
             let promises = [];
@@ -280,20 +284,20 @@ async function requestGuardPage(roomid, uid, pn, map) {
 async function getGuardInfo(roomId, uid) {
     let map = new Map();
     return requestGuardPage(roomId, uid, 1, map).then((data) => {
-        if (data["code"] == 0) {
-            let count = data["data"]["info"]["num"];
-            let pn = 1;
-            let promises = [];
-            while (pn * 30 < count) {
-                pn += 1;
-                promises.push(requestGuardPage(roomId, uid, pn, map));
-            }
-            return Promise.all(promises).then((values) => {
-                return Array.from(map.values());
-            })
-        } else {
+        if (data["code"] != 0) {
             return [];
         }
+        let count = data["data"]["info"]["num"];
+        let pn = 1;
+        let promises = [];
+        while (pn * 30 < count) {
+            pn += 1;
+            promises.push(requestGuardPage(roomId, uid, pn, map));
+        }
+        return Promise.all(promises).then((values) => {
+            let data = Array.from(map.values());
+            return data
+        })
     });
 }
 
