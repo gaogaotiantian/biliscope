@@ -643,14 +643,12 @@ UserProfileCard.prototype.updateData = function (data) {
             canvas.style.height = "0px";
             canvas.height = 0;
         }
-    } else if (this.data['name']) {
-        // wait until name is ready
+    } else if (data["data"]["name"]) {
         document.getElementById("biliscope-id-card-data").innerHTML = getUserProfileCardDataHTML(this.data);
         this.setupTriggers();
-        this.drawVideoTags();
     }
 
-    if (this.enabled && this.valid && this.el && this.el.style.display != "flex") {
+    if (this.enabled && this.valid && this.el?.style.display != "flex") {
         this.clearOriginalCard();
         this.el.style.display = "flex";
     }
