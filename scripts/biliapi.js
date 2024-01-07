@@ -228,31 +228,28 @@ function updateRelation(userId, callback) {
 }
 
 function updateUserInfo(userId, callback) {
-    this._prevUserId = null;
-
-    if (this._prevUserId != userId) {
-        let cache = userInfoCache.get(userId);
-        if (cacheValid(cache)) {
-            for (let api in cache) {
-                callback({"uid": userId, "api": api, "payload": cache[api]});
-            }
-        } else {
-            biliGet(`${BILIBILI_API_URL}/x/relation/stat`, {
-                vmid: userId,
-                jsonp: "jsonp",
-            })
-            .then((data) => cacheAndUpdate(callback, userId, "stat", data));
-
-            biliGet(`${BILIBILI_API_URL}/x/space/wbi/acc/info`, {
-                mid: userId,
-            })
-            .then((data) => cacheAndUpdate(callback, userId, "info", data));
-
-            updateRelation(userId, callback);
-
-            updateVideoData(userId, callback);
+    let cache = userInfoCache.get(userId);
+    if (cacheValid(cache)) {
+        for (let api in cache) {
+            callback({"uid": userId, "api": api, "payload": cache[api]});
         }
+        return;
     }
+
+    biliGet(`${BILIBILI_API_URL}/x/relation/stat`, {
+        vmid: userId,
+        jsonp: "jsonp",
+    })
+    .then((data) => cacheAndUpdate(callback, userId, "stat", data));
+
+    biliGet(`${BILIBILI_API_URL}/x/space/wbi/acc/info`, {
+        mid: userId,
+    })
+    .then((data) => cacheAndUpdate(callback, userId, "info", data));
+
+    updateRelation(userId, callback);
+
+    updateVideoData(userId, callback);
 }
 
 
