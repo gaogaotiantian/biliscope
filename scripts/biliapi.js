@@ -175,9 +175,9 @@ function updateVideoData(userId, callback) {
 
             if (count > 0) {
                 let lastVideoTimestamp = data["data"]["list"]["vlist"][0]["created"];
-                cacheAndUpdate(callback, userId, "lastVideoTimestamp", { "timestamp": lastVideoTimestamp });
+                cacheAndUpdate(callback, userId, "lastVideoTimestamp", {"timestamp": lastVideoTimestamp});
             } else {
-                cacheAndUpdate(callback, userId, "lastVideoTimestamp", { "timestamp": null });
+                cacheAndUpdate(callback, userId, "lastVideoTimestamp", {"timestamp": null});
             }
 
             let pn = 1;
