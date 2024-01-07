@@ -85,12 +85,22 @@ function updateWordMap(map, sentence, weight) {
     // Remove date format like (YYYY-MM-DD hh:mm:ss | YYYY-MM-DD | YYYY-MM-D | YYYY-M-DD | YYYY-M-D | YYYY-M)
     sentence = sentence.replace(/\d{4}[-./]\d{1,2}([-./]\d{0,2})?(\s\d{2}:\d{2}:\d{2})?/g, '');
 
+    // Remove avid and bvid
+    sentence = sentence.replace(/[aA][vV]\d+/g, '');
+    sentence = sentence.replace(/[bB][vV]1[1-9a-km-zA-HJ-NP-Z]{9}/g, '');
+
     for (let word of IGNORE_WORDS) {
         sentence = sentence.replaceAll(word, '');
     }
 
-    let results = Array.from(new Intl.Segmenter('cn', { granularity: 'word' }).segment(sentence));
     let wordMap = map.get("word");
+
+    // Cut currentUserName
+    let count = [...sentence.matchAll(currentUserName)].length;
+    wordMap.set(currentUserName, (wordMap.get(currentUserName) ?? 0) + count * weight);
+    sentence = sentence.replaceAll(currentUserName, '');
+
+    let results = Array.from(new Intl.Segmenter('cn', { granularity: 'word' }).segment(sentence));
 
     for (let result of results) {
         if (result.isWordLike) {
@@ -258,11 +268,14 @@ function updateUserInfo(userId, callback) {
             biliGet(`${BILIBILI_API_URL}/x/space/wbi/acc/info`, {
                 mid: userId,
             })
-            .then((data) => cacheAndUpdate(callback, userId, "info", data));
+            .then((data) => {
+                cacheAndUpdate(callback, userId, "info", data);
+                // currentUserName refresh
 
-            updateRelation(userId, callback);
+                updateRelation(userId, callback);
 
-            updateVideoData(userId, callback);
+                updateVideoData(userId, callback);
+            })
         }
     }
 }

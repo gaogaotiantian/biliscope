@@ -5,3 +5,4 @@ var enableTagColor = null;
 var userProfileCard = null;
 var biliTags = {};
 var myMid = null;
+var currentUserName = null;
