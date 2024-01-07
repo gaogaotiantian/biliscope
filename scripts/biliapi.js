@@ -180,25 +180,18 @@ function updateVideoData(userId, callback) {
                 cacheAndUpdate(callback, userId, "lastVideoTimestamp", {"timestamp": null});
             }
 
+            let pn = 1;
             let promises = [];
-            if (count > NUM_PER_PAGE) {
-                let pn = 2;
-                while (pn * NUM_PER_PAGE < count) {
-                    promises.push(requestSearchPage(userId, pn, map));
-                    pn += 1;
-                }
-                Promise.all(promises).then((values) => {
-                    cacheAndUpdate(callback, userId, "wordcloud", convertVideoData(map));
-                    cacheAndUpdate(callback, userId, "totalVideoInfo", {
-                        "lastMonthCount": map.get("lastMonthVideoCount"),
-                        "totalLength": map.get("totalVideoLength")});
-                })
-            } else {
+            while (pn * NUM_PER_PAGE < count) {
+                pn += 1;
+                promises.push(requestSearchPage(userId, pn, map));
+            }
+            Promise.all(promises).then((values) => {
                 cacheAndUpdate(callback, userId, "wordcloud", convertVideoData(map));
                 cacheAndUpdate(callback, userId, "totalVideoInfo", {
                     "lastMonthCount": map.get("lastMonthVideoCount"),
                     "totalLength": map.get("totalVideoLength")});
-            }
+            })
         } else {
             cacheAndUpdate(callback, userId, "count", {"count": null});
             cacheAndUpdate(callback, userId, "wordcloud", {"word": [], "type": []});
@@ -290,27 +283,21 @@ async function requestGuardPage(roomid, uid, pn, map) {
 
 async function getGuardInfo(roomId, uid) {
     let map = new Map();
-    let promises = [];
-    let pn = 1;
-    return requestGuardPage(roomId, uid, pn, map).then((data) => {
-        if (data["code"] == 0) {
-            let count = data["data"]["info"]["num"];
-            if (count > 30) {
-                let pn = 2;
-                while (pn * 30 < count) {
-                    promises.push(requestGuardPage(roomId, uid, pn, map));
-                    pn += 1;
-                }
-                return Promise.all(promises).then((values) => {
-                    let data = Array.from(map.values());
-                    return data
-                })
-            } else {
-                return Array.from(map.values());
-            }
-        } else {
+    return requestGuardPage(roomId, uid, 1, map).then((data) => {
+        if (data["code"] != 0) {
             return [];
         }
+        let count = data["data"]["info"]["num"];
+        let pn = 1;
+        let promises = [];
+        while (pn * 30 < count) {
+            pn += 1;
+            promises.push(requestGuardPage(roomId, uid, pn, map));
+        }
+        return Promise.all(promises).then((values) => {
+            let data = Array.from(map.values());
+            return data
+        })
     });
 }
 
