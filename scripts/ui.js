@@ -16,7 +16,7 @@ function sexToClass(sex) {
 }
 
 function getRelationText(data) {
-    if (!data?.["relation"]?.["attribute"]) {
+    if (!data?.relation?.attribute) {
         return null;
     }
 
@@ -64,7 +64,7 @@ function getRelationHTML(data) {
 }
 
 function noteDataToDisplay(noteData, mid) {
-    if (noteData && noteData[mid]) {
+    if (noteData?.[mid]) {
         return noteData[mid].split("\n", 1)[0];
     }
     return "";
@@ -157,7 +157,7 @@ function getGuardSupportHTML(data) {
         return "";
     }
 
-    let guard = guardInfo[data["mid"] % guardInfo.length];
+    const guard = guardInfo[data["mid"] % guardInfo.length];
     const guardImgs = [
         // 总督
         "ffcd832b5d7b84ea851cb8156ec0a71940439511",
@@ -597,8 +597,8 @@ UserProfileCard.prototype.drawWordCloud = function(canvas) {
 }
 
 UserProfileCard.prototype.updateData = function (data) {
-    let uid = data["uid"];
-    let d = data["payload"];
+    const uid = data["uid"];
+    const d = data["payload"];
 
     if (uid != this.userId) {
         return;
@@ -663,7 +663,7 @@ UserProfileCard.prototype.updateData = function (data) {
     this.updateCursor(this.cursorX, this.cursorY);
 }
 
-var guardInfo = null;
+let guardInfo = null;
 
 window.addEventListener("load", function() {
     userProfileCard = new UserProfileCard();

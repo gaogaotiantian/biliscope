@@ -11,7 +11,7 @@ window.addEventListener("load", function() {
 function getTarget(target) {
     let maxDepth = 5;
     userLink = target;
-    while (userLink && maxDepth-- >= 0 && userLink.getAttribute) {
+    while (userLink?.getAttribute && maxDepth-- >= 0) {
         if (userLink.getAttribute("biliscope-userid")) {
             return userLink;
         }
@@ -24,7 +24,7 @@ function getTarget(target) {
 function showProfile(event) {
     let target = getTarget(event.target);
 
-    if (target && userProfileCard && userProfileCard.enable()) {
+    if (target && userProfileCard?.enable()) {
         let userId = target.getAttribute("biliscope-userid");
         let updated = userProfileCard.updateUserId(userId);
         userProfileCard.updateCursor(event.pageX, event.pageY);
