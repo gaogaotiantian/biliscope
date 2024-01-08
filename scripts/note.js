@@ -25,7 +25,7 @@ function getUserIdFromLink(s) {
 let noteObserver = new MutationObserver((mutationList, observer) => {
     let userNoteNode = document.getElementById("biliscope-profile-note");
 
-    if (window.location.href.startsWith(BILIBILI_SPACE_URL) && noteData != null && !userNoteNode) {
+    if (window.location.href.startsWith(BILIBILI_SPACE_URL) && !userNoteNode) {
         let userInfoWrapper = document.querySelector("#page-index > div.col-2");
         let userId = getUserIdFromLink(window.location.href);
         if (!userInfoWrapper) {
@@ -66,10 +66,6 @@ let noteObserver = new MutationObserver((mutationList, observer) => {
 });
 
 function changeUsernameColor(element, userId) {
-    if (!(enableTagColor && noteData[userId])) {
-        return;
-    }
-
     let tags = getTags(userId);
     for (let tag of tags) {
         if (!(tagColors[tag])) {
@@ -97,7 +93,7 @@ let userNameObserver = new MutationObserver((mutationList, observer) => {
 
     for (let el of document.querySelectorAll("[biliscope-userid]")) {
         let userId = el.getAttribute("biliscope-userid");
-        if (userId) {
+        if (noteData[userId]) {
             changeUsernameColor(el, userId);
         }
     }
