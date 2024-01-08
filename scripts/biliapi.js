@@ -78,6 +78,8 @@ async function biliPost(url, params) {
 
 var userInfoCache = new Map();
 
+let currentUserName = "";
+
 function updateWordMap(map, sentence, weight) {
     // Remove all URLs
     sentence = sentence.replace(/(?:https?|ftp):\/\/[\n\S]+/g, '');
@@ -249,8 +251,9 @@ function updateUserInfo(userId, callback) {
         mid: userId,
     })
     .then((data) => {
+        currentUserName = data["data"]["name"];
+
         cacheAndUpdate(callback, userId, "info", data);
-        // currentUserName refresh
 
         updateRelation(userId, callback);
 
