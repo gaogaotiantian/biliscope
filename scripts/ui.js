@@ -552,7 +552,7 @@ UserProfileCard.prototype.setupTriggers = function() {
         }
     });
 
-    followButton.addEventListener("click", (ev) => {
+    followButton?.addEventListener("click", (ev) => {
         ev.stopPropagation();
 
         let followAction = null;
