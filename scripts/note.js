@@ -13,8 +13,8 @@ chrome.storage.sync.get({
 });
 
 function getUserIdFromLink(s) {
-    let regex = /.*?bilibili.com\/([0-9]*)(\/dynamic)?([^\/]*|\/|\/\?.*)$/;
-    let match = s?.match(regex);
+    const regex = /.*?bilibili.com\/([0-9]*)(\/dynamic)?([^\/]*|\/|\/\?.*)$/;
+    const match = s?.match(regex);
     if (!match) {
         return null;
     }
@@ -27,13 +27,13 @@ let noteObserver = new MutationObserver((mutationList, observer) => {
 
     if (window.location.href.startsWith(BILIBILI_SPACE_URL) && !userNoteNode) {
         let userInfoWrapper = document.querySelector("#page-index > div.col-2");
-        let userId = getUserIdFromLink(window.location.href);
         if (!userInfoWrapper) {
             return;
         }
 
+        const userId = getUserIdFromLink(window.location.href);
+        const note = noteData[userId] ?? "";
         let noteNode = document.createElement("div");
-        let note = noteData[userId] ?? "";
         noteNode.id = "biliscope-profile-note"
         noteNode.className = "section user-info"
         noteNode.innerHTML = `
@@ -51,7 +51,7 @@ let noteObserver = new MutationObserver((mutationList, observer) => {
         `;
         noteNode.getElementsByTagName("textarea")[0].addEventListener("blur", (ev) => {
             // if the value is empty, delete the key
-            let note = ev.target.value;
+            const note = ev.target.value;
             if (note == "") {
                 delete noteData[userId];
             } else {
@@ -66,7 +66,7 @@ let noteObserver = new MutationObserver((mutationList, observer) => {
 });
 
 function changeUsernameColor(element, userId) {
-    let tags = getTags(userId);
+    const tags = getTags(userId);
     for (let tag of tags) {
         if (!(tagColors[tag])) {
             continue;

@@ -107,8 +107,8 @@ function updateTypeMap(map, type) {
 }
 
 function videoLengthStringToSeconds(s) {
-    let regex = /([0-9]*):([0-9]*)/;
-    let match = s?.match(regex);
+    const regex = /([0-9]*):([0-9]*)/;
+    const match = s?.match(regex);
     if (!match) {
         return 0;
     }

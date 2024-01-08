@@ -4,8 +4,8 @@ const BILIBILI_POPULAR_URL = "https://www.bilibili.com/v/popular"
 const BILIBILI_VIDEO_URL = "https://www.bilibili.com/video"
 
 function getUserIdFromLink(s) {
-    let regex = /.*?bilibili.com\/([0-9]*)(\/dynamic)?([^\/]*|\/|\/\?.*)$/;
-    let match = s?.match(regex);
+    const regex = /.*?bilibili.com\/([0-9]*)(\/dynamic)?([^\/]*|\/|\/\?.*)$/;
+    const match = s?.match(regex);
     if (!match) {
         return null;
     }
@@ -38,7 +38,7 @@ function labelDynamicPage() {
     }
 
     for (let el of document.getElementsByClassName("bili-dyn-up-list")) {
-        let upList = el.__vue__.list;
+        const upList = el.__vue__.list;
         let upElements = Array.from(el.getElementsByClassName("bili-dyn-up-list__item"));
 
         // the first element is "all dynamics", so we start from the second one
