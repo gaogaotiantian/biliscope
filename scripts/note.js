@@ -67,7 +67,7 @@ let spaceNoteObserver = new MutationObserver((mutationList, observer) => {
 function changeUsernameColor(element, userId) {
     const tags = getTags(userId);
     for (let tag of tags) {
-        if (!(tagColors[tag])) {
+        if (!tagColors[tag]) {
             continue;
         }
 
