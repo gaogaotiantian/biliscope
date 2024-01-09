@@ -22,7 +22,7 @@ function getUserIdFromLink(s) {
     return match[1];
 }
 
-let noteObserver = new MutationObserver((mutationList, observer) => {
+let spaceNoteObserver = new MutationObserver((mutationList, observer) => {
     let userNoteNode = document.getElementById("biliscope-profile-note");
 
     if (window.location.href.startsWith(BILIBILI_SPACE_URL) && !userNoteNode) {
@@ -49,8 +49,7 @@ let noteObserver = new MutationObserver((mutationList, observer) => {
                     id="biliscope-note-textarea">\n${note}</textarea>
             </div>
         `;
-        noteNode.getElementsByTagName("textarea")[0].addEventListener("blur", (ev) => {
-            // if the value is empty, delete the key
+        noteNode.querySelector("#biliscope-note-textarea").addEventListener("blur", (ev) => {
             const note = ev.target.value;
             if (note == "") {
                 delete noteData[userId];
@@ -100,7 +99,7 @@ let userNameObserver = new MutationObserver((mutationList, observer) => {
 });
 
 window.addEventListener("load", function() {
-    noteObserver.observe(document.body, {
+    spaceNoteObserver.observe(document.body, {
         childList: true,
         subtree: true
     });
