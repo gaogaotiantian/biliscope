@@ -14,7 +14,6 @@
         "scripts/stopwords.js",
         "scripts/wordcloud2.min.js",
         "scripts/md5.js",
-        "scripts/options.js",
         "scripts/util.js",
         "scripts/biliapi.js",
         "scripts/searchpage.js",
