@@ -683,5 +683,4 @@ window.addEventListener("load", function() {
     getMyInfo().then((data) => {
         myMid = data["profile"]["mid"];
     })
-
 });
