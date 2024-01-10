@@ -396,7 +396,7 @@ UserProfileCard.prototype.updateTarget = function(target) {
                 zIndex = containerIndex;
             }
             node = node.parentNode;
-        } 
+        }
         this.el.style.zIndex = zIndex + 1;
     }
 

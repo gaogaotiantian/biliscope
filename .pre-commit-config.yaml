@@ -4,4 +4,6 @@ repos:
     hooks:
       - id: trailing-whitespace
       - id: end-of-file-fixer
+        exclude: scripts/(md5|wordcloud2.min).js
+        exclude_types: [svg]
       - id: check-yaml
