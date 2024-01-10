@@ -12,9 +12,32 @@ pip install pre-commit
 pre-commit install
 ```
 
+## 代码风格
+
+### `javaScript`文件
+
+```js
+function main(args) {
+    if (!args) {
+        return -1;
+    }
+}
+```
+
+- 语句末尾使用分号
+- `if`/`for`/`while`语句与`(`空一格
+- `)`与`{`空一格且不新开一行
+
+### 其他文件
+
+- 在文件末尾新开一行
+- 行尾没有多余的空格
+
 ## 贡献代码
 
-首先，你需要`fork`（复刻）此项目，然后创建一个新的分支：
+### 克隆代码到本地
+
+你需要`fork`（复刻）此项目，然后创建一个新的分支。
 
 ```
 git clone https://github.com/<your_user_name>/biliscope.git
@@ -22,4 +45,24 @@ cd biliscope
 git checkout -b <your_feature_branch>
 ```
 
-在你完成代码的修改之后，你需要向`gaogaotiantian/viztracer`的`master`分支发起一个`Pull Request`（拉取请求）, 我会尽快审查代码并给予反馈。
+### 测试
+
+#### 常规测试
+
+1. 打开浏览器[扩展](chrome://extensions/)界面
+2. 打开开发人员模式
+3. 点击“加载解压缩的扩展”按钮，选择`biliscope`文件夹
+4. 禁用在浏览器扩展市场安装的`biliscope`
+5. 打开[B站](https://www.bilibili.com/)，验证你所完成的功能
+
+#### `github actions`
+
+使用[act](https://github.com/nektos/act)在本地测试`github actions`。
+
+```
+act
+```
+
+### 发起`Pull Request`（拉取请求）
+
+你需要向`gaogaotiantian/viztracer`的`master`分支发起一个`Pull Request`（拉取请求）, 我会尽快审查代码并给予反馈。

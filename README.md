@@ -50,6 +50,10 @@ BiliScope是一个为B站打造的Chrome/Edge插件。它可以让你在B站的�
 
 在设置（点击浏览器扩展栏上的Biliscope图标）中点击导出/导入备注
 
+## 贡献
+
+参考[贡献指南](CONTRIBUTING.md)
+
 ## LICENSE
 
 Copyright 2023 Tian Gao.
