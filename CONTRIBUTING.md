@@ -1,8 +1,8 @@
-首先, 感谢你愿意为`biliscope`做出贡献！
+首先，感谢你愿意为`biliscope`做出贡献！
 
 ## 贡献代码之前
 
-如果你有改动多行以上代码的想法，我建议你先提交一个`issue`（议题），来谈谈你想要实现的东西。在你投入太多精力之前，我们应该讨论一下，来确认这个修改是否合适。
+如果你有改动多行以上代码的想法，我建议你先提交一个`issue`（议题），来谈谈你想要实现的东西。在你投入太多精力之前，我们应该讨论一下你的这个修改是否合适。
 
 你还需要安装`pre-commit`钩子，来检查你的提交没有一些细节上的问题。
 
@@ -49,9 +49,9 @@ git checkout -b <your_feature_branch>
 
 #### 常规测试
 
-1. 打开浏览器[扩展](chrome://extensions/)界面
+1. 打开浏览器的[扩展](chrome://extensions/)界面
 2. 打开开发人员模式
-3. 点击“加载解压缩的扩展”按钮，选择`biliscope`文件夹
+3. 点击`加载解压缩的扩展`按钮，选择`biliscope`文件夹
 4. 禁用在浏览器扩展市场安装的`biliscope`
 5. 打开[B站](https://www.bilibili.com/)，验证你所完成的功能
 
@@ -65,4 +65,4 @@ act
 
 ### 发起`Pull Request`（拉取请求）
 
-你需要向`gaogaotiantian/viztracer`的`master`分支发起一个`Pull Request`（拉取请求）, 我会尽快审查代码并给予反馈。
+你需要向`gaogaotiantian/viztracer`的`master`分支发起一个`Pull Request`（拉取请求），我会尽快审查代码并给予反馈。
