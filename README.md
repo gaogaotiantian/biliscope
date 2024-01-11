@@ -52,7 +52,7 @@ BiliScope是一个为B站打造的Chrome/Edge插件。它可以让你在B站的�
 
 ## 贡献
 
-参考[贡献指南](CONTRIBUTING.md)
+参考[贡献指南](./.github/CONTRIBUTING.md)
 
 ## LICENSE
 
