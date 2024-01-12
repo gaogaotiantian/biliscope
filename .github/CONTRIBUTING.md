@@ -35,14 +35,17 @@ function main(args) {
 
 ## 贡献代码
 
+> [!TIP]
+> 如果你还不会使用`git`，建议观看[这个视频](https://www.bilibili.com/video/BV19e4y1q7JJ/)。
+
 ### 克隆代码到本地
 
-你需要`fork`（复刻）此项目，然后创建一个新的分支。
+你需要`fork`（复刻）此项目，然后创建一个新的功能分支。
 
 ```
-git clone https://github.com/<your_user_name>/biliscope.git
+git clone https://github.com/<你的用户名>/biliscope.git
 cd biliscope
-git checkout -b <your_feature_branch>
+git checkout -b <功能分支的名字>
 ```
 
 ### 测试
@@ -57,12 +60,25 @@ git checkout -b <your_feature_branch>
 
 #### `github actions`
 
-使用[act](https://github.com/nektos/act)在本地测试`github actions`。
+> [!TIP]
+> 在测试前，先`commit`你当前的修改，但不要`push`，测试成功后，再`checkout`回当前分支`push`。
 
-```
-act
-```
+1. 创建一个测试分支`test_ci_<要测试的ci名>`
+2. 向待测试文件中的`on.push.branches`列表追加`test_ci_*`
+3. `push`测试分支
+4. 在你`fork`的远程仓库中查看测试结果。
+5. 删掉测试分支（可选）
+
+---
+
+如果你的电脑有`docker`环境，可以使用[act](https://github.com/nektos/act)在本地进行测试。
 
 ### 发起`Pull Request`（拉取请求）
 
 你需要向`gaogaotiantian/viztracer`的`master`分支发起一个`Pull Request`（拉取请求），我会尽快审查代码并给予反馈。
+
+> [!TIP]
+> 如果你发现`Pull Request`后，`github-actions[bot]`修复了你的`commit`。那么在下次`commit`前，你要先进行以下操作，否则会发生合并冲突。
+> ```
+> git pull origin <功能分支的名字>
+> ```
