@@ -2,9 +2,9 @@
 
 ## 贡献代码之前
 
-如果你有改动多行以上代码的想法，我建议你先提交一个`issue`（议题），来谈谈你想要实现的东西。在你投入太多精力之前，我们应该讨论一下你的这个修改是否合适。
+如果你有改动多行以上代码的想法，我建议你先创建一个`issue`（议题），来谈谈你想要实现的东西。在你投入太多精力之前，我们应该讨论一下你的这个修改是否合适。
 
-你还需要安装`pre-commit`钩子，来检查你的提交没有一些细节上的问题。
+你还需要安装`pre-commit`钩子，它用来检查你的提交没有一些细节上的问题。
 
 ```
 // 电脑没有python环境的话请先安装python
@@ -17,18 +17,24 @@ pre-commit install
 ### `javaScript`文件
 
 ```js
-function main(args) {
-    if (!args) {
-        return -1;
+const STATUS_TRUE = 1;
+
+function main(myArgs) {
+    if (myArgs) {
+        return STATUS_TRUE ?? 1;
     }
+
+    return 0;
 }
 ```
 
+- 常量中，单词要全大写，使用下划线命名法
+- 变量名和函数名使用小驼峰式命名法
 - 语句末尾使用分号
 - `if`/`for`/`while`语句与`(`空一格
 - `)`与`{`空一格且不新开一行
 
-### 其他文件
+### 所有文件
 
 - 在文件末尾新开一行
 - 行尾没有多余的空格
@@ -61,7 +67,8 @@ git checkout -b <功能分支的名字>
 #### `github actions`
 
 > [!TIP]
-> 在测试前，先`commit`你当前的修改，但不要`push`，测试成功后，再`checkout`回当前分支`push`。
+> 在测试前，先`commit`你当前的修改，但不要`push`。
+> 测试成功后，`checkout`回当前功能分支，再`push`。
 
 1. 创建一个测试分支`test_ci_<要测试的ci名>`
 2. 向待测试文件中的`on.push.branches`列表追加`test_ci_*`
@@ -75,10 +82,10 @@ git checkout -b <功能分支的名字>
 
 ### 发起`Pull Request`（拉取请求）
 
-你需要向`gaogaotiantian/viztracer`的`master`分支发起一个`Pull Request`（拉取请求），我会尽快审查代码并给予反馈。
+你需要向`gaogaotiantian/viztracer`的`master`分支发起一个`Pull Request`，我会尽快审查代码并给予反馈。
 
 > [!TIP]
-> 如果你发现`Pull Request`后，`github-actions[bot]`修复了你的`commit`。那么在下次`commit`前，你要先进行以下操作，否则会发生合并冲突。
+> `Pull Request`后，如果你发现`github-actions[bot]`修复了你的`commit`。那么在下次`commit`前，你要先进行以下操作，否则`push`时会发生合并冲突。
 > ```
 > git pull origin <功能分支的名字>
 > ```
