@@ -4,7 +4,7 @@
 
 如果你有改动多行以上代码的想法，我建议你先创建一个`issue`（议题），来谈谈你想要实现的东西。在你投入太多精力之前，我们应该讨论一下你的这个修改是否合适。
 
-你还需要安装`pre-commit`钩子，它用来检查你的提交没有一些细节上的问题。
+你还需要安装`pre-commit`库，它用来检查你的提交没有一些细节上的问题。
 
 ```
 // 电脑没有python环境的话请先安装python
@@ -13,26 +13,6 @@ pre-commit install
 ```
 
 ## 代码风格
-
-### `javaScript`文件
-
-```js
-const STATUS_TRUE = 1;
-
-function main(myArgs) {
-    if (myArgs) {
-        return STATUS_TRUE ?? 1;
-    }
-
-    return 0;
-}
-```
-
-- 常量中，单词要全大写，使用下划线命名法
-- 变量名和函数名使用小驼峰式命名法
-- 语句末尾使用分号
-- `if`/`for`/`while`语句与`(`空一格
-- `)`与`{`空一格且不新开一行
 
 ### 所有文件
 
@@ -83,9 +63,3 @@ git checkout -b <功能分支的名字>
 ### 发起`Pull Request`（拉取请求）
 
 你需要向`gaogaotiantian/viztracer`的`master`分支发起一个`Pull Request`，我会尽快审查代码并给予反馈。
-
-> [!TIP]
-> `Pull Request`后，如果你发现`github-actions[bot]`修复了你的`commit`。那么在下次`commit`前，你要先进行以下操作，否则`push`时会发生合并冲突。
-> ```
-> git pull origin <功能分支的名字>
-> ```

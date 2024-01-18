@@ -16,8 +16,3 @@ jobs:
           python-version: "3.11"
 
       - uses: pre-commit/action@v3.0.0
-        continue-on-error: true
-
-      - uses: stefanzweifel/git-auto-commit-action@v5
-        with:
-          commit_message: Fix by pre-commit ci
