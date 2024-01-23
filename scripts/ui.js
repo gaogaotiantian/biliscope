@@ -646,6 +646,7 @@ UserProfileCard.prototype.updateData = function (data) {
         this.setupTriggers();
         this.drawVideoTags();
     } else if (this.data["name"]) {
+        // wait until name is ready
         document.getElementById("biliscope-id-card-data").innerHTML = getUserProfileCardDataHTML(this.data);
     }
 
