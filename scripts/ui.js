@@ -642,10 +642,11 @@ UserProfileCard.prototype.updateData = function (data) {
             canvas.style.height = "0px";
             canvas.height = 0;
         }
-    } else if (data["data"]["name"]) {
-        document.getElementById("biliscope-id-card-data").innerHTML = getUserProfileCardDataHTML(this.data);
+    } else if (data["data"]?.["name"]) {
         this.setupTriggers();
         this.drawVideoTags();
+    } else if (this.data["name"]) {
+        document.getElementById("biliscope-id-card-data").innerHTML = getUserProfileCardDataHTML(this.data);
     }
 
     if (this.enabled && this.valid && this.el?.style.display != "flex") {
