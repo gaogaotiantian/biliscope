@@ -59,6 +59,24 @@ function updatePage(clear=true) {
             }
         }
 
+        let vuiTabs = Array.from(document.getElementsByClassName("vui_tabs--nav-link"));
+        for (let vuiTab of vuiTabs.reverse()) {
+            let texts = vuiTab.getElementsByClassName("vui_tabs--nav-text");
+            let nums = vuiTab.getElementsByClassName("vui_tabs--nav-num");
+            if (!(texts.length && nums.length)) {
+                break;
+            }
+
+            if (texts[0].textContent == "用户") {
+                if (this.users.size > 99) {
+                    nums[0].textContent = "99+";
+                } else {
+                    nums[0].textContent = this.users.size.toString();
+                }
+                break;
+            }
+        }
+
         let container = document.getElementById("biliscope-tag-search-result");
 
         if (!container || clear) {
