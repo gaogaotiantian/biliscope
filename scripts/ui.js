@@ -660,6 +660,9 @@ UserProfileCard.prototype.updateData = function (data) {
 
 var guardInfo = null;
 
+let biliTags = {};
+let myMid = null;
+
 window.addEventListener("load", function() {
     userProfileCard = new UserProfileCard();
 
