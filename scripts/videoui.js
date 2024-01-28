@@ -143,6 +143,7 @@ VideoProfileCard.prototype.drawConclusion = function() {
 
     if (outline && outline.length > 0) {
         let outlineHTML = "";
+        document.getElementById("biliscope-video-card-outline").classList.remove("d-none");
         for (let i = 0; i < outline.length; i++) {
             outlineHTML += '<div class="biliscope-video-card-outline-item">';
             outlineHTML += `<div style="min-width: 20px">${i+1}. </div>`;
@@ -167,6 +168,8 @@ VideoProfileCard.prototype.drawConclusion = function() {
             outlineHTML += "</div>";
         }
         document.getElementById("biliscope-video-card-outline").innerHTML = outlineHTML;
+    } else {
+        document.getElementById("biliscope-video-card-outline").classList.add("d-none");
     }
 }
 
@@ -175,7 +178,7 @@ VideoProfileCard.prototype.updateData = function(data) {
         this.data.view = data["payload"];
     } else if (data["api"] == "conclusion") {
         this.data.conclusion = data["payload"];
-        if (this.data.conclusion.code == 0) {
+        if (this.data.conclusion.model_result.summary) {
             this.valid = true;
         } else {
             this.valid = false;
