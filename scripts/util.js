@@ -50,6 +50,27 @@ function secondsToDisplay(sec) {
     }
 }
 
+function secondsToTimeLink(sec) {
+    if (!sec) {
+        return 0;
+    }
+
+    function digitToStr(n) {
+        n = Math.floor(n);
+        return n < 10 ? "0" + n : n;
+    }
+
+    sec = Math.floor(sec);
+
+    if (sec < 60) {
+        return `${digitToStr(sec)}s`;
+    } else if (sec < 60 * 60) {
+        return `${digitToStr(sec / 60)}m${digitToStr(sec % 60)}s`;
+    } else {
+        return `${digitToStr(sec / 60 / 60)}h${digitToStr(sec / 60) % 60}m${digitToStr(sec % 60)}s`;
+    }
+}
+
 // ===========================================================================
 // ========================= Data query related ==============================
 // ===========================================================================

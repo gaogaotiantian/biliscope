@@ -15,6 +15,16 @@ function getUserIdFromLink(s) {
     return userId;
 }
 
+function getVideoIdFromLink(s) {
+    let regex = /.*?bilibili.com\/video\/(BV[1-9a-zA-Z]{10})\/?$/;
+    let videoId = null;
+
+    if (s && s.match(regex)) {
+        return s.match(regex)[1];
+    }
+    return videoId;
+}
+
 function labelPopularPage() {
     for (let el of document.getElementsByClassName("video-card")) {
         let mid = el.__vue__.videoData.owner.mid;
@@ -79,6 +89,11 @@ function labelLinks() {
             let userId = el.getAttribute("data-user-id");
             if (userId) {
                 el.setAttribute("biliscope-userid", userId);
+            }
+        } else if (el.href.startsWith(BILIBILI_VIDEO_URL)) {
+            let videoId = getVideoIdFromLink(el.href);
+            if (videoId) {
+                el.setAttribute("biliscope-videoid", videoId);
             }
         }
     }

@@ -1,5 +1,6 @@
 chrome.storage.sync.get({
     enableWordCloud: true,
+    enableAiSummary: true,
     minSize: 5
 }, function(items) {
     biliScopeOptions = items;

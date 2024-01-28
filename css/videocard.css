@@ -1,0 +1,53 @@
+#biliscope-video-card {
+    background: #fff;
+    box-shadow: 0 0 2px rgba(0,0,0,.3);
+    border-radius: 8px;
+    position: absolute;
+    z-index: 1002;
+    width: 375px;
+    line-height: 1.6;
+    overflow: hidden;
+    font-size: 12px;
+    padding: 15px;
+}
+
+#biliscope-video-card * {
+    box-sizing: content-box;
+}
+
+#biliscope-video-card .d-none {
+    display: none;
+}
+
+#biliscope-video-card .biliscope-video-card-title {
+    font-weight: bold;
+}
+
+#biliscope-video-card #biliscope-video-card-summary {
+    margin: 5px 0;
+}
+
+#biliscope-video-card #biliscope-video-card-outline {
+    padding: 5px 0px;
+}
+
+.biliscope-video-card-outline-title {
+    display: flex;
+}
+
+.biliscope-video-card-outline-item {
+    display: flex;
+}
+
+.biliscope-video-card-outline-parts {
+    margin-bottom: 5px;
+}
+
+.biliscope-video-card-outline-part-item {
+    display: flex;
+}
+
+.bliscope-video-card-part-timestamp {
+    margin-right: 5px;
+    color: #008AC5;
+}

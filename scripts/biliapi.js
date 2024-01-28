@@ -31,7 +31,7 @@ async function biliGet(url, params, retry = 5) {
         biliMixin = await getBiliMixin();
     }
 
-    if (url.indexOf("/wbi/") != -1) {
+    if (url.indexOf("/wbi/") != -1 || url.indexOf("/conclusion/get") != -1) {
         // convert params to url in a sorted order
         params["wts"] = Math.floor(Date.now() / 1000);
         let keys = Object.keys(params).sort();
@@ -77,6 +77,7 @@ async function biliPost(url, params) {
  */
 
 var userInfoCache = new Map();
+var videoInfoCache = new Map();
 
 function updateWordMap(map, sentence, weight) {
     // Remove all URLs
@@ -209,6 +210,24 @@ function cacheAndUpdate(callback, userId, api, payload) {
     callback({"uid": userId, "api": api, "payload": payload});
 }
 
+function cacheValidVideo(cache) {
+    if (!cache) {
+        return false;
+    }
+
+    return ["conclusion", "view"].every((key) => cache[key]);
+}
+
+function cacheAndUpdateVideo(callback, videoId, api, payload) {
+    let cache = videoInfoCache.get(videoId) ?? {};
+
+    cache[api] = payload;
+
+    videoInfoCache.set(videoId, cache);
+
+    callback({"bvid": videoId, "api": api, "payload": payload});
+}
+
 function updateRelation(userId, callback) {
     biliGet(`${BILIBILI_API_URL}/x/space/acc/relation`, {
         mid: userId,
@@ -243,6 +262,33 @@ function updateUserInfo(userId, callback) {
     updateRelation(userId, callback);
 
     updateVideoData(userId, callback);
+}
+
+function updateVideoInfo(videoId, callback) {
+    let cache = videoInfoCache.get(videoId);
+    if (cacheValidVideo(cache)) {
+        for (let api in cache) {
+            callback({"videoId": videoId, "api": api, "payload": cache[api]});
+        }
+        return;
+    }
+
+    biliGet(`${BILIBILI_API_URL}/x/web-interface/view`, {
+        bvid: videoId,
+    })
+    .then((data) => {
+        if (data["code"] == 0) {
+            cacheAndUpdateVideo(callback, videoId, "view", data["data"]);
+            biliGet(`${BILIBILI_API_URL}/x/web-interface/view/conclusion/get`, {
+                bvid: videoId,
+                cid: data["data"]["cid"],
+                up_mid: data["data"]["owner"]["mid"],
+            })
+            .then((data) => {
+                cacheAndUpdateVideo(callback, videoId, "conclusion", data["data"]);
+            })
+        }
+    })
 }
 
 

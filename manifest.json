@@ -20,10 +20,12 @@
         "scripts/searchpage.js",
         "scripts/note.js",
         "scripts/ui.js",
+        "scripts/videoui.js",
         "scripts/biliscope.js"
       ],
       "css": [
         "css/idcard.css",
+        "css/videocard.css",
         "css/searchpage.css"
       ],
       "matches": [
