@@ -78,8 +78,6 @@ async function biliPost(url, params) {
 
 var userInfoCache = new Map();
 
-let currentUserName = "";
-
 function updateWordMap(map, sentence, weight) {
     // Remove all URLs
     sentence = sentence.replace(/(?:https?|ftp):\/\/[\n\S]+/g, '');
@@ -95,16 +93,10 @@ function updateWordMap(map, sentence, weight) {
         sentence = sentence.replaceAll(word, '');
     }
 
-    let wordMap = map.get("word");
-
-    // Cut currentUserName
-    let count = [...sentence.matchAll(currentUserName)].length;
-    wordMap.set(currentUserName, (wordMap.get(currentUserName) ?? 0) + count * weight);
-    sentence = sentence.replaceAll(currentUserName, '');
-
     let words = Array.from(new Intl.Segmenter('cn', { granularity: 'word' }).segment(sentence))
         .filter(segment => segment.isWordLike)
         .map(segment => segment["segment"]);
+    let wordMap = map.get("word");
 
     for (let word of words) {
         if (!STOP_WORDS.has(word)) {
@@ -250,15 +242,11 @@ function updateUserInfo(userId, callback) {
     biliGet(`${BILIBILI_API_URL}/x/space/wbi/acc/info`, {
         mid: userId,
     })
-    .then((data) => {
-        currentUserName = data["data"]["name"];
+    .then((data) => cacheAndUpdate(callback, userId, "info", data));
 
-        cacheAndUpdate(callback, userId, "info", data);
+    updateRelation(userId, callback);
 
-        updateRelation(userId, callback);
-
-        updateVideoData(userId, callback);
-    })
+    updateVideoData(userId, callback);
 }
 
 
