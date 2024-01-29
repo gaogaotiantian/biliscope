@@ -16,7 +16,7 @@ function getUserIdFromLink(s) {
 }
 
 function getVideoIdFromLink(s) {
-    let regex = /.*?bilibili.com\/video\/(BV[1-9a-zA-Z]{10})\/?$/;
+    let regex = /.*?bilibili.com\/video\/(BV[1-9a-zA-Z]{10})(\/|\/\?.*)?$/;
     let videoId = null;
 
     if (s && s.match(regex)) {
