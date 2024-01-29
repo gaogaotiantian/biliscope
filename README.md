@@ -2,7 +2,7 @@
 
 [![Chrome Web Store Version](https://img.shields.io/chrome-web-store/v/ekmbchepcdggpcbdpjpijphjiiiimfga)](https://chromewebstore.google.com/detail/biliscope-bilibili%E6%8F%92%E4%BB%B6%EF%BC%8C%E7%9F%A5%E9%81%93ta/ekmbchepcdggpcbdpjpijphjiiiimfga?hl=zh-CN)
 
-BiliScope是一个为B站打造的Chrome/Edge插件。它可以让你在B站的任何网页轻松查询任何出现的UP的详细信息。
+BiliScope是一个为B站打造的Chrome/Edge插件。它可以让你在B站的任何网页轻松查询任何出现的UP的详细信息，以及查看视频的AI内容总结。
 
 [![example_img](https://github.com/gaogaotiantian/biliscope/blob/master/img/screenshot.png)](https://github.com/gaogaotiantian/biliscope/blob/master/img/screenshot.png)
 
@@ -33,6 +33,8 @@ BiliScope是一个为B站打造的Chrome/Edge插件。它可以让你在B站的�
 * up主的认证
 * up主的签名
 * up主全部投稿标题和描述生成的词云
+
+把鼠标悬停到视频上，会显示上图所示的AI内容总结。点击总结中的章节可以跳转到对应时间的视频。
 
 ## 备注说明
 
