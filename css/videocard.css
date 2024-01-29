@@ -79,6 +79,8 @@
 
 .biliscope-ai-summary-popup-body-abstracts {
     padding: 8px 10px;
+    user-select: text;
+    -webkit-user-select: text;
     font-size: 14px;
     font-weight: 700
 }
