@@ -1,7 +1,8 @@
 function getVideoProfileCardHTML(data) {
     return `
         <div id="biliscope-video-card">
-            <div class="biliscope-ai-summary-popup">
+            <div id="biliscope-ai-summary-none">此视频不存在AI总结</div>
+            <div id="biliscope-ai-summary-popup" class="biliscope-ai-summary-popup">
                 <div class="biliscope-ai-summary-popup-header">
                     <div class="biliscope-ai-summary-popup-header-left">
                         <svg width="30" height="30" viewBox="0 0 30 30" fill="none"
@@ -171,11 +172,9 @@ VideoProfileCard.prototype.setLeaveEvent = function() {
 
     this.enterCallback = () => {
         clearTimeout(this.disableDebounce.timer);
-        this.cursorInside = true;
     }
 
     this.disableDebounce = () => {
-        this.cursorInside = false;
         this.disableDebounce.timer = setTimeout(() => {
             this.leaveCallback();
         }, 400);
@@ -241,7 +240,7 @@ VideoProfileCard.prototype.updateTarget = function(target) {
     }
 
     this.target = target;
-    this.valid = false;
+    this.valid = null;
     this.setLeaveEvent();
 }
 
@@ -290,8 +289,18 @@ VideoProfileCard.prototype.updateData = function(data) {
         this.drawConclusion();
     }
 
-    if (this.enabled && this.valid && this.el && this.el.style.display != "flex") {
-        this.el.style.display = "flex";
+    if (this.enabled && this.el && this.el.style.display != "flex") {
+        if (this.valid != null) {
+            this.el.style.display = "flex";
+            if (this.valid) {
+                document.getElementById("biliscope-ai-summary-popup").classList.remove("d-none");
+                document.getElementById("biliscope-ai-summary-none").classList.add("d-none");
+            } else {
+                document.getElementById("biliscope-ai-summary-popup").classList.add("d-none");
+                document.getElementById("biliscope-ai-summary-none").classList.remove("d-none");
+            }
+
+        }
     }
 
     this.updateCursor(this.cursorX, this.cursorY);

@@ -76,7 +76,7 @@ function showProfileDebounce(event) {
             debounceTime = 300;
             break;
         case "video":
-            debounceTime = 600;
+            debounceTime = 800;
             break;
     }
 

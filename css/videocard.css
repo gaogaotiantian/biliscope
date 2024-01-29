@@ -1,7 +1,6 @@
 #biliscope-video-card {
     position: absolute;
     z-index: 1002;
-    width: 375px;
     font-size: 14px;
 }
 
@@ -13,8 +12,17 @@
     display: none;
 }
 
+#biliscope-ai-summary-none {
+    border: solid 1px;
+    font-size: 13px;
+    color: #444;
+    width: max-content;
+    padding: 0px 5px;
+    background-color: #fff;
+}
+
 .biliscope-ai-summary-popup {
-    width: 100%;
+    width: 375px;
     height: 100%;
     border-radius: 8px;
     border: 1px solid #e3e5e7;
