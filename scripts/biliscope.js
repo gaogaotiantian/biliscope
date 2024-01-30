@@ -1,6 +1,13 @@
+let currCursorX = 0;
+let currCursorY = 0;
+
 // Load the site script to label the user links
 window.addEventListener("load", function() {
-    document.addEventListener("mouseover", showProfileDebounce);
+    this.document.addEventListener("mouseover", showProfileDebounce);
+    this.document.addEventListener("mousemove", (event) => {
+        currCursorX = event.pageX;
+        currCursorY = event.pageY;
+    });
 
     var s = document.createElement('script');
     s.src = chrome.runtime.getURL('scripts/sitescript.js');
@@ -10,35 +17,72 @@ window.addEventListener("load", function() {
 
 function getTarget(target) {
     let maxDepth = 5;
-    userLink = target;
-    while (userLink && maxDepth-- >= 0 && userLink.getAttribute) {
-        if (userLink.getAttribute("biliscope-userid")) {
-            return userLink;
+    el = target;
+    while (el && maxDepth-- >= 0 && el.getAttribute) {
+        if (el.getAttribute("biliscope-userid")) {
+            return {"type": "user", "target": el};
+        } else if (el.getAttribute("biliscope-videoid")) {
+            return {"type": "video", "target": el};
         }
-        userLink = userLink.parentNode;
+        el = el.parentNode;
     }
-
     return null;
 }
 
 function showProfile(event) {
-    let target = getTarget(event.target);
+    // User target
+    let targetData = getTarget(event.target);
 
-    if (target && userProfileCard && userProfileCard.enable()) {
-        let userId = target.getAttribute("biliscope-userid");
-        let updated = userProfileCard.updateUserId(userId);
-        userProfileCard.updateCursor(event.pageX, event.pageY);
-        userProfileCard.updateTarget(target)
-        if (updated) {
-            updateUserInfo(userId, (data) => userProfileCard.updateData(data));
+    if (targetData) {
+        if (targetData["type"] == "user") {
+            if (userProfileCard && userProfileCard.enable()) {
+                let target = targetData["target"];
+                let userId = target.getAttribute("biliscope-userid");
+                let updated = userProfileCard.updateUserId(userId);
+                userProfileCard.updateCursor(event.pageX, event.pageY);
+                userProfileCard.updateTarget(target)
+                if (updated) {
+                    updateUserInfo(userId, (data) => userProfileCard.updateData(data));
+                }
+            }
+        } else if (targetData["type"] == "video") {
+            if (biliScopeOptions.enableAiSummary && videoProfileCard && videoProfileCard.enable()) {
+                let target = targetData["target"];
+                let videoId = target.getAttribute("biliscope-videoid");
+                let updated = videoProfileCard.updateVideoId(videoId);
+                videoProfileCard.updateCursor(currCursorX, currCursorY);
+                videoProfileCard.updateTarget(target)
+                if (updated) {
+                    updateVideoInfo(videoId, (data) => videoProfileCard.updateData(data));
+                }
+            }
         }
     }
 }
 
 function showProfileDebounce(event) {
     clearTimeout(showProfileDebounce.timer);
-    event.target.addEventListener("mouseout", () => clearTimeout(showProfileDebounce.timer));
+    let targetData = getTarget(event.target);
+    if (!targetData) {
+        return;
+    }
+
+    let target = targetData["target"];
+    let type = targetData["type"];
+    let debounceTime = 0;
+
+    switch (type) {
+        case "user":
+            debounceTime = 300;
+            break;
+        case "video":
+            debounceTime = 800;
+            break;
+    }
+
+    target.addEventListener("mouseout", () => clearTimeout(showProfileDebounce.timer));
+
     showProfileDebounce.timer = setTimeout(() => {
         showProfile(event)
-    }, 300);
+    }, debounceTime);
 }

@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "BiliScope - Bilibili插件，知道TA是个什么UP主",
+  "name": "BiliScope - Bilibili插件，你的B站小助手",
   "version": "0.4.6",
-  "description": "可以在B站的各类网页上显示用户的详细信息，包括关注数、粉丝数、投稿数、签名、投稿词云等等。还可以给UP主做备注和标签！",
+  "description": "可以显示视频的AI内容总结，在B站的各类网页上显示用户的详细信息，包括关注数、粉丝数、投稿数、签名、投稿词云等等。还可以给UP主做备注和标签！",
   "icons": {
     "128": "img/logo.png"
   },
@@ -20,10 +20,12 @@
         "scripts/searchpage.js",
         "scripts/note.js",
         "scripts/ui.js",
+        "scripts/videoui.js",
         "scripts/biliscope.js"
       ],
       "css": [
         "css/idcard.css",
+        "css/videocard.css",
         "css/searchpage.css"
       ],
       "matches": [
@@ -38,7 +40,7 @@
   ],
   "action": {
     "default_popup": "options/options.html",
-    "default_title": "BiliScope - Bilibili插件，知道TA是个什么UP主"
+    "default_title": "BiliScope - Bilibili插件，你的B站小助手"
   },
   "options_ui": {
     "page": "options/options.html",
