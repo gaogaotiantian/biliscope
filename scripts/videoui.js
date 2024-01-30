@@ -305,7 +305,3 @@ VideoProfileCard.prototype.updateData = function(data) {
 
     this.updateCursor(this.cursorX, this.cursorY);
 }
-
-window.addEventListener("load", function() {
-    videoProfileCard = new VideoProfileCard();
-});
