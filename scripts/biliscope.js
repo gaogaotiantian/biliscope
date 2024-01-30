@@ -3,16 +3,10 @@ let currCursorY = 0;
 
 // Load the site script to label the user links
 window.addEventListener("load", function() {
-    this.document.addEventListener("mouseover", showProfileDebounce);
     this.document.addEventListener("mousemove", (event) => {
         currCursorX = event.pageX;
         currCursorY = event.pageY;
     });
-
-    var s = document.createElement('script');
-    s.src = chrome.runtime.getURL('scripts/sitescript.js');
-    s.onload = function() { this.remove(); };
-    (document.head || document.documentElement).appendChild(s);
 });
 
 function getTarget(target) {

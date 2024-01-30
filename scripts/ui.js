@@ -227,6 +227,10 @@ function getUserProfileCardHTML(data) {
     `
 }
 
+function saveOptions() {
+    chrome.storage.sync.set(biliScopeOptions);
+}
+
 function UserProfileCard() {
     this.userId = null;
     this.data = {};
@@ -662,26 +666,3 @@ var guardInfo = null;
 
 let biliTags = {};
 let myMid = null;
-
-window.addEventListener("load", function() {
-    userProfileCard = new UserProfileCard();
-
-    getGuardInfo(6726252, 245645656).then((data) => {
-        guardInfo = data;
-        // Shuffle guardInfo
-        let i = guardInfo.length;
-        while (i) {
-            let j = Math.floor(Math.random() * i--);
-            [guardInfo[i], guardInfo[j]] = [guardInfo[j], guardInfo[i]];
-        }
-    });
-
-    getTagsInfo().then((data) => {
-        biliTags = data;
-    });
-
-    getMyInfo().then((data) => {
-        myMid = data["profile"]["mid"];
-    })
-
-});
