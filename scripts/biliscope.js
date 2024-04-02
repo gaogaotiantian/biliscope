@@ -29,7 +29,7 @@ function showProfile(event) {
 
     if (targetData) {
         if (targetData["type"] == "user") {
-            if (userProfileCard && userProfileCard.enable()) {
+            if (biliScopeOptions.enableUpCard && userProfileCard && userProfileCard.enable()) {
                 let target = targetData["target"];
                 let userId = target.getAttribute("biliscope-userid");
                 let updated = userProfileCard.updateUserId(userId);
