@@ -10,7 +10,6 @@ function getUserCard(data) {
                         <div class="avatar-inner">
                             <div class="bili-avatar" style="width: 86px;height:86px;transform: translate(0px, 0px);">
                                 <img class="bili-avatar-img bili-avatar-face bili-avatar-img-radius" src="${data["face"]}@240w_240h_1c_1s_!web-avatar-search-user.webp">
-                                <span class="bili-avatar-icon bili-avatar-right-icon ${data["avatarIconClass"]} bili-avatar-size-86"></span>
                             </div>
                         </div>
                     </div>
@@ -25,9 +24,6 @@ function getUserCard(data) {
                     <span class="biliscope-search-tag-list" style="margin-left: 10px">${data["tagInner"]}</span>
                 </h2>
                 <p class="b_text fs_5 text2 text_ellipsis">${noteData[data["mid"]].split("\n", 1)[0]}</p>
-                <p class="b_text fs_5 text2 text_ellipsis">${data["sign"]}
-                    <span style="margin-left: 3px; ${data["official"]["title"] ? "": "display: none"}">${data["official"]["title"]}</span>
-                </p>
             </div>
         </div>
     </div>
@@ -105,13 +101,6 @@ function updatePage(clear=true) {
                         tagInner += `<a href="//search.bilibili.com/upuser?keyword=%23${encodeURIComponent(tag)}"><span class="biliscope-search-tag">${tag}</span></a>`;
                     }
                     d["tagInner"] = tagInner;
-                    if ([1, 2, 7, 9].includes(d["official"]["role"])) {
-                        d["avatarIconClass"] = "bili-avatar-icon-personal";
-                    } else if ([3, 4, 5, 6].includes(d["official"]["role"])) {
-                        d["avatarIconClass"] = "bili-avatar-icon-business";
-                    } else {
-                        d["avatarIconClass"] = "";
-                    }
                     container.innerHTML += getUserCard(d);
                 }
             })
