@@ -183,8 +183,7 @@ function save_options() {
         enableTagColor: enableTagColor,
         minSize: minSize
     }, function () {
-        // Update status to let user know options were saved.
-        show_status('保存成功', 750);
+        show_status('保存成功，刷新网页后生效', 3000);
     });
 }
 
