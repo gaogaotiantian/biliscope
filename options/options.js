@@ -172,12 +172,14 @@ function save_options() {
     const enableUpCard = document.getElementById('enable-up-card').checked;
     const enableWordCloud = document.getElementById('enable-word-cloud').checked;
     const enableAiSummary = document.getElementById('enable-ai-summary').checked;
+    const aiSummaryHoverThreshold = document.getElementById('ai-summary-hover-threshold').value;
     const minSize = document.getElementById('min-number').value;
     const enableTagColor = document.getElementById('enable-tag-color').checked;
     chrome.storage.sync.set({
         enableUpCard: enableUpCard,
         enableWordCloud: enableWordCloud,
         enableAiSummary: enableAiSummary,
+        aiSummaryHoverThreshold: aiSummaryHoverThreshold,
         enableTagColor: enableTagColor,
         minSize: minSize
     }, function () {
@@ -193,12 +195,14 @@ function restore_options() {
         enableUpCard: true,
         enableWordCloud: true,
         enableAiSummary: true,
+        aiSummaryHoverThreshold: 800,
         enableTagColor: false,
         minSize: 5
     }, function (items) {
         document.getElementById('enable-up-card').checked = items.enableUpCard;
         document.getElementById('enable-word-cloud').checked = items.enableWordCloud;
         document.getElementById('enable-ai-summary').checked = items.enableAiSummary;
+        document.getElementById('ai-summary-hover-threshold').value = items.aiSummaryHoverThreshold,
         document.getElementById('enable-tag-color').checked = items.enableTagColor;
         document.getElementById('min-number').value = items.minSize;
     });
