@@ -169,11 +169,13 @@ document.getElementById('tag-color-setting-add-button').addEventListener('click'
 
 // Saves options to chrome.storage
 function save_options() {
+    const enableUpCard = document.getElementById('enable-up-card').checked;
     const enableWordCloud = document.getElementById('enable-word-cloud').checked;
     const enableAiSummary = document.getElementById('enable-ai-summary').checked;
     const minSize = document.getElementById('min-number').value;
     const enableTagColor = document.getElementById('enable-tag-color').checked;
     chrome.storage.sync.set({
+        enableUpCard: enableUpCard,
         enableWordCloud: enableWordCloud,
         enableAiSummary: enableAiSummary,
         enableTagColor: enableTagColor,
@@ -188,11 +190,13 @@ function save_options() {
 // stored in chrome.storage.
 function restore_options() {
     chrome.storage.sync.get({
+        enableUpCard: true,
         enableWordCloud: true,
         enableAiSummary: true,
         enableTagColor: false,
         minSize: 5
     }, function (items) {
+        document.getElementById('enable-up-card').checked = items.enableUpCard;
         document.getElementById('enable-word-cloud').checked = items.enableWordCloud;
         document.getElementById('enable-ai-summary').checked = items.enableAiSummary;
         document.getElementById('enable-tag-color').checked = items.enableTagColor;
