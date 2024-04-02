@@ -2,6 +2,7 @@ let optionLoad = chrome.storage.sync.get({
     enableUpCard: true,
     enableWordCloud: true,
     enableAiSummary: true,
+    aiSummaryHoverThreshold: 800,
     minSize: 5
 });
 

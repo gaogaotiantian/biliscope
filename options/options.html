@@ -13,15 +13,19 @@
     <input type="checkbox" id="enable-up-card">
   </div>
   <div class="item">
-    <label for="enable-word-cloud">使用词云:</label>
-    <input type="checkbox" id="enable-word-cloud">
-  </div>
-  <div class="item">
     <label for="enable-ai-summary">开启视频AI总结:</label>
     <input type="checkbox" id="enable-ai-summary">
   </div>
+  <div class="item">
+    <label for="enable-ai-summary">视频AI总结悬停触发时长（毫秒）:</label>
+    <input type="number" id="ai-summary-hover-threshold">
+  </div>
+  <div class="item">
+    <label for="enable-word-cloud">使用词云:</label>
+    <input type="checkbox" id="enable-word-cloud">
+  </div>
   <div class="number-selector item">
-    <label for="min-number">最小字号:</label>
+    <label for="min-number">词云最小字号:</label>
     <button id="decrement" class="btn btn-change">-</button>
       <input type="number" id="min-number" value="5" min="5" max="50">
     <button id="increment" class="btn btn-change">+</button>
