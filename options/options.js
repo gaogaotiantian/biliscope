@@ -233,3 +233,7 @@ document.getElementById('clear-note-confirm').addEventListener('click', () => {
     document.getElementById('clear-note-confirm-div').hidden = true;
     document.getElementById('clear-note-button-div').hidden = false;
 });
+
+document.getElementById('report-issue').addEventListener('click', () => {
+    chrome.tabs.create({url: 'https://github.com/gaogaotiantian/biliscope/issues'});
+});
