@@ -78,7 +78,6 @@ async function biliPost(url, params) {
 
 var userInfoCache = new Map();
 var videoInfoCache = new Map();
-var videoTagInfoCache = new Map();
 
 function updateWordMap(map, sentence, weight) {
     // Remove all URLs
@@ -229,24 +228,6 @@ function cacheAndUpdateVideo(callback, videoId, api, payload) {
     cache[api] = payload;
 
     videoInfoCache.set(videoId, cache);
-
-    callback({"bvid": videoId, "api": api, "payload": payload});
-}
-
-function cacheValidVideoTag(cache) {
-    if (!cache) {
-        return false;
-    }
-
-    return true;
-}
-
-function cacheAndUpdateVideoTag(callback, videoId, api, payload) {
-    let cache = videoTagInfoCache.get(videoId) ?? {};
-
-    cache[api] = payload;
-
-    videoTagInfoCache.set(videoId, cache);
 
     callback({"bvid": videoId, "api": api, "payload": payload});
 }

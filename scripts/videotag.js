@@ -1,5 +1,5 @@
 function VideoTagManager() {
-    this.tags = [];
+    this.tags = new Set();
     this.target = null;
     this.targetHasImage = false;
     this.videoId = null;
@@ -7,7 +7,7 @@ function VideoTagManager() {
 }
 
 VideoTagManager.prototype.clear = function() {
-    this.tags = [];
+    this.tags = new Set();
     this.target = null;
     this.videoId = null;
     if (this.tagWrapper) {
@@ -29,23 +29,17 @@ VideoTagManager.prototype.updateVideoId = function(videoId) {
     this.videoId = videoId;
 }
 
-VideoTagManager.prototype.targetHasImg = function(target) {
-    return imgs.length > 0;
-}
-
 VideoTagManager.prototype.updateData = function(data) {
     let newTag = false;
 
     if (data["api"] == "reply") {
-        let jumpurl = data.payload?.top?.upper?.content?.jump_url;
+        const jumpurl = data.payload?.top?.upper?.content?.jump_url;
         if (jumpurl) {
             for (const [key, value] of Object.entries(jumpurl)) {
                 if (value?.extra?.goods_item_id) {
-                    if (!this.tags.includes("商单")) {
-                        this.tags.push("商单");
-                        newTag = true;
-                        break;
-                    }
+                    this.tags.add("商单");
+                    newTag = true;
+                    break;
                 }
             }
         }
@@ -54,9 +48,11 @@ VideoTagManager.prototype.updateData = function(data) {
         const coin = data.payload?.stat?.coin;
 
         if (favorite / coin > 10) {
-            this.tags.push("低质");
+            this.tags.add("低质");
             newTag = true;
         }
+    } else {
+        return;
     }
 
     if (newTag) {
@@ -67,7 +63,6 @@ VideoTagManager.prototype.updateData = function(data) {
         }
 
         this.tagWrapper.innerHTML = "";
-        this.tags.sort();
         for (let tag of this.tags) {
             let tagElement = document.createElement("span");
             tagElement.className = "biliscope-video-tag";
