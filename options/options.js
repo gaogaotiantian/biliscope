@@ -173,6 +173,7 @@ function save_options() {
     const enableWordCloud = document.getElementById('enable-word-cloud').checked;
     const enableAiSummary = document.getElementById('enable-ai-summary').checked;
     const aiSummaryHoverThreshold = document.getElementById('ai-summary-hover-threshold').value;
+    const enableVideoTag = document.getElementById('enable-video-tag').checked;
     const minSize = document.getElementById('min-number').value;
     const enableTagColor = document.getElementById('enable-tag-color').checked;
     chrome.storage.sync.set({
@@ -180,6 +181,7 @@ function save_options() {
         enableWordCloud: enableWordCloud,
         enableAiSummary: enableAiSummary,
         aiSummaryHoverThreshold: aiSummaryHoverThreshold,
+        enableVideoTag: enableVideoTag,
         enableTagColor: enableTagColor,
         minSize: minSize
     }, function () {
@@ -195,6 +197,7 @@ function restore_options() {
         enableWordCloud: true,
         enableAiSummary: true,
         aiSummaryHoverThreshold: 800,
+        enableVideoTag: true,
         enableTagColor: false,
         minSize: 5
     }, function (items) {
@@ -202,6 +205,7 @@ function restore_options() {
         document.getElementById('enable-word-cloud').checked = items.enableWordCloud;
         document.getElementById('enable-ai-summary').checked = items.enableAiSummary;
         document.getElementById('ai-summary-hover-threshold').value = items.aiSummaryHoverThreshold,
+        document.getElementById('enable-video-tag').checked = items.enableVideoTag;
         document.getElementById('enable-tag-color').checked = items.enableTagColor;
         document.getElementById('min-number').value = items.minSize;
     });

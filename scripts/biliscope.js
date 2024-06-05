@@ -40,6 +40,17 @@ function showProfile(event) {
                 }
             }
         } else if (targetData["type"] == "video") {
+            if (biliScopeOptions.enableVideoTag && videoTagManager) {
+                let target = targetData["target"];
+                let videoId = target.getAttribute("biliscope-videoid");
+                let updated = videoTagManager.updateTarget(target);
+                videoTagManager.updateVideoId(videoId);
+
+                if (updated) {
+                    updateVideoInfo(videoId, (data) => videoTagManager.updateData(data));
+                }
+            }
+
             if (biliScopeOptions.enableAiSummary && videoProfileCard && videoProfileCard.enable()) {
                 let target = targetData["target"];
                 let videoId = target.getAttribute("biliscope-videoid");

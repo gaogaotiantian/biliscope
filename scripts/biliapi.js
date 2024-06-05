@@ -78,6 +78,7 @@ async function biliPost(url, params) {
 
 var userInfoCache = new Map();
 var videoInfoCache = new Map();
+var videoTagInfoCache = new Map();
 
 function updateWordMap(map, sentence, weight) {
     // Remove all URLs
@@ -232,6 +233,24 @@ function cacheAndUpdateVideo(callback, videoId, api, payload) {
     callback({"bvid": videoId, "api": api, "payload": payload});
 }
 
+function cacheValidVideoTag(cache) {
+    if (!cache) {
+        return false;
+    }
+
+    return true;
+}
+
+function cacheAndUpdateVideoTag(callback, videoId, api, payload) {
+    let cache = videoTagInfoCache.get(videoId) ?? {};
+
+    cache[api] = payload;
+
+    videoTagInfoCache.set(videoId, cache);
+
+    callback({"bvid": videoId, "api": api, "payload": payload});
+}
+
 function updateRelation(userId, callback) {
     biliGet(`${BILIBILI_API_URL}/x/space/acc/relation`, {
         mid: userId,
@@ -290,6 +309,14 @@ function updateVideoInfo(videoId, callback) {
             })
             .then((data) => {
                 cacheAndUpdateVideo(callback, videoId, "conclusion", data["data"]);
+            })
+
+            biliGet(`${BILIBILI_API_URL}/x/v2/reply/wbi/main`, {
+                type: 1,
+                oid: data["data"]["aid"],
+            })
+            .then((data) => {
+                cacheAndUpdateVideo(callback, videoId, "reply", data["data"]);
             })
         }
     })
