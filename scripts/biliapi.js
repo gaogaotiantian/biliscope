@@ -291,6 +291,14 @@ function updateVideoInfo(videoId, callback) {
             .then((data) => {
                 cacheAndUpdateVideo(callback, videoId, "conclusion", data["data"]);
             })
+
+            biliGet(`${BILIBILI_API_URL}/x/v2/reply/wbi/main`, {
+                type: 1,
+                oid: data["data"]["aid"],
+            })
+            .then((data) => {
+                cacheAndUpdateVideo(callback, videoId, "reply", data["data"]);
+            })
         }
     })
 }

@@ -3,6 +3,7 @@ let optionLoad = chrome.storage.sync.get({
     enableWordCloud: true,
     enableAiSummary: true,
     aiSummaryHoverThreshold: 800,
+    enableVideoTag: true,
     minSize: 5
 });
 

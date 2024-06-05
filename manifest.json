@@ -18,6 +18,7 @@
         "scripts/biliapi.js",
         "scripts/searchpage.js",
         "scripts/note.js",
+        "scripts/videotag.js",
         "scripts/ui.js",
         "scripts/videoui.js",
         "scripts/biliscope.js",
@@ -26,6 +27,7 @@
       "css": [
         "css/idcard.css",
         "css/videocard.css",
+        "css/videotag.css",
         "css/searchpage.css"
       ],
       "matches": [
