@@ -36,8 +36,16 @@ VideoTagManager.prototype.updateData = function(data) {
         const jumpurl = data.payload?.top?.upper?.content?.jump_url;
         if (jumpurl) {
             for (const [key, value] of Object.entries(jumpurl)) {
-                if (value?.extra?.goods_item_id) {
-                    this.tags.add("商单");
+                if (key.startsWith("BV") || key.startsWith("https://www.bilibili.com/")) {
+                    // Internel reference, that's okay
+                    continue;
+                }
+                if (value?.pc_url.indexOf("search.bilibili.com") != -1) {
+                    // Search link, that's okay
+                    continue;
+                }
+                if (value?.extra?.goods_item_id || value?.extra?.goods_cm_control != 0) {
+                    this.tags.add("广告");
                     newTag = true;
                     break;
                 }
