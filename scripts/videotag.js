@@ -33,6 +33,12 @@ VideoTagManager.prototype.updateData = function(data) {
     let newTag = false;
 
     if (data["api"] == "reply") {
+        const member = data.payload?.top?.upper?.member;
+        if (member?.official_verify?.type == 1) {
+            newTag = true;
+            this.tags.add("广告");
+        }
+
         const jumpurl = data.payload?.top?.upper?.content?.jump_url;
         if (jumpurl) {
             for (const [key, value] of Object.entries(jumpurl)) {
