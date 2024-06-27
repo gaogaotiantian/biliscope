@@ -161,17 +161,30 @@ VideoProfileCard.prototype.disable = function() {
 VideoProfileCard.prototype.setLeaveEvent = function() {
     let validTargets = [this.el, this.target];
 
+    const checkPopover = (event) => {
+        let node = this.target;
+        while (node && node != document) {
+            if (node.classList && node.classList.contains("v-popover")) {
+                node.dispatchEvent(new Event(event));
+                break;
+            }
+            node = node.parentNode;
+        }
+    }
+
     this.leaveCallback = () => {
         if (this.disable()) {
             for (let target of validTargets) {
                 target.removeEventListener("mouseleave", this.disableDebounce);
                 target.removeEventListener("mouseenter", this.enterCallback);
             }
+            checkPopover("mouseleave");
         }
     }
 
     this.enterCallback = () => {
         clearTimeout(this.disableDebounce.timer);
+        checkPopover("mouseenter");
     }
 
     this.disableDebounce = () => {
