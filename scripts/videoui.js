@@ -161,7 +161,10 @@ VideoProfileCard.prototype.disable = function() {
 VideoProfileCard.prototype.setLeaveEvent = function() {
     let validTargets = [this.el, this.target];
 
-    const checkPopover = (event) => {
+    // The UI lives directly under document so switching to the UI will trigger
+    // the leave event. We need to dispatch the event to the popover to prevent
+    // the popover from disappearing.
+    const dispatchToPopover = (event) => {
         let node = this.target;
         while (node && node != document) {
             if (node.classList && node.classList.contains("v-popover")) {
@@ -178,13 +181,13 @@ VideoProfileCard.prototype.setLeaveEvent = function() {
                 target.removeEventListener("mouseleave", this.disableDebounce);
                 target.removeEventListener("mouseenter", this.enterCallback);
             }
-            checkPopover("mouseleave");
+            dispatchToPopover("mouseleave");
         }
     }
 
     this.enterCallback = () => {
         clearTimeout(this.disableDebounce.timer);
-        checkPopover("mouseenter");
+        dispatchToPopover("mouseenter");
     }
 
     this.disableDebounce = () => {
