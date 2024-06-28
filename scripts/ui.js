@@ -411,17 +411,33 @@ UserProfileCard.prototype.updateTarget = function(target) {
 UserProfileCard.prototype.setLeaveEvent = function() {
     let validTargets = [this.el, this.target];
 
+    // The UI lives directly under document so switching to the UI will trigger
+    // the leave event. We need to dispatch the event to the popover to prevent
+    // the popover from disappearing.
+    const dispatchToPopover = (event) => {
+        let node = this.target;
+        while (node && node != document) {
+            if (node.classList && node.classList.contains("v-popover")) {
+                node.dispatchEvent(new Event(event));
+                break;
+            }
+            node = node.parentNode;
+        }
+    }
+
     this.leaveCallback = () => {
         if (this.disable()) {
             for (let target of validTargets) {
                 target.removeEventListener("mouseleave", this.disableDebounce);
                 target.removeEventListener("mouseenter", this.enterCallback);
             }
+            dispatchToPopover("mouseleave");
         }
     }
 
     this.enterCallback = () => {
         clearTimeout(this.disableDebounce.timer);
+        dispatchToPopover("mouseenter");
         this.cursorInside = true;
     }
 
