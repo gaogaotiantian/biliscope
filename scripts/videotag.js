@@ -42,8 +42,10 @@ VideoTagManager.prototype.updateData = function(data) {
         const jumpurl = data.payload?.top?.upper?.content?.jump_url;
         if (jumpurl) {
             for (const [key, value] of Object.entries(jumpurl)) {
-                if (key.startsWith("BV") || key.startsWith("https://www.bilibili.com/")) {
-                    // Internel reference, that's okay
+                if (key.startsWith("BV") ||
+                    key.startsWith("https://www.bilibili.com/") ||
+                    key.startsWith("https://b23.tv/")) {
+                    // Internal reference, that's okay
                     continue;
                 }
                 if (value?.pc_url.indexOf("search.bilibili.com") != -1) {
