@@ -43,6 +43,7 @@ VideoTagManager.prototype.updateData = function(data) {
         if (jumpurl) {
             for (const [key, value] of Object.entries(jumpurl)) {
                 if (key.startsWith("BV") ||
+                    key.startsWith("av") ||
                     key.startsWith("https://www.bilibili.com/") ||
                     key.startsWith("https://b23.tv/")) {
                     // Internal reference, that's okay
