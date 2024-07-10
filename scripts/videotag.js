@@ -76,7 +76,11 @@ VideoTagManager.prototype.updateData = function(data) {
         if (!this.tagWrapper) {
             this.tagWrapper = document.createElement("div");
             this.tagWrapper.className = "biliscope-video-tag-wrapper";
-            this.target.appendChild(this.tagWrapper);
+            if (this.target.getAttribute("dyn-id")){
+                this.target.firstChild.appendChild(this.tagWrapper);
+            } else {
+                this.target.appendChild(this.tagWrapper);
+            }
         }
 
         this.tagWrapper.innerHTML = "";
