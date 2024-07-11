@@ -42,6 +42,13 @@ VideoTagManager.prototype.updateData = function(data) {
         const jumpurl = data.payload?.top?.upper?.content?.jump_url;
         if (jumpurl) {
             for (const [key, value] of Object.entries(jumpurl)) {
+                if (value?.extra?.goods_item_id || value?.extra?.goods_cm_control) {
+                    // Link with goods, has to be ad
+                    this.tags.add("广告");
+                    newTag = true;
+                    break;
+                }
+
                 if (key.startsWith("BV") ||
                     key.startsWith("av") ||
                     key.startsWith("https://www.bilibili.com/") ||
@@ -49,15 +56,16 @@ VideoTagManager.prototype.updateData = function(data) {
                     // Internal reference, that's okay
                     continue;
                 }
+
                 if (value?.pc_url.indexOf("search.bilibili.com") != -1) {
                     // Search link, that's okay
                     continue;
                 }
-                if (value?.extra?.goods_item_id || value?.extra?.goods_cm_control != 0) {
-                    this.tags.add("广告");
-                    newTag = true;
-                    break;
-                }
+
+                // We can't recognize the link, assume it's an ad
+                this.tags.add("广告");
+                newTag = true;
+                break;
             }
         }
     } else if (data["api"] == "view") {
