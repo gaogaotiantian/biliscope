@@ -44,8 +44,7 @@ VideoTagManager.prototype.updateData = function(data) {
             for (const [key, value] of Object.entries(jumpurl)) {
                 if (key.startsWith("BV") ||
                     key.startsWith("av") ||
-                    key.startsWith("https://www.bilibili.com/") ||
-                    key.startsWith("https://b23.tv/")) {
+                    key.startsWith("https://www.bilibili.com/")) {
                     // Internal reference, that's okay
                     continue;
                 }
@@ -57,6 +56,9 @@ VideoTagManager.prototype.updateData = function(data) {
                     this.tags.add("广告");
                     newTag = true;
                     break;
+                }
+                if(key.startsWith("https://b23.tv/")) {
+                    continue;
                 }
             }
         }
