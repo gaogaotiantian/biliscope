@@ -182,7 +182,7 @@ function installHooks() {
     ipObserver.observe(document.body, {
         childList: true,
         subtree: true,
-    })
+    });
 }
 
-installHooks();
+installHooks()
