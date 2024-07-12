@@ -4,13 +4,14 @@ let optionLoad = chrome.storage.sync.get({
     enableAiSummary: true,
     aiSummaryHoverThreshold: 800,
     enableVideoTag: true,
+    enableIpLabel: true,
     minSize: 5
 });
 
 window.addEventListener("load", function() {
 
     var s = document.createElement('script');
-    s.src = chrome.runtime.getURL('scripts/sitescript.js');
+    s.src = chrome.runtime.getURL('scripts/sitescripts/labelid.js');
     s.onload = function() { this.remove(); };
     (document.head || document.documentElement).appendChild(s);
 
@@ -21,6 +22,14 @@ window.addEventListener("load", function() {
         userProfileCard = new UserProfileCard();
         videoProfileCard = new VideoProfileCard();
         this.document.addEventListener("mouseover", showProfileDebounce);
+
+        if (biliScopeOptions.enableIpLabel) {
+            s = document.createElement('script');
+            s.src = chrome.runtime.getURL('scripts/sitescripts/labelip.js');
+            s.onload = function() { this.remove(); };
+            (document.head || document.documentElement).appendChild(s);
+        }
+
     });
 
     getGuardInfo(6726252, 245645656).then((data) => {

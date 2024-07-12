@@ -3,9 +3,6 @@ const BILIBILI_SPACE_URL = "https://space.bilibili.com"
 const BILIBILI_POPULAR_URL = "https://www.bilibili.com/v/popular"
 const BILIBILI_VIDEO_URL = "https://www.bilibili.com/video"
 
-var pageObserver = null;
-var ipObserver = null;
-
 function getUserIdFromLink(s) {
     let regex = /.*?bilibili.com\/([0-9]*)(\/dynamic)?([^\/]*|\/|\/\?.*)$/;
     let userId = null;
@@ -100,63 +97,9 @@ function labelLinks() {
     }
 }
 
-function labelVideoCommentIp(observer) {
 
-    function tryObserve(root) {
-        if (root) {
-            observer.observe(root, {
-                childList: true,
-                subtree: true,
-            })
-        }
-    }
-
-    if (window.location.href.startsWith(BILIBILI_VIDEO_URL)) {
-        const comments = document.getElementsByTagName("bili-comments")[0];
-        const feed = comments?.renderRoot?.children?.contents?.children?.feed;
-
-        tryObserve(comments?.renderRoot);
-
-        if (!feed) {
-            return;
-        }
-
-        for (const commentStack of feed.children) {
-            const mainComment = commentStack.shadowRoot.children.comment;
-            const replies = commentStack.shadowRoot.children?.replies;
-            const roots = [];
-
-            tryObserve(commentStack.shadowRoot);
-
-            if (mainComment) {
-                roots.push(mainComment.shadowRoot);
-            }
-
-            if (replies) {
-                tryObserve(replies.children[0].shadowRoot);
-                for (const reply of replies.children[0].shadowRoot.querySelectorAll("bili-comment-reply-renderer")) {
-                    roots.push(reply.shadowRoot)
-                }
-            }
-
-            for (const root of roots) {
-                const data = root.getElementById("footer")?.children[0].__data;
-                const replyControlRoot = root.getElementById("footer")?.children[0].shadowRoot;
-                tryObserve(root);
-                tryObserve(replyControlRoot);
-                if (replyControlRoot && !replyControlRoot.getElementById("ip") && data?.reply_control?.location && replyControlRoot.children.like) {
-                    const ipDiv = document.createElement("div");
-                    ipDiv.id = "ip";
-                    ipDiv.innerText = data?.reply_control?.location;
-                    replyControlRoot.insertBefore(ipDiv, replyControlRoot.children.like);
-                }
-            }
-        }
-    }
-}
-
-function installHooks() {
-    pageObserver = new MutationObserver((mutationList, observer) => {
+function installIdHooks() {
+    let pageObserver = new MutationObserver((mutationList, observer) => {
         labelLinks();
 
         if (window.location.href.startsWith(BILIBILI_POPULAR_URL)) {
@@ -173,16 +116,6 @@ function installHooks() {
         subtree: true,
     })
 
-    ipObserver = new MutationObserver((mutationList, observer) => {
-        if (window.location.href.startsWith(BILIBILI_VIDEO_URL)) {
-            labelVideoCommentIp(ipObserver);
-        }
-    });
-
-    ipObserver.observe(document.body, {
-        childList: true,
-        subtree: true,
-    });
 }
 
-installHooks()
+installIdHooks()
