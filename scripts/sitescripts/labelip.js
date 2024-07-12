@@ -161,7 +161,6 @@ function installIpHooks() {
             subtree: true,
         });
     }
-
 }
 
 installIpHooks();
