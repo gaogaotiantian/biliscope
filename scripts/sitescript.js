@@ -100,7 +100,7 @@ function labelLinks() {
     }
 }
 
-function labelReplyIP(observer) {
+function labelVideoCommentIp(observer) {
 
     function tryObserve(root) {
         if (root) {
@@ -124,7 +124,7 @@ function labelReplyIP(observer) {
         for (const commentStack of feed.children) {
             const mainComment = commentStack.shadowRoot.children.comment;
             const replies = commentStack.shadowRoot.children?.replies;
-            let roots = [];
+            const roots = [];
 
             tryObserve(commentStack.shadowRoot);
 
@@ -139,7 +139,7 @@ function labelReplyIP(observer) {
                 }
             }
 
-            for (let root of roots) {
+            for (const root of roots) {
                 const data = root.getElementById("footer")?.children[0].__data;
                 const replyControlRoot = root.getElementById("footer")?.children[0].shadowRoot;
                 tryObserve(root);
@@ -175,7 +175,7 @@ function installHooks() {
 
     ipObserver = new MutationObserver((mutationList, observer) => {
         if (window.location.href.startsWith(BILIBILI_VIDEO_URL)) {
-            labelReplyIP(ipObserver);
+            labelVideoCommentIp(ipObserver);
         }
     });
 
