@@ -176,6 +176,7 @@ function save_options() {
     const enableVideoTag = document.getElementById('enable-video-tag').checked;
     const minSize = document.getElementById('min-number').value;
     const enableTagColor = document.getElementById('enable-tag-color').checked;
+    const enableIpLabel = document.getElementById('enable-ip-label').checked;
     chrome.storage.sync.set({
         enableUpCard: enableUpCard,
         enableWordCloud: enableWordCloud,
@@ -183,6 +184,7 @@ function save_options() {
         aiSummaryHoverThreshold: aiSummaryHoverThreshold,
         enableVideoTag: enableVideoTag,
         enableTagColor: enableTagColor,
+        enableIpLabel: enableIpLabel,
         minSize: minSize
     }, function () {
         show_status('保存成功，刷新网页后生效', 3000);
@@ -199,6 +201,7 @@ function restore_options() {
         aiSummaryHoverThreshold: 800,
         enableVideoTag: true,
         enableTagColor: false,
+        enableIpLabel: true,
         minSize: 5
     }, function (items) {
         document.getElementById('enable-up-card').checked = items.enableUpCard;
@@ -207,6 +210,7 @@ function restore_options() {
         document.getElementById('ai-summary-hover-threshold').value = items.aiSummaryHoverThreshold,
         document.getElementById('enable-video-tag').checked = items.enableVideoTag;
         document.getElementById('enable-tag-color').checked = items.enableTagColor;
+        document.getElementById('enable-ip-label').checked = items.enableIpLabel;
         document.getElementById('min-number').value = items.minSize;
     });
     display_tag_colors();

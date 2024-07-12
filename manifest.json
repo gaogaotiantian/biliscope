@@ -50,7 +50,7 @@
   },
   "web_accessible_resources": [
     {
-      "resources": ["img/bililv.svg", "scripts/sitescript.js"],
+      "resources": ["img/bililv.svg", "scripts/sitescripts/*.js"],
       "matches": ["https://*.bilibili.com/*"]
     }
   ]
