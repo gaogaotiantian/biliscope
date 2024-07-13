@@ -1,7 +1,8 @@
-const BILIBILI_DYNAMIC_URL = "https://t.bilibili.com"
-const BILIBILI_SPACE_URL = "https://space.bilibili.com"
-const BILIBILI_POPULAR_URL = "https://www.bilibili.com/v/popular"
-const BILIBILI_VIDEO_URL = "https://www.bilibili.com/video"
+// These could be redefined in the other site scripts so use var instead of const
+var BILIBILI_DYNAMIC_URL = "https://t.bilibili.com"
+var BILIBILI_SPACE_URL = "https://space.bilibili.com"
+var BILIBILI_POPULAR_URL = "https://www.bilibili.com/v/popular"
+var BILIBILI_VIDEO_URL = "https://www.bilibili.com/video"
 
 function getUserIdFromLink(s) {
     let regex = /.*?bilibili.com\/([0-9]*)(\/dynamic)?([^\/]*|\/|\/\?.*)$/;
