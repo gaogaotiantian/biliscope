@@ -167,26 +167,31 @@ document.getElementById('tag-color-setting-add-button').addEventListener('click'
 
 // == End tag color related functions ==
 
+const all_options = [
+    ['enable-up-card', null, true],
+    ['enable-block-button', null, true],
+    ['enable-word-cloud', null, true],
+    ['enable-ai-summary', null, true],
+    ['ai-summary-hover-threshold', null, 800],
+    ['enable-video-tag', null, true],
+    ['enable-tag-color', null, true],
+    ['enable-ip-label', null, true],
+    ['min-number', 'minSize', 5],
+]
+
+function toCamelCase(str) {
+    return str.replace(/-([a-z])/g, function (g) { return g[1].toUpperCase(); });
+}
+
 // Saves options to chrome.storage
 function save_options() {
-    const enableUpCard = document.getElementById('enable-up-card').checked;
-    const enableWordCloud = document.getElementById('enable-word-cloud').checked;
-    const enableAiSummary = document.getElementById('enable-ai-summary').checked;
-    const aiSummaryHoverThreshold = document.getElementById('ai-summary-hover-threshold').value;
-    const enableVideoTag = document.getElementById('enable-video-tag').checked;
-    const minSize = document.getElementById('min-number').value;
-    const enableTagColor = document.getElementById('enable-tag-color').checked;
-    const enableIpLabel = document.getElementById('enable-ip-label').checked;
-    chrome.storage.sync.set({
-        enableUpCard: enableUpCard,
-        enableWordCloud: enableWordCloud,
-        enableAiSummary: enableAiSummary,
-        aiSummaryHoverThreshold: aiSummaryHoverThreshold,
-        enableVideoTag: enableVideoTag,
-        enableTagColor: enableTagColor,
-        enableIpLabel: enableIpLabel,
-        minSize: minSize
-    }, function () {
+    let options = {};
+    for (const option of all_options) {
+        const element = document.getElementById(option[0]);
+        const key = option[1] ? option[1] : toCamelCase(option[0]);
+        options[key] = element.type === 'checkbox' ? element.checked : element.value;
+    }
+    chrome.storage.sync.set(options, function () {
         show_status('保存成功，刷新网页后生效', 3000);
     });
 }
@@ -194,24 +199,22 @@ function save_options() {
 // Restores select box and checkbox state using the preferences
 // stored in chrome.storage.
 function restore_options() {
-    chrome.storage.sync.get({
-        enableUpCard: true,
-        enableWordCloud: true,
-        enableAiSummary: true,
-        aiSummaryHoverThreshold: 800,
-        enableVideoTag: true,
-        enableTagColor: false,
-        enableIpLabel: true,
-        minSize: 5
-    }, function (items) {
-        document.getElementById('enable-up-card').checked = items.enableUpCard;
-        document.getElementById('enable-word-cloud').checked = items.enableWordCloud;
-        document.getElementById('enable-ai-summary').checked = items.enableAiSummary;
-        document.getElementById('ai-summary-hover-threshold').value = items.aiSummaryHoverThreshold,
-        document.getElementById('enable-video-tag').checked = items.enableVideoTag;
-        document.getElementById('enable-tag-color').checked = items.enableTagColor;
-        document.getElementById('enable-ip-label').checked = items.enableIpLabel;
-        document.getElementById('min-number').value = items.minSize;
+    let options = {};
+    for (const option of all_options) {
+        const key = option[1] ? option[1] : toCamelCase(option[0]);
+        const defaultValue = option[2];
+        options[key] = defaultValue;
+    }
+    chrome.storage.sync.get(options, function (items) {
+        for (const option of all_options) {
+            const element = document.getElementById(option[0]);
+            const key = option[1] ? option[1] : toCamelCase(option[0]);
+            if (element.type === 'checkbox') {
+                element.checked = items[key];
+            } else {
+                element.value = items[key];
+            }
+        }
     });
     display_tag_colors();
 }

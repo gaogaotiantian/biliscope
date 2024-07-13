@@ -1,5 +1,6 @@
 let optionLoad = chrome.storage.sync.get({
     enableUpCard: true,
+    enableBlockButton: true,
     enableWordCloud: true,
     enableAiSummary: true,
     aiSummaryHoverThreshold: 800,
