@@ -58,6 +58,13 @@ function relationClass(data) {
     }
 }
 
+function blockClass(data) {
+    if (biliScopeOptions.enableBlockButton && data?.relation?.attribute == 0) {
+        return "biliscope-relation-block";
+    }
+    return "d-none";
+}
+
 function noteDataToDisplay(noteData, mid) {
     if (noteData && noteData[mid]) {
         return noteData[mid].split("\n", 1)[0];
@@ -83,7 +90,7 @@ function getUserProfileCardDataHTML(data) {
                 </div>
             </a>
             <div class="idc-content h">
-                <div>
+                <div style="white-space: nowrap">
                     <div id="biliscope-username-wrapper" style="display: inline-block">
                         <a class="idc-username">
                             <b title="点击添加备注" class="idc-uname" style="${data["vip"] ? "color: rgb(251, 114, 153);": "color: #18191C"}">
@@ -98,6 +105,7 @@ function getUserProfileCardDataHTML(data) {
                         </span>
                     </div>
                     <a><span id="biliscope-follow-button" class="biliscope-relation ${relationClass(data)}">${relationDisplay(data)}</span></a>
+                    <a><span id="biliscope-block-button" class="biliscope-relation ${blockClass(data)}">拉黑</span></a>
                 </div>
                 <div class="idc-meta" id="biliscope-note-wrapper">
                     <div class="idc-meta-item"
@@ -511,6 +519,7 @@ UserProfileCard.prototype.setupTriggers = function() {
     let text = document.getElementById("biliscope-card-note-text");
     let textarea = document.getElementById("biliscope-card-note-textarea");
     let followButton = document.getElementById("biliscope-follow-button");
+    let blockButton = document.getElementById("biliscope-block-button");
 
     // This event uses mousedown because the event trigger sequence click event will be later than blur
     userWrapper.addEventListener("mousedown", (ev) => {
@@ -593,6 +602,20 @@ UserProfileCard.prototype.setupTriggers = function() {
         }
     });
 
+    blockButton.addEventListener("click", (ev) => {
+        ev.stopPropagation();
+
+        biliPost("https://api.bilibili.com/x/relation/modify", {
+            fid: this.data["mid"],
+            act: 5,
+            re_src: 11
+        })
+        .then((data) => {
+            if (data["code"] == 0) {
+                updateRelation(this.userId, (data) => this.updateData(data));
+            }
+        });
+    });
 }
 
 UserProfileCard.prototype.drawWordCloud = function(canvas) {

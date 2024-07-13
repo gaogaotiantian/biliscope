@@ -157,6 +157,14 @@
     background-color: rgba(0,0,0,.45);
 }
 
+#biliscope-id-card .biliscope-relation-block {
+    background-color: rgba(0,0,0,.45);
+}
+
+#biliscope-id-card .biliscope-relation-block:hover {
+    background-color: rgba(0,0,0,.6);
+}
+
 #biliscope-id-card .idc-avatar {
     border: 2px solid #fff;
     border-radius: 50px;
