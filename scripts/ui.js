@@ -30,7 +30,7 @@ function relationDisplay(data) {
 
     if (data["relation"]["attribute"] == 0) {
         if (data["be_relation"]["attribute"] == 0) {
-            return "+ 关注";
+            return "关注";
         } else if (data["be_relation"]["attribute"] == 2) {
             return "关注了你";
         }
@@ -51,7 +51,7 @@ function relationClass(data) {
         return "d-none";
     } else if (text == "已拉黑" || text == "已被拉黑") {
         return "biliscope-relation-black";
-    } else if (text == "+ 关注" || text == "关注了你") {
+    } else if (text == "关注" || text == "关注了你") {
         return "biliscope-relation-follow";
     } else if (text == "已关注" || text == "已互粉") {
         return "biliscope-relation-followed";
@@ -65,6 +65,17 @@ function blockClass(data) {
     return "d-none";
 }
 
+function messageClass(data) {
+    if (data?.relation?.attribute == 128 || data?.be_relation?.attribute == 128) {
+        return "d-none";
+    }
+    return "biliscope-relation-message";
+}
+
+function messageLink(data) {
+    return `https://message.bilibili.com/#/whisper/mid${data["mid"]}`;
+}
+
 function noteDataToDisplay(noteData, mid) {
     if (noteData && noteData[mid]) {
         return noteData[mid].split("\n", 1)[0];
@@ -75,6 +86,11 @@ function noteDataToDisplay(noteData, mid) {
 function getUserProfileCardDataHTML(data) {
     return `
         <div class="idc-theme-img" style="background-image: url(&quot;${data["top_photo"]}@100Q.webp&quot;);">
+            <div style="position: absolute; top: 85px; right: 10px">
+                <a><span id="biliscope-follow-button" class="biliscope-relation ${relationClass(data)}">${relationDisplay(data)}</span></a>
+                <a><span id="biliscope-block-button" class="biliscope-relation ${blockClass(data)}">拉黑</span></a>
+                <a href="${messageLink(data)}"><span id="biliscope-block-button" class="biliscope-relation ${messageClass(data)}">私信</span></a>
+            </div>
         </div>
         <div class="idc-info clearfix">
             <a class="idc-avatar-container" href="https://space.bilibili.com/${data["mid"]}" target="_blank">
@@ -104,8 +120,6 @@ function getUserProfileCardDataHTML(data) {
                             </span>
                         </span>
                     </div>
-                    <a><span id="biliscope-follow-button" class="biliscope-relation ${relationClass(data)}">${relationDisplay(data)}</span></a>
-                    <a><span id="biliscope-block-button" class="biliscope-relation ${blockClass(data)}">拉黑</span></a>
                 </div>
                 <div class="idc-meta" id="biliscope-note-wrapper">
                     <div class="idc-meta-item"

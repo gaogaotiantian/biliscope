@@ -126,13 +126,14 @@
 }
 
 #biliscope-id-card .biliscope-relation {
-    margin-left: 6px;
-    padding: 3px 10px;
+    margin-left: 8px;
+    padding: 4px 16px;
     font-size: 12px;
     text-align: center;
     border-radius: 5px;
     vertical-align: middle;
     color:white;
+    border: 2px solid;
 }
 
 #biliscope-id-card .biliscope-relation-follow {
@@ -154,16 +155,25 @@
 }
 
 #biliscope-id-card .biliscope-relation-black {
-    background-color: rgba(0,0,0,.45);
+    background-color: #555;
 }
 
 #biliscope-id-card .biliscope-relation-block {
-    background-color: rgba(0,0,0,.45);
+    background-color: #555;
     cursor: pointer;
 }
 
 #biliscope-id-card .biliscope-relation-block:hover {
-    background-color: rgba(0,0,0,.6);
+    background-color: #333;
+}
+
+#biliscope-id-card .biliscope-relation-message {
+    background-color: rgba(0, 0, 0, 0.5);
+    cursor: pointer;
+}
+
+#biliscope-id-card .biliscope-relation-message:hover {
+    background-color: rgba(0, 0, 0, 0.65);
 }
 
 #biliscope-id-card .idc-avatar {
