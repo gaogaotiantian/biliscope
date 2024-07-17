@@ -22,7 +22,8 @@
         "scripts/ui.js",
         "scripts/videoui.js",
         "scripts/biliscope.js",
-        "scripts/load.js"
+        "scripts/load.js",
+        "scripts/rollbackfeedcard.js"
       ],
       "css": [
         "css/idcard.css",

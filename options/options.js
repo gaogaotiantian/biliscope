@@ -170,6 +170,7 @@ document.getElementById('tag-color-setting-add-button').addEventListener('click'
 const all_options = [
     ['enable-up-card', null, true],
     ['enable-block-button', null, true],
+    ['enable-rollback-feedcard', null, true],
     ['enable-word-cloud', null, true],
     ['enable-ai-summary', null, true],
     ['ai-summary-hover-threshold', null, 800],
