@@ -35,7 +35,7 @@ window.addEventListener("load", function() {
         if (biliScopeOptions.enableRollbackFeedcard) {
             const rollBtn = document.querySelector('.roll-btn');
             if (rollBtn) {
-                feedcardManager.addButton();
+                feedcardManager.addButton(rollBtn.parentElement);
                 rollBtn.addEventListener('click', () => {
                     feedcardManager.onRollFeedcard()
                 });

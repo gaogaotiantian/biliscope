@@ -5,13 +5,13 @@ function FeedcardManager() {
     this.forwardButton = null;
 }
 
-FeedcardManager.prototype.addButton = function () {
+FeedcardManager.prototype.addButton = function (parentNode) {
     const buttonWrapper = document.createElement('div');
     buttonWrapper.innerHTML = `
-        <button disabled class="primary-btn roll-btn backward" style="margin-top: 20px; margin-bottom: 10px;">
+        <button id="biliscope-feedcard-backward" disabled class="primary-btn roll-btn" style="margin-top: 20px; margin-bottom: 10px;">
             <span>上一页</span>
         </button>
-        <button disabled class="primary-btn roll-btn forward">
+        <button id="biliscope-feedcard-forward" disabled class="primary-btn roll-btn">
             <span>下一页</span>
         </button>
         <style>
@@ -25,10 +25,9 @@ FeedcardManager.prototype.addButton = function () {
             }
         </style>
     `;
-    const parentNode = document.querySelector('.roll-btn').parentElement;
     parentNode.appendChild(buttonWrapper);
-    this.backwardButton = buttonWrapper.querySelector('.backward');
-    this.forwardButton = buttonWrapper.querySelector('.forward');
+    this.backwardButton = document.getElementById('biliscope-feedcard-backward');
+    this.forwardButton = document.getElementById('biliscope-feedcard-forward');
     this.backwardButton.addEventListener('click', () => {
         this.backward();
     });
