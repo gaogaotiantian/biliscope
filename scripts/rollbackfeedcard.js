@@ -3,7 +3,6 @@ function FeedcardManager() {
     this.forwardStack = [];
     this.backwardButton = null;
     this.forwardButton = null;
-    this.feedcardBatchSize = 0;
 }
 
 FeedcardManager.prototype.addButton = function (parentNode) {
@@ -51,19 +50,26 @@ FeedcardManager.prototype.refreshButtonState = function () {
 FeedcardManager.prototype.onRollFeedcard = function () {
     const oldFeedcards = document.querySelectorAll('.feed-card');
 
-    // 换一换的更新逻辑是移除上一次刷新的内容，再添加新的内容。
-    // 如果正在展示的不是上一次刷新的内容则不会被移除，这会导致有多余的card留在页面上。
-    // 因此限制每次入栈的card数量为刷新的数量，避免旧数据重复入栈。
-    if (this.feedcardBatchSize == 0) {
-        this.feedcardBatchSize = oldFeedcards.length;
-    }
-
     // 防止连续点击换一换导致重复入栈
     if (this.backwardStack.length > 0 && oldFeedcards[0] == this.backwardStack.at(-1)[0]) {
         return;
     }
 
-    this.backwardStack.push([...oldFeedcards].slice(0, this.feedcardBatchSize));
+    // 换一换后移除旧的feedcard
+    const observer = new MutationObserver((mutationsList, observer) => {
+        for (const mutation of mutationsList) {
+            if (mutation.type === 'childList') {
+                for (feedcard of oldFeedcards) {
+                    feedcard.remove();
+                }
+                observer.disconnect();
+                break;
+            }
+        }
+    });
+    observer.observe(oldFeedcards[0].parentElement, { childList: true });
+
+    this.backwardStack.push(oldFeedcards);
     this.forwardStack = [];
     this.refreshButtonState();
 }
@@ -80,7 +86,7 @@ FeedcardManager.prototype.replaceFeedcards = function (newFeedcards) {
         parentNode.insertBefore(feedcard, referenceNode);
     }
 
-    return [...oldFeedcards].slice(0, this.feedcardBatchSize);
+    return oldFeedcards;
 }
 
 FeedcardManager.prototype.backward = function () {
