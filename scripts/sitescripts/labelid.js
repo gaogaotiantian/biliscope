@@ -1,5 +1,6 @@
 // These could be redefined in the other site scripts so use var instead of const
 var BILIBILI_DYNAMIC_URL = "https://t.bilibili.com"
+var BILIBILI_NEW_DYNAMIC_URL = "https://www.bilibili.com/opus"
 var BILIBILI_SPACE_URL = "https://space.bilibili.com"
 var BILIBILI_POPULAR_URL = "https://www.bilibili.com/v/popular"
 var BILIBILI_VIDEO_URL = "https://www.bilibili.com/video"
@@ -105,7 +106,8 @@ function installIdHooks() {
 
         if (window.location.href.startsWith(BILIBILI_POPULAR_URL)) {
             labelPopularPage();
-        } else if (window.location.href.startsWith(BILIBILI_DYNAMIC_URL)) {
+        } else if (window.location.href.startsWith(BILIBILI_DYNAMIC_URL) ||
+                   window.location.href.startsWith(BILIBILI_NEW_DYNAMIC_URL)) {
             labelDynamicPage();
         } else if (window.location.href.startsWith(BILIBILI_VIDEO_URL)) {
             labelVideoPage();
