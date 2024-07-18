@@ -32,7 +32,7 @@ window.addEventListener("load", function() {
             (document.head || document.documentElement).appendChild(s);
         }
 
-        if (biliScopeOptions.enableRollbackFeedcard) {
+        if (biliScopeOptions.enableRollbackFeedcard && document.location.pathname == '/') {
             const rollBtn = document.querySelector('.roll-btn');
             if (rollBtn) {
                 feedcardManager.addButton(rollBtn.parentElement);
