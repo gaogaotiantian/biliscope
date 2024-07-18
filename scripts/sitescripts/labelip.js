@@ -1,5 +1,6 @@
 // These could be redefined in the other site scripts so use var instead of const
 var BILIBILI_DYNAMIC_URL = "https://t.bilibili.com"
+var BILIBILI_NEW_DYNAMIC_URL = "https://www.bilibili.com/opus"
 var BILIBILI_VIDEO_URL = "https://www.bilibili.com/video"
 
 function labelVideoCommentIp(observer) {
@@ -145,7 +146,8 @@ function hookVueComponent() {
 }
 
 function installIpHooks() {
-    if (window.location.href.startsWith(BILIBILI_DYNAMIC_URL)) {
+    if (window.location.href.startsWith(BILIBILI_DYNAMIC_URL) ||
+        window.location.href.startsWith(BILIBILI_NEW_DYNAMIC_URL)) {
         hookVueComponent();
         let ipObserver = new MutationObserver((mutationList, observer) => {
             labelDynamicCommentIp();
