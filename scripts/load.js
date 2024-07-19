@@ -1,6 +1,7 @@
 let optionLoad = chrome.storage.sync.get({
     enableUpCard: true,
     enableBlockButton: true,
+    enableRollbackFeedcard: true,
     enableWordCloud: true,
     enableAiSummary: true,
     aiSummaryHoverThreshold: 800,
@@ -31,6 +32,16 @@ window.addEventListener("load", function() {
             (document.head || document.documentElement).appendChild(s);
         }
 
+        if (biliScopeOptions.enableRollbackFeedcard && document.location.pathname == '/' && document.location.hostname == 'www.bilibili.com') {
+            const feedRollBtn = document.querySelector('.feed-roll-btn');
+            const rollBtn = document.querySelector('.roll-btn');
+            if (feedRollBtn && rollBtn) {
+                feedcardManager.addButton(feedRollBtn);
+                rollBtn.addEventListener('click', () => {
+                    feedcardManager.onRollFeedcard()
+                });
+            }
+        }
     });
 
     getGuardInfo(6726252, 245645656).then((data) => {
