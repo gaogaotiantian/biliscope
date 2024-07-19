@@ -8,7 +8,7 @@ function FeedcardManager() {
 FeedcardManager.prototype.addButton = function (parentNode) {
     const buttonWrapper = document.createElement('div');
     buttonWrapper.innerHTML = `
-        <button id="biliscope-feedcard-backward" class="primary-btn roll-btn" style="margin-top: 20px; margin-bottom: 10px;" disabled>
+        <button id="biliscope-feedcard-backward" class="primary-btn roll-btn" style="margin-top: 15px; margin-bottom: 10px; display: none">
             <svg width="16" height="16" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin: 3px 0; scale: 0.85; transform: translateY(-1px); rotate: -90deg;">
                 <path fill-rule="evenodd" clip-rule="evenodd" d="M22.2692 6.98965C23.0395 5.65908 24.9605 5.65908 25.7309 6.98965L44.262 38.9979C45.0339 40.3313 44.0718 42 42.5311 42H5.4689C3.92823 42 2.96611 40.3313 3.73804 38.9979L22.2692 6.98965Z" fill="none" stroke="#000" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
@@ -45,6 +45,7 @@ FeedcardManager.prototype.addButton = function (parentNode) {
 }
 
 FeedcardManager.prototype.refreshButtonState = function () {
+    this.backwardButton.style.display = 'block';
     if (this.backwardStack.length > 0) {
         this.backwardButton.removeAttribute('disabled');
     } else {
