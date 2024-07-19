@@ -8,18 +8,30 @@ function FeedcardManager() {
 FeedcardManager.prototype.addButton = function (parentNode) {
     const buttonWrapper = document.createElement('div');
     buttonWrapper.innerHTML = `
-        <button id="biliscope-feedcard-backward" class="primary-btn roll-btn" style="margin-top: 20px; margin-bottom: 10px; visibility: hidden; transition: visibility 0s;">
+        <button id="biliscope-feedcard-backward" class="primary-btn roll-btn" style="margin-top: 20px; margin-bottom: 10px;" disabled>
             <svg width="16" height="16" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin: 3px 0;">
                 <path d="M12 23.9917H36" stroke="#000" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
                 <path d="M24 36L12 24L24 12" stroke="#000" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
         </button>
-        <button id="biliscope-feedcard-forward" class="primary-btn roll-btn" style="visibility: hidden; transition: visibility 0s;">
+        <button id="biliscope-feedcard-forward" class="primary-btn roll-btn" style="display: none;">
             <svg width="16" height="16" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin: 3px 0;">
                 <path d="M36 24.0083H12" stroke="#000" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
                 <path d="M24 12L36 24L24 36" stroke="#000" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
         </button>
+        <style>
+            #biliscope-feedcard-backward:disabled {
+                outline: none;
+                background: none;
+            }
+            #biliscope-feedcard-backward:disabled:active {
+                transform: none;
+            }
+            #biliscope-feedcard-backward:disabled svg path {
+                stroke: gray;
+            }
+        </style>
     `;
     parentNode.appendChild(buttonWrapper);
 
@@ -36,14 +48,14 @@ FeedcardManager.prototype.addButton = function (parentNode) {
 
 FeedcardManager.prototype.refreshButtonState = function () {
     if (this.backwardStack.length > 0) {
-        this.backwardButton.style.visibility = 'visible';
+        this.backwardButton.removeAttribute('disabled');
     } else {
-        this.backwardButton.style.visibility = 'hidden';
+        this.backwardButton.setAttribute('disabled', '')
     }
     if (this.forwardStack.length > 0) {
-        this.forwardButton.style.visibility = 'visible';
+        this.forwardButton.style.display = 'block';
     } else {
-        this.forwardButton.style.visibility = 'hidden';
+        this.forwardButton.style.display = 'none';
     }
 }
 

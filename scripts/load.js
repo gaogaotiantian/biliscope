@@ -32,14 +32,11 @@ window.addEventListener("load", function() {
             (document.head || document.documentElement).appendChild(s);
         }
 
-        if (biliScopeOptions.enableRollbackFeedcard && document.location.pathname == '/') {
-            const rollBtn = document.querySelector('.roll-btn');
-            if (rollBtn) {
-                feedcardManager.addButton(rollBtn.parentElement);
-                rollBtn.addEventListener('click', () => {
-                    feedcardManager.onRollFeedcard()
-                });
-            }
+        if (biliScopeOptions.enableRollbackFeedcard && document.location.href == 'https://www.bilibili.com/') {
+            feedcardManager.addButton(document.querySelector('.feed-roll-btn'));
+            document.querySelector('.roll-btn').addEventListener('click', () => {
+                feedcardManager.onRollFeedcard()
+            });
         }
     });
 
