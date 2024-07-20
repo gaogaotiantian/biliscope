@@ -49,9 +49,12 @@
     "page": "options/options.html",
     "open_in_tab": false
   },
+  "background": {
+    "service_worker": "changelog/background.js"
+  },
   "web_accessible_resources": [
     {
-      "resources": ["img/bililv.svg", "scripts/sitescripts/*.js"],
+      "resources": ["img/bililv.svg", "scripts/sitescripts/*.js", "changelog/changelog.*"],
       "matches": ["https://*.bilibili.com/*"]
     }
   ]
