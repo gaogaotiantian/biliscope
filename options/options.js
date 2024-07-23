@@ -174,7 +174,7 @@ const all_options = [
     ['enable-word-cloud', null, true],
     ['enable-ai-summary', null, true],
     ['enable-hot-comment', null, true],
-    ['ai-summary-hover-threshold', null, 800],
+    ['video-card-hover-threshold', null, 800],
     ['enable-video-tag', null, true],
     ['enable-tag-color', null, true],
     ['enable-ip-label', null, true],
