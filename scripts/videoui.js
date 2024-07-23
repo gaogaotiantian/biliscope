@@ -329,42 +329,35 @@ VideoProfileCard.prototype.updateData = function(data) {
         document.getElementById("biliscope-ai-summary-popup").classList.add("d-none");
         document.getElementById("biliscope-ai-summary-none").classList.add("d-none");
     }
+    this.valid = true;
 
     if (data["api"] == "view") {
         this.data.view = data["payload"];
     } else if (data["api"] == "conclusion") {
         if (!biliScopeOptions.enableAiSummary) {
-            this.valid = false;
             return;
         }
 
         this.data.conclusion = data["payload"];
-        if (this.data.conclusion.model_result.summary) {
-            this.valid = true;
-        } else {
-            this.valid = false;
-        }
         this.drawConclusion();
 
-        if (this.valid) {
+        if (this.data.conclusion.model_result.summary) {
             document.getElementById("biliscope-ai-summary-popup").classList.remove("d-none");
         } else if (!biliScopeOptions.enableHotComment){
             document.getElementById("biliscope-ai-summary-none").classList.remove("d-none");
         }
     } else if (data["api"] == "reply") {
         if (!biliScopeOptions.enableHotComment) {
-            this.valid = false;
             return;
         }
 
         this.data.replies = data.payload?.replies;
         if(this.data.replies) {
             this.drawHotComment();
-            this.valid = true;
         }
     }
 
-    if (this.enabled && this.el?.style.display != "flex" && this.valid != null) {
+    if (this.enabled && this.el) {
         this.el.style.display = "flex";
     }
 
