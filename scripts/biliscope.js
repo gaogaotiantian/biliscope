@@ -23,43 +23,38 @@ function getTarget(target) {
     return null;
 }
 
-function showProfile(event) {
-    // User target
-    let targetData = getTarget(event.target);
-
-    if (targetData) {
-        if (targetData["type"] == "user") {
-            if (biliScopeOptions.enableUpCard && userProfileCard && userProfileCard.enable()) {
-                let target = targetData["target"];
-                let userId = target.getAttribute("biliscope-userid");
-                let updated = userProfileCard.updateUserId(userId);
-                userProfileCard.updateCursor(event.pageX, event.pageY);
-                userProfileCard.updateTarget(target)
-                if (updated) {
-                    updateUserInfo(userId, (data) => userProfileCard.updateData(data));
-                }
+function showProfile(event, targetData) {
+    if (targetData["type"] == "user") {
+        if (biliScopeOptions.enableUpCard && userProfileCard && userProfileCard.enable()) {
+            let target = targetData["target"];
+            let userId = target.getAttribute("biliscope-userid");
+            let updated = userProfileCard.updateUserId(userId);
+            userProfileCard.updateCursor(event.pageX, event.pageY);
+            userProfileCard.updateTarget(target);
+            if (updated) {
+                updateUserInfo(userId, (data) => userProfileCard.updateData(data));
             }
-        } else if (targetData["type"] == "video") {
-            if (biliScopeOptions.enableVideoTag && videoTagManager) {
-                let target = targetData["target"];
-                let videoId = target.getAttribute("biliscope-videoid");
-                let updated = videoTagManager.updateTarget(target);
-                videoTagManager.updateVideoId(videoId);
+        }
+    } else if (targetData["type"] == "video") {
+        if (biliScopeOptions.enableVideoTag && videoTagManager) {
+            let target = targetData["target"];
+            let videoId = target.getAttribute("biliscope-videoid");
+            let updated = videoTagManager.updateTarget(target);
+            videoTagManager.updateVideoId(videoId);
 
-                if (updated) {
-                    updateVideoInfo(videoId, (data) => videoTagManager.updateData(data));
-                }
+            if (updated) {
+                updateVideoInfo(videoId, (data) => videoTagManager.updateData(data));
             }
+        }
 
-            if (biliScopeOptions.enableAiSummary && videoProfileCard && videoProfileCard.enable()) {
-                let target = targetData["target"];
-                let videoId = target.getAttribute("biliscope-videoid");
-                let updated = videoProfileCard.updateVideoId(videoId);
-                videoProfileCard.updateCursor(currCursorX, currCursorY);
-                videoProfileCard.updateTarget(target)
-                if (updated) {
-                    updateVideoInfo(videoId, (data) => videoProfileCard.updateData(data));
-                }
+        if (biliScopeOptions.enableAiSummary && videoProfileCard && videoProfileCard.enable()) {
+            let target = targetData["target"];
+            let videoId = target.getAttribute("biliscope-videoid");
+            let updated = videoProfileCard.updateVideoId(videoId);
+            videoProfileCard.updateCursor(currCursorX, currCursorY);
+            videoProfileCard.updateTarget(target);
+            if (updated) {
+                updateVideoInfo(videoId, (data) => videoProfileCard.updateData(data));
             }
         }
     }
@@ -88,6 +83,8 @@ function showProfileDebounce(event) {
     target.addEventListener("mouseout", () => clearTimeout(showProfileDebounce.timer));
 
     showProfileDebounce.timer = setTimeout(() => {
-        showProfile(event)
+        if (targetData) {
+            showProfile(event, targetData)
+        }
     }, debounceTime);
 }
