@@ -304,21 +304,68 @@ VideoProfileCard.prototype.drawHotComment = function() {
     // 具有热评标签的
     hotComment = this.data.replies.filter(reply =>
         reply?.attr == 32768
-    )?.[0]?.content.message;
+    )?.[0]?.content;
     hotCommentTag = "热评：";
     // 高赞的
     if(!hotComment) {
         hotComment = this.data.replies.reduce((lReply, rReply) =>
             lReply.like > rReply.like ? lReply : rReply
-        )?.content.message;
+        )?.content;
         if(hotComment) {
             hotCommentTag = "高赞：";
         }
     }
 
     if(hotComment) {
+        const hotCommentText = document.getElementById("biliscope-hot-comment-text");
+
+        if (!hotComment?.emote && !hotComment?.jump_url) {
+            hotCommentText.innerHTML = hotComment.message;
+        } else {
+            hotCommentText.innerHTML = '';
+            let separators = [];
+            let emote = hotComment?.emote;
+            let jump_url = hotComment?.jump_url;
+            if (emote) {
+                separators = separators.concat(Object.keys(emote));
+            }
+            if (jump_url) {
+                separators = separators.concat(Object.keys(jump_url));
+            }
+
+            let regexStr = separators.map(s =>
+                s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join('|');
+            let hotComments = hotComment.message.split(new RegExp(`(${regexStr})`, 'g'))
+                .filter(s => s != '');
+            let hotCommentItem;
+
+            hotComments.map(s => {
+                if (emote?.[s]) {
+                    hotCommentItem = document.createElement("img");
+                    hotCommentItem.style = "width:1.4em;height:1.4em;vertical-align:text-bottom;";
+                    hotCommentItem.src = emote[s].url;
+                } else if (jump_url?.[s]) {
+                    hotCommentItem = document.createElement("a");
+                    hotCommentItem.style = "color:#008ac5;cursor:pointer;";
+                    hotCommentItem.onmouseover = function() {
+                        this.style.color = '#00AEEC';
+                    }
+                    hotCommentItem.onmouseout = function() {
+                        this.style.color = '#008ac5';
+                    }
+                    hotCommentItem.target = "_blank";
+                    hotCommentItem.href = jump_url[s].pc_url;
+                    hotCommentItem.innerHTML = s;
+                } else {
+                    hotCommentItem = document.createElement("span");
+                    hotCommentItem.innerHTML = s;
+                }
+
+                hotCommentText.appendChild(hotCommentItem);
+            });
+        }
+
         document.getElementById("biliscope-hot-comment-tag").innerHTML = hotCommentTag;
-        document.getElementById("biliscope-hot-comment-text").innerHTML = hotComment;
         document.getElementById("biliscope-hot-comment").classList.remove("d-none");
     }
 }
