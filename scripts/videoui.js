@@ -105,6 +105,12 @@ function getVideoProfileCardHTML(data) {
                     </div>
                 </div>
             </div>
+            <div id="biliscope-hot-comment">
+                <span id="biliscope-hot-comment-tag">
+                </span>
+                <span id="biliscope-hot-comment-text">
+                </span>
+            </div>
         </div>
     `
 }
@@ -292,7 +298,35 @@ VideoProfileCard.prototype.drawConclusion = function() {
     }
 }
 
+VideoProfileCard.prototype.drawHotComment = function() {
+    let hotComment, hotCommentTag;
+
+    // 具有热评标签的
+    hotComment = this.data.replies.filter(reply =>
+        reply?.attr == 32768
+    )?.[0]?.content.message;
+    hotCommentTag = "热评：";
+    // 高赞的
+    if(!hotComment) {
+        hotComment = this.data.replies.reduce((lReply, rReply) =>
+            lReply.like > rReply.like ? lReply : rReply
+        )?.content.message;
+        if(hotComment) {
+            hotCommentTag = "高赞：";
+        }
+    }
+
+    if(hotComment) {
+        document.getElementById("biliscope-ai-summary-none").classList.add("d-none");
+        document.getElementById("biliscope-hot-comment-tag").innerHTML = hotCommentTag;
+        document.getElementById("biliscope-hot-comment-text").innerHTML = hotComment;
+        document.getElementById("biliscope-hot-comment").classList.remove("d-none");
+    }
+}
+
 VideoProfileCard.prototype.updateData = function(data) {
+    document.getElementById("biliscope-hot-comment").classList.add("d-none");
+
     if (data["api"] == "view") {
         this.data.view = data["payload"];
     } else if (data["api"] == "conclusion") {
@@ -303,6 +337,11 @@ VideoProfileCard.prototype.updateData = function(data) {
             this.valid = false;
         }
         this.drawConclusion();
+    } else if (data["api"] == "reply") {
+        this.data.replies = data.payload?.replies;
+        if(this.data.replies) {
+            this.drawHotComment();
+        }
     }
 
     if (this.enabled && this.el && this.el.style.display != "flex") {

@@ -2,6 +2,9 @@
     position: absolute;
     z-index: 1002;
     font-size: 14px;
+    display: flex;
+    flex-direction: column;
+    max-height: calc(50vh + 74px);
 }
 
 #biliscope-video-card * {
@@ -21,9 +24,27 @@
     background-color: #fff;
 }
 
+#biliscope-hot-comment {
+    padding: 10px 15px;
+    border-radius: 8px;
+    width: 345px;
+    font-weight: 700;
+    background-color: #fff;
+    max-height: 20vh;
+    overflow-y: auto;
+    flex-shrink: 0;
+}
+
+#biliscope-hot-comment-text {
+    color: #18191C;
+}
+
+#biliscope-hot-comment-tag {
+    color: #ff6699;
+}
+
 .biliscope-ai-summary-popup {
     width: 375px;
-    height: 100%;
     border-radius: 8px;
     border: 1px solid #e3e5e7;
     background: #fff;
@@ -33,7 +54,8 @@
     -ms-flex-direction: column;
     flex-direction: column;
     -ms-user-select: none;
-    user-select: none
+    user-select: none;
+    min-height: 0;
 }
 
 .biliscope-ai-summary-popup-header {
