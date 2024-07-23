@@ -324,13 +324,20 @@ VideoProfileCard.prototype.drawHotComment = function() {
 }
 
 VideoProfileCard.prototype.updateData = function(data) {
-    document.getElementById("biliscope-hot-comment").classList.add("d-none");
-    document.getElementById("biliscope-ai-summary-popup").classList.add("d-none");
-    document.getElementById("biliscope-ai-summary-none").classList.add("d-none");
+    if (this.valid == null) {
+        document.getElementById("biliscope-hot-comment").classList.add("d-none");
+        document.getElementById("biliscope-ai-summary-popup").classList.add("d-none");
+        document.getElementById("biliscope-ai-summary-none").classList.add("d-none");
+    }
 
     if (data["api"] == "view") {
         this.data.view = data["payload"];
-    } else if (biliScopeOptions.enableAiSummary && data["api"] == "conclusion") {
+    } else if (data["api"] == "conclusion") {
+        if (!biliScopeOptions.enableAiSummary) {
+            this.valid = false;
+            return;
+        }
+
         this.data.conclusion = data["payload"];
         if (this.data.conclusion.model_result.summary) {
             this.valid = true;
@@ -341,10 +348,15 @@ VideoProfileCard.prototype.updateData = function(data) {
 
         if (this.valid) {
             document.getElementById("biliscope-ai-summary-popup").classList.remove("d-none");
-        } else {
+        } else if (!biliScopeOptions.enableHotComment){
             document.getElementById("biliscope-ai-summary-none").classList.remove("d-none");
         }
-    } else if (biliScopeOptions.enableHotComment && data["api"] == "reply") {
+    } else if (data["api"] == "reply") {
+        if (!biliScopeOptions.enableHotComment) {
+            this.valid = false;
+            return;
+        }
+
         this.data.replies = data.payload?.replies;
         if(this.data.replies) {
             this.drawHotComment();
@@ -353,7 +365,7 @@ VideoProfileCard.prototype.updateData = function(data) {
     }
 
     if (this.enabled && this.el?.style.display != "flex" && this.valid != null) {
-            this.el.style.display = "flex";
+        this.el.style.display = "flex";
     }
 
     this.updateCursor(this.cursorX, this.cursorY);
