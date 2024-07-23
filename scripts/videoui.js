@@ -317,7 +317,6 @@ VideoProfileCard.prototype.drawHotComment = function() {
     }
 
     if(hotComment) {
-        document.getElementById("biliscope-ai-summary-none").classList.add("d-none");
         document.getElementById("biliscope-hot-comment-tag").innerHTML = hotCommentTag;
         document.getElementById("biliscope-hot-comment-text").innerHTML = hotComment;
         document.getElementById("biliscope-hot-comment").classList.remove("d-none");
@@ -326,10 +325,12 @@ VideoProfileCard.prototype.drawHotComment = function() {
 
 VideoProfileCard.prototype.updateData = function(data) {
     document.getElementById("biliscope-hot-comment").classList.add("d-none");
+    document.getElementById("biliscope-ai-summary-popup").classList.add("d-none");
+    document.getElementById("biliscope-ai-summary-none").classList.add("d-none");
 
     if (data["api"] == "view") {
         this.data.view = data["payload"];
-    } else if (data["api"] == "conclusion") {
+    } else if (biliScopeOptions.enableAiSummary && data["api"] == "conclusion") {
         this.data.conclusion = data["payload"];
         if (this.data.conclusion.model_result.summary) {
             this.valid = true;
@@ -337,25 +338,22 @@ VideoProfileCard.prototype.updateData = function(data) {
             this.valid = false;
         }
         this.drawConclusion();
-    } else if (data["api"] == "reply") {
+
+        if (this.valid) {
+            document.getElementById("biliscope-ai-summary-popup").classList.remove("d-none");
+        } else {
+            document.getElementById("biliscope-ai-summary-none").classList.remove("d-none");
+        }
+    } else if (biliScopeOptions.enableHotComment && data["api"] == "reply") {
         this.data.replies = data.payload?.replies;
         if(this.data.replies) {
             this.drawHotComment();
+            this.valid = true;
         }
     }
 
-    if (this.enabled && this.el && this.el.style.display != "flex") {
-        if (this.valid != null) {
+    if (this.enabled && this.el?.style.display != "flex" && this.valid != null) {
             this.el.style.display = "flex";
-            if (this.valid) {
-                document.getElementById("biliscope-ai-summary-popup").classList.remove("d-none");
-                document.getElementById("biliscope-ai-summary-none").classList.add("d-none");
-            } else {
-                document.getElementById("biliscope-ai-summary-popup").classList.add("d-none");
-                document.getElementById("biliscope-ai-summary-none").classList.remove("d-none");
-            }
-
-        }
     }
 
     this.updateCursor(this.cursorX, this.cursorY);

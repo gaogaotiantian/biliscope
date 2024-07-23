@@ -51,7 +51,8 @@ function showProfile(event) {
                 }
             }
 
-            if (biliScopeOptions.enableAiSummary && videoProfileCard && videoProfileCard.enable()) {
+            if ((biliScopeOptions.enableAiSummary || biliScopeOptions.enableHotComment)
+                    && videoProfileCard && videoProfileCard.enable()) {
                 let target = targetData["target"];
                 let videoId = target.getAttribute("biliscope-videoid");
                 let updated = videoProfileCard.updateVideoId(videoId);
