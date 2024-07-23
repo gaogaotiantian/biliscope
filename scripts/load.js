@@ -48,6 +48,7 @@ window.addEventListener("load", function() {
                 setTimeout(() => hookComment(), 400)
                 return;
             }
+
             document.querySelector("bili-comments")
                 .shadowRoot.querySelectorAll("bili-comment-thread-renderer")
                 .forEach(element => {

@@ -83,8 +83,6 @@ function showProfileDebounce(event) {
     target.addEventListener("mouseout", () => clearTimeout(showProfileDebounce.timer));
 
     showProfileDebounce.timer = setTimeout(() => {
-        if (targetData) {
-            showProfile(event, targetData)
-        }
+        showProfile(event, targetData);
     }, debounceTime);
 }
