@@ -66,7 +66,9 @@ window.addEventListener("load", function() {
                 })
         }
 
-        setTimeout(() => hookComment(), 400);
+        if (window.location.href.startsWith(BILIBILI_VIDEO_URL)) {
+            setTimeout(() => hookComment(), 400);
+        }
     });
 
     getGuardInfo(6726252, 245645656).then((data) => {
