@@ -324,13 +324,13 @@ VideoProfileCard.prototype.drawHotComment = function() {
         } else {
             hotCommentText.innerHTML = '';
             let separators = [];
-            let emote = hotComment?.emote;
-            let jump_url = hotComment?.jump_url;
-            if (emote) {
-                separators = separators.concat(Object.keys(emote));
+            let emotes = hotComment?.emote;
+            let jump_urls = hotComment?.jump_url;
+            if (emotes) {
+                separators = separators.concat(Object.keys(emotes));
             }
-            if (jump_url) {
-                separators = separators.concat(Object.keys(jump_url));
+            if (jump_urls) {
+                separators = separators.concat(Object.keys(jump_urls));
             }
 
             let regexStr = separators.map(s =>
@@ -338,12 +338,13 @@ VideoProfileCard.prototype.drawHotComment = function() {
             let hotComments = hotComment.message.split(new RegExp(`(${regexStr})`));
             let hotCommentItem;
 
+            let jump_urls_copy = {...jump_urls};
             hotComments.map(s => {
-                if (emote?.[s]) {
+                if (emotes?.[s]) {
                     hotCommentItem = document.createElement("img");
                     hotCommentItem.style = "width:1.4em;height:1.4em;vertical-align:text-bottom;";
-                    hotCommentItem.src = emote[s].url;
-                } else if (jump_url?.[s]) {
+                    hotCommentItem.src = emotes[s].url;
+                } else if (jump_urls_copy?.[s]) {
                     hotCommentItem = document.createElement("a");
                     hotCommentItem.style = "color:#008ac5;cursor:pointer;";
                     hotCommentItem.onmouseover = function() {
@@ -353,9 +354,9 @@ VideoProfileCard.prototype.drawHotComment = function() {
                         this.style.color = '#008ac5';
                     }
                     hotCommentItem.target = "_blank";
-                    hotCommentItem.href = jump_url[s].pc_url;
+                    hotCommentItem.href = jump_urls[s].pc_url;
                     hotCommentItem.innerHTML = s;
-                    delete jump_url[s];
+                    delete jump_urls_copy[s];
                 } else {
                     hotCommentItem = document.createElement("span");
                     hotCommentItem.innerHTML = s;
