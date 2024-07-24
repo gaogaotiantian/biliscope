@@ -44,8 +44,9 @@ window.addEventListener("load", function() {
         }
 
         let hookComment = () => {
-            if (!document.querySelector("bili-comments")?.shadowRoot.querySelector("bili-comment-thread-renderer")){
-                setTimeout(() => hookComment(), 400)
+            if (!document.querySelector("bili-comments")?.shadowRoot.querySelector("bili-comment-thread-renderer")
+                    ?.shadowRoot.querySelector("bili-comment-renderer")) {
+                setTimeout(() => hookComment(), 400);
                 return;
             }
 
