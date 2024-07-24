@@ -27,7 +27,8 @@
 }
 
 #biliscope-hot-comment {
-    margin: 10px 15px;
+    margin-bottom: 10px;
+    padding: 10px 15px 0 15px;
     width: 346px;
     font-weight: 700;
     background-color: #fff;
@@ -35,13 +36,14 @@
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
-    overflow: hidden;
+    overflow-y: hidden;
+    flex-shrink: 0;
 }
 
 #biliscope-hot-comment:hover {
     display: block;
     max-height: 20vh;
-    flex-shrink: 0;
+    overflow-y: auto;
 }
 
 #biliscope-hot-comment-text {
