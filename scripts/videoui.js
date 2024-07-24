@@ -245,7 +245,10 @@ VideoProfileCard.prototype.updateTarget = function(target) {
         // Calculate z-index for the card
         let node = target
         let zIndex = 1002;
-        while (node && node != document && node instanceof Element) {
+        while (node && node != document) {
+            if (node instanceof ShadowRoot) {
+                node = node.host;
+            }
             let containerIndex = window.getComputedStyle(node).getPropertyValue("z-index");
             if (containerIndex && containerIndex != "auto" && containerIndex > zIndex) {
                 zIndex = containerIndex;
