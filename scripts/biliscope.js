@@ -15,6 +15,8 @@ function getTarget(target) {
     while (el && maxDepth-- >= 0 && el.getAttribute) {
         if (el.getAttribute("biliscope-userid")) {
             return {"type": "user", "target": el};
+        } else if (el.getAttribute("data-user-profile-id")) {
+            return {"type": "user", "target": el};
         } else if (el.getAttribute("biliscope-videoid")) {
             return {"type": "video", "target": el};
         }
@@ -27,7 +29,8 @@ function showProfile(event, targetData) {
     if (targetData["type"] == "user") {
         if (biliScopeOptions.enableUpCard && userProfileCard && userProfileCard.enable()) {
             let target = targetData["target"];
-            let userId = target.getAttribute("biliscope-userid");
+            let userId = target.getAttribute("biliscope-userid")
+                || target.getAttribute("data-user-profile-id");
             let updated = userProfileCard.updateUserId(userId);
             userProfileCard.updateCursor(event.pageX, event.pageY);
             userProfileCard.updateTarget(target);

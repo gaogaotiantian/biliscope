@@ -85,28 +85,6 @@ function labelLinks() {
             if (userId) {
                 el.setAttribute("biliscope-userid", userId);
             }
-
-            document.querySelector("bili-comments")
-                ?.shadowRoot.querySelectorAll("bili-comment-thread-renderer")
-                .forEach(element => {
-                    el = element.shadowRoot.querySelector("bili-comment-renderer")
-                        .shadowRoot.getElementById("user-avatar");
-                    userId = getUserIdFromLink(el.href);
-                    if (userId) {
-                        el.setAttribute("biliscope-userid", userId);
-                    }
-
-                    replies = element.shadowRoot.querySelector("bili-comment-replies-renderer")
-                        .shadowRoot.querySelectorAll("bili-comment-reply-renderer");
-                    for (const reply of replies){
-                        el = reply.shadowRoot.querySelector("bili-comment-user-info")
-                            .getElementsByTagName("a")[0];
-                        userId = getUserIdFromLink(el.href);
-                        if (userId) {
-                            el.setAttribute("biliscope-userid", userId);
-                        }
-                    }
-            });
         } else if (el.classList.contains("jump-link")) {
             let userId = el.getAttribute("data-user-id");
             if (userId) {
