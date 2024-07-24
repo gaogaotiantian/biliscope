@@ -335,8 +335,7 @@ VideoProfileCard.prototype.drawHotComment = function() {
 
             let regexStr = separators.map(s =>
                 s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join('|');
-            let hotComments = hotComment.message.split(new RegExp(`(${regexStr})`, 'g'))
-                .filter(s => s != '');
+            let hotComments = hotComment.message.split(new RegExp(`(${regexStr})`));
             let hotCommentItem;
 
             hotComments.map(s => {
@@ -356,6 +355,7 @@ VideoProfileCard.prototype.drawHotComment = function() {
                     hotCommentItem.target = "_blank";
                     hotCommentItem.href = jump_url[s].pc_url;
                     hotCommentItem.innerHTML = s;
+                    delete jump_url[s];
                 } else {
                     hotCommentItem = document.createElement("span");
                     hotCommentItem.innerHTML = s;
