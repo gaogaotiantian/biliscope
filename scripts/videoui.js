@@ -105,11 +105,15 @@ function getVideoProfileCardHTML(data) {
                     </div>
                 </div>
             </div>
-            <div id="biliscope-hot-comment">
-                <span id="biliscope-hot-comment-tag">
-                </span>
-                <span id="biliscope-hot-comment-text">
-                </span>
+            <div id="biliscope-hot-comment-wrapper">
+                <div id="biliscope-hot-comment-icon">
+                </div>
+                <div id="biliscope-hot-comment">
+                    <span id="biliscope-hot-comment-author" class="bili-rich-text-module at">
+                    </span>
+                    <span id="biliscope-hot-comment-text">
+                    </span>
+                </div>
             </div>
         </div>
     `
@@ -299,33 +303,36 @@ VideoProfileCard.prototype.drawConclusion = function() {
 }
 
 VideoProfileCard.prototype.drawHotComment = function() {
-    let hotComment, hotCommentTag;
+    let hotComment;
 
     // 具有热评标签的
     hotComment = this.data.replies.filter(reply =>
         reply?.attr == 32768
-    )?.[0]?.content;
-    hotCommentTag = "热评：";
+    )?.[0];
+
     // 高赞的
     if(!hotComment) {
         hotComment = this.data.replies.reduce((lReply, rReply) =>
             lReply.like > rReply.like ? lReply : rReply
-        )?.content;
-        if(hotComment) {
-            hotCommentTag = "高赞：";
-        }
+        );
     }
 
     if(hotComment) {
+        const {content, member} = hotComment;
         const hotCommentText = document.getElementById("biliscope-hot-comment-text");
 
-        if (!hotComment?.emote && !hotComment?.jump_url) {
-            hotCommentText.innerHTML = hotComment.message;
+        document.getElementById("biliscope-hot-comment-author").innerHTML = `${member.uname}：`;
+        document.getElementById("biliscope-hot-comment-author").onclick = function() {
+            open(`//space.bilibili.com/${member.mid}`);
+        }
+
+        if (!content?.emote && !content?.jump_url) {
+            hotCommentText.innerHTML = content.message;
         } else {
             hotCommentText.innerHTML = '';
             let separators = [];
-            let emotes = hotComment?.emote;
-            let jump_urls = hotComment?.jump_url;
+            let emotes = content?.emote;
+            let jump_urls = content?.jump_url;
             if (emotes) {
                 separators = separators.concat(Object.keys(emotes));
             }
@@ -338,9 +345,9 @@ VideoProfileCard.prototype.drawHotComment = function() {
             let hotComments, hotCommentItem;
 
             if (regexStr) {
-                hotComments = hotComment.message.split(new RegExp(`(${regexStr})`));
+                hotComments = content.message.split(new RegExp(`(${regexStr})`));
             } else {
-                hotComments = [hotComment.message];
+                hotComments = [content.message];
             }
 
             let jump_urls_copy = {...jump_urls};
@@ -371,14 +378,13 @@ VideoProfileCard.prototype.drawHotComment = function() {
             });
         }
 
-        document.getElementById("biliscope-hot-comment-tag").innerHTML = hotCommentTag;
-        document.getElementById("biliscope-hot-comment").classList.remove("d-none");
+        document.getElementById("biliscope-hot-comment-wrapper").classList.remove("d-none");
     }
 }
 
 VideoProfileCard.prototype.updateData = function(data) {
     if (this.valid == null) {
-        document.getElementById("biliscope-hot-comment").classList.add("d-none");
+        document.getElementById("biliscope-hot-comment-wrapper").classList.add("d-none");
         document.getElementById("biliscope-ai-summary-popup").classList.add("d-none");
         document.getElementById("biliscope-ai-summary-none").classList.add("d-none");
     }
