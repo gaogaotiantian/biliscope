@@ -354,7 +354,7 @@ VideoProfileCard.prototype.drawHotComment = function() {
                         this.style.color = '#008ac5';
                     }
                     hotCommentItem.target = "_blank";
-                    hotCommentItem.href = jump_urls[s].pc_url;
+                    hotCommentItem.href = jump_urls_copy[s].pc_url;
                     hotCommentItem.innerHTML = s;
                     delete jump_urls_copy[s];
                 } else {
