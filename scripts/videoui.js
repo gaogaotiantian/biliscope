@@ -335,8 +335,13 @@ VideoProfileCard.prototype.drawHotComment = function() {
 
             let regexStr = separators.map(s =>
                 s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join('|');
-            let hotComments = hotComment.message.split(new RegExp(`(${regexStr})`));
-            let hotCommentItem;
+            let hotComments, hotCommentItem;
+
+            if (regexStr) {
+                hotComments = hotComment.message.split(new RegExp(`(${regexStr})`));
+            } else {
+                hotComments.push(hotComment.message);
+            }
 
             let jump_urls_copy = {...jump_urls};
             hotComments.map(s => {
