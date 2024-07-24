@@ -340,7 +340,7 @@ VideoProfileCard.prototype.drawHotComment = function() {
             if (regexStr) {
                 hotComments = hotComment.message.split(new RegExp(`(${regexStr})`));
             } else {
-                hotComments.push(hotComment.message);
+                hotComments = [hotComment.message];
             }
 
             let jump_urls_copy = {...jump_urls};
