@@ -43,32 +43,42 @@ window.addEventListener("load", function() {
             }
         }
 
-        let hookComment = () => {
-            if (!document.querySelector("bili-comments")?.shadowRoot.querySelector("bili-comment-thread-renderer")
-                    ?.shadowRoot.querySelector("bili-comment-renderer")) {
-                setTimeout(() => hookComment(), 400);
+        let retry = 20;
+        const hookComment = (retry) => {
+            if (retry < 1) {
                 return;
             }
 
-            document.querySelector("bili-comments")
-                .shadowRoot.querySelectorAll("bili-comment-thread-renderer")
-                .forEach(element => {
-                    el = element.shadowRoot.querySelector("bili-comment-renderer")
-                        .shadowRoot.getElementById("user-avatar");
-                    el.addEventListener("mouseover", showProfileDebounce);
+            if (!document.querySelector("bili-comments")?.shadowRoot
+                .querySelector("bili-comment-thread-renderer")?.shadowRoot
+                .querySelector("bili-comment-renderer")) {
+                setTimeout(() => hookComment(retry-1), 500);
+                return;
+            }
 
-                    replies = element.shadowRoot.querySelector("bili-comment-replies-renderer")
-                        .shadowRoot.querySelectorAll("bili-comment-reply-renderer");
-                    for (const reply of replies){
-                        el = reply.shadowRoot.querySelector("bili-comment-user-info")
-                            .getElementsByTagName("a")[0];
-                        el.addEventListener("mouseover", showProfileDebounce);
-                    }
-                })
+            let el;
+            document.querySelector("bili-comments").shadowRoot
+            .querySelectorAll("bili-comment-thread-renderer")
+            .forEach(element => {
+                el = element.shadowRoot
+                    .querySelector("bili-comment-renderer").shadowRoot
+                    .getElementById("user-avatar");
+                el.addEventListener("mouseover", showProfileDebounce);
+
+                const replies = element.shadowRoot
+                .querySelector("bili-comment-replies-renderer").shadowRoot
+                .querySelectorAll("bili-comment-reply-renderer");
+                for (const reply of replies){
+                    el = reply.shadowRoot
+                        .querySelector("bili-comment-user-info")
+                        .getElementsByTagName("a")[0];
+                    el.addEventListener("mouseover", showProfileDebounce);
+                }
+            })
         }
 
         if (window.location.href.startsWith(BILIBILI_VIDEO_URL)) {
-            setTimeout(() => hookComment(), 400);
+            setTimeout(() => hookComment(retry), 500);
         }
     });
 
