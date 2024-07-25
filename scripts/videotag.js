@@ -34,7 +34,7 @@ VideoTagManager.prototype.updateData = function(data) {
 
     if (data["api"] == "reply") {
         const member = data.payload?.top?.upper?.member;
-        if (member?.official_verify?.type == 1) {
+        if (member.mid != data.payload.upper.mid && member?.official_verify?.type == 1) {
             newTag = true;
             this.tags.add("广告");
         }
