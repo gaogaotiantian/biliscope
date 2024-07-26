@@ -55,23 +55,22 @@ window.addEventListener("load", function() {
                 return;
             }
 
-            let el;
             document.querySelector("bili-comments").shadowRoot
             .querySelectorAll("bili-comment-thread-renderer")
             .forEach(element => {
-                el = element.shadowRoot
+                const avatar = element.shadowRoot
                      .querySelector("bili-comment-renderer").shadowRoot
                      .getElementById("user-avatar");
-                el.addEventListener("mouseover", showProfileDebounce);
+                avatar.addEventListener("mouseover", showProfileDebounce);
 
                 const replies = element.shadowRoot
                                 .querySelector("bili-comment-replies-renderer").shadowRoot
                                 .querySelectorAll("bili-comment-reply-renderer");
                 for (const reply of replies){
-                    el = reply.shadowRoot
+                    const avatar = reply.shadowRoot
                          .querySelector("bili-comment-user-info")
                          .getElementsByTagName("a")[0];
-                    el.addEventListener("mouseover", showProfileDebounce);
+                    avatar.addEventListener("mouseover", showProfileDebounce);
                 }
             })
         }
