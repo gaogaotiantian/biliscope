@@ -43,15 +43,14 @@ window.addEventListener("load", function() {
             }
         }
 
-        let retry = 20;
         const hookComment = (retry) => {
             if (retry < 1) {
                 return;
             }
 
             if (!document.querySelector("bili-comments")?.shadowRoot
-                .querySelector("bili-comment-thread-renderer")?.shadowRoot
-                .querySelector("bili-comment-renderer")) {
+                 .querySelector("bili-comment-thread-renderer")?.shadowRoot
+                 .querySelector("bili-comment-renderer")) {
                 setTimeout(() => hookComment(retry-1), 500);
                 return;
             }
@@ -61,24 +60,24 @@ window.addEventListener("load", function() {
             .querySelectorAll("bili-comment-thread-renderer")
             .forEach(element => {
                 el = element.shadowRoot
-                    .querySelector("bili-comment-renderer").shadowRoot
-                    .getElementById("user-avatar");
+                     .querySelector("bili-comment-renderer").shadowRoot
+                     .getElementById("user-avatar");
                 el.addEventListener("mouseover", showProfileDebounce);
 
                 const replies = element.shadowRoot
-                .querySelector("bili-comment-replies-renderer").shadowRoot
-                .querySelectorAll("bili-comment-reply-renderer");
+                                .querySelector("bili-comment-replies-renderer").shadowRoot
+                                .querySelectorAll("bili-comment-reply-renderer");
                 for (const reply of replies){
                     el = reply.shadowRoot
-                        .querySelector("bili-comment-user-info")
-                        .getElementsByTagName("a")[0];
+                         .querySelector("bili-comment-user-info")
+                         .getElementsByTagName("a")[0];
                     el.addEventListener("mouseover", showProfileDebounce);
                 }
             })
         }
 
         if (window.location.href.startsWith(BILIBILI_VIDEO_URL)) {
-            setTimeout(() => hookComment(retry), 500);
+            setTimeout(() => hookComment(20), 500);
         }
     });
 
