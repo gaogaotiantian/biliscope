@@ -76,6 +76,13 @@ VideoTagManager.prototype.updateData = function(data) {
             this.tags.add("低质");
             newTag = true;
         }
+
+        const staffs = data.payload?.staff;
+
+        if (staffs?.find(staff => staff?.title == "赞助商")) {
+            this.tags.add("广告");
+            newTag = true;
+        }
     } else {
         return;
     }
