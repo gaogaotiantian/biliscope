@@ -40,26 +40,33 @@ function showProfile(event) {
                 }
             }
         } else if (targetData["type"] == "video") {
-            if (biliScopeOptions.enableVideoTag && videoTagManager) {
-                let target = targetData["target"];
-                let videoId = target.getAttribute("biliscope-videoid");
-                let updated = videoTagManager.updateTarget(target);
-                videoTagManager.updateVideoId(videoId);
+            let videoInfoConsumer = [];
+            const target = targetData["target"];
+            const videoId = target.getAttribute("biliscope-videoid");
 
+            if (biliScopeOptions.enableVideoTag && videoTagManager) {
+                const updated = videoTagManager.updateTarget(target);
+                videoTagManager.updateVideoId(videoId);
                 if (updated) {
-                    updateVideoInfo(videoId, (data) => videoTagManager.updateData(data));
+                    videoInfoConsumer.push(videoTagManager);
                 }
             }
 
             if (biliScopeOptions.enableAiSummary && videoProfileCard && videoProfileCard.enable()) {
-                let target = targetData["target"];
-                let videoId = target.getAttribute("biliscope-videoid");
-                let updated = videoProfileCard.updateVideoId(videoId);
+                const updated = videoProfileCard.updateVideoId(videoId);
                 videoProfileCard.updateCursor(currCursorX, currCursorY);
                 videoProfileCard.updateTarget(target)
                 if (updated) {
-                    updateVideoInfo(videoId, (data) => videoProfileCard.updateData(data));
+                    videoInfoConsumer.push(videoProfileCard);
                 }
+            }
+
+            if (videoInfoConsumer.length) {
+                updateVideoInfo(videoId, (data) => {
+                    for (let consumer of videoInfoConsumer) {
+                        consumer.updateData(data);
+                    }
+                });
             }
         }
     }
