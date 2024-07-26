@@ -79,7 +79,7 @@ VideoTagManager.prototype.updateData = function(data) {
 
         const staffs = data.payload?.staff;
 
-        if (staffs?.filter(staff => staff?.title == "赞助商")) {
+        if (staffs?.find(staff => staff?.title == "赞助商")) {
             this.tags.add("广告");
             newTag = true;
         }
