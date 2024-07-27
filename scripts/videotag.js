@@ -34,7 +34,7 @@ VideoTagManager.prototype.updateData = function(data) {
 
     if (data["api"] == "reply") {
         const member = data.payload?.top?.upper?.member;
-        if (member?.official_verify?.type == 1) {
+        if (member && member.mid != data.payload.upper.mid && member?.official_verify?.type == 1) {
             newTag = true;
             this.tags.add("广告");
         }
@@ -74,6 +74,13 @@ VideoTagManager.prototype.updateData = function(data) {
 
         if (favorite / coin > 10) {
             this.tags.add("低质");
+            newTag = true;
+        }
+
+        const staffs = data.payload?.staff;
+
+        if (staffs?.find(staff => staff?.title == "赞助商")) {
+            this.tags.add("广告");
             newTag = true;
         }
     } else {
