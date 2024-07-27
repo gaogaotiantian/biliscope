@@ -69,7 +69,7 @@ window.addEventListener("load", function() {
                 for (const reply of replies){
                     const avatar = reply.shadowRoot
                                    .querySelector("bili-comment-user-info")
-                                   .getElementsByTagName("a")[0];
+                                   .querySelector("#user-avatar");
                     avatar.addEventListener("mouseover", showProfileDebounce);
                 }
             })
