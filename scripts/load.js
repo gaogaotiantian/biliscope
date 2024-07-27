@@ -59,8 +59,8 @@ window.addEventListener("load", function() {
             .querySelectorAll("bili-comment-thread-renderer")
             .forEach(element => {
                 const avatar = element.shadowRoot
-                     .querySelector("bili-comment-renderer").shadowRoot
-                     .getElementById("user-avatar");
+                               .querySelector("bili-comment-renderer").shadowRoot
+                               .getElementById("user-avatar");
                 avatar.addEventListener("mouseover", showProfileDebounce);
 
                 const replies = element.shadowRoot
@@ -68,8 +68,8 @@ window.addEventListener("load", function() {
                                 .querySelectorAll("bili-comment-reply-renderer");
                 for (const reply of replies){
                     const avatar = reply.shadowRoot
-                         .querySelector("bili-comment-user-info")
-                         .getElementsByTagName("a")[0];
+                                   .querySelector("bili-comment-user-info")
+                                   .getElementsByTagName("a")[0];
                     avatar.addEventListener("mouseover", showProfileDebounce);
                 }
             })
