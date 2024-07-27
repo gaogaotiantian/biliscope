@@ -331,6 +331,10 @@ UserProfileCard.prototype.clearOriginalCard = function() {
     for (let card of document.getElementsByClassName("bili-user-profile")) {
         card.hidden = true;
     }
+
+    for (let card of document.getElementsByTagName("bili-user-profile")) {
+        card.hidden = true;
+    }
 }
 
 UserProfileCard.prototype.initEvents = function() {
@@ -417,6 +421,9 @@ UserProfileCard.prototype.updateTarget = function(target) {
         let node = target
         let zIndex = 1002;
         while (node && node != document) {
+            if (node instanceof ShadowRoot) {
+                node = node.host;
+            }
             let containerIndex = window.getComputedStyle(node).getPropertyValue("z-index");
             if (containerIndex && containerIndex != "auto" && containerIndex > zIndex) {
                 zIndex = containerIndex;

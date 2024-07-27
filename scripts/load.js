@@ -42,6 +42,50 @@ window.addEventListener("load", function() {
                 });
             }
         }
+
+        const hookComment = (retry) => {
+            if (retry < 1) {
+                return;
+            }
+
+            if (!document.querySelector("bili-comments")?.shadowRoot
+                 .querySelector("bili-comment-thread-renderer")?.shadowRoot
+                 .querySelector("bili-comment-renderer")) {
+                setTimeout(() => hookComment(retry-1), 500);
+                return;
+            }
+
+            document.querySelector("bili-comments").shadowRoot
+            .querySelectorAll("bili-comment-thread-renderer")
+            .forEach(element => {
+                const renderer = element.shadowRoot
+                                 .querySelector("bili-comment-renderer")
+                const avatar = renderer.shadowRoot.getElementById("user-avatar");
+                avatar.addEventListener("mouseover", showProfileDebounce);
+
+                const userNameA = renderer.shadowRoot
+                                  .querySelector("bili-comment-user-info").shadowRoot
+                                  .querySelector("#user-name > a");
+                userNameA.addEventListener("mouseover", showProfileDebounce);
+
+                const replies = element.shadowRoot
+                                .querySelector("bili-comment-replies-renderer").shadowRoot
+                                .querySelectorAll("bili-comment-reply-renderer");
+                for (const reply of replies){
+                    const userInfo = reply.shadowRoot
+                                     .querySelector("bili-comment-user-info");
+                    const avatar = userInfo.querySelector("#user-avatar");
+                    avatar.addEventListener("mouseover", showProfileDebounce);
+
+                    const userNameA = userInfo.shadowRoot.querySelector("#user-name > a");
+                    userNameA.addEventListener("mouseover", showProfileDebounce);
+                }
+            })
+        }
+
+        if (window.location.href.startsWith(BILIBILI_VIDEO_URL)) {
+            setTimeout(() => hookComment(20), 500);
+        }
     });
 
     getGuardInfo(6726252, 245645656).then((data) => {
