@@ -4,7 +4,7 @@ let optionLoad = chrome.storage.sync.get({
     enableRollbackFeedcard: true,
     enableWordCloud: true,
     enableAiSummary: true,
-    videoCardHoverThreshold: 800,
+    aiSummaryHoverThreshold: 800,
     enableVideoTag: true,
     enableIpLabel: true,
     minSize: 5

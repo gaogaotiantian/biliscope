@@ -81,7 +81,7 @@ function showProfileDebounce(event) {
             debounceTime = 300;
             break;
         case "video":
-            debounceTime = biliScopeOptions.videoCardHoverThreshold;
+            debounceTime = biliScopeOptions.aiSummaryHoverThreshold;
             break;
     }
 
