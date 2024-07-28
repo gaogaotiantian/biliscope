@@ -383,36 +383,41 @@ VideoProfileCard.prototype.drawHotComment = function() {
 }
 
 VideoProfileCard.prototype.updateData = function(data) {
+    if (!biliScopeOptions.enableAiSummary) {
+        return;
+    }
+
     if (this.valid == null) {
         document.getElementById("biliscope-hot-comment-wrapper").classList.add("d-none");
         document.getElementById("biliscope-ai-summary-popup").classList.add("d-none");
-        document.getElementById("biliscope-ai-summary-none").classList.add("d-none");
+        document.getElementById("biliscope-ai-summary-none").classList.remove("d-none");
     }
-    this.valid = true;
 
     if (data["api"] == "view") {
         this.data.view = data["payload"];
     } else if (data["api"] == "conclusion") {
-        if (!biliScopeOptions.enableAiSummary) {
-            return;
-        }
-
         this.data.conclusion = data["payload"];
         this.drawConclusion();
 
         if (this.data.conclusion.model_result.summary) {
+            document.getElementById("biliscope-ai-summary-none").classList.add("d-none");
             document.getElementById("biliscope-ai-summary-popup").classList.remove("d-none");
-        } else if (!biliScopeOptions.enableHotComment){
-            document.getElementById("biliscope-ai-summary-none").classList.remove("d-none");
+            this.valid = true;
+        } else {
+            document.getElementById("biliscope-hot-comment-wrapper").classList.add("d-none");
+            this.valid = false;
         }
     } else if (data["api"] == "reply") {
-        if (!biliScopeOptions.enableHotComment) {
+        if (this.valid == false) {
             return;
         }
 
         this.data.replies = data.payload?.replies;
         if(this.data.replies) {
             this.drawHotComment();
+            this.valid = true;
+        } else {
+            this.valid = false;
         }
     }
 
