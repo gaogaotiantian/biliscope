@@ -61,6 +61,7 @@
 
 #biliscope-hot-comment-author {
     color: #61666d;
+    cursor: pointer;
 }
 
 #biliscope-hot-comment-author:hover {

@@ -109,7 +109,7 @@ function getVideoProfileCardHTML(data) {
                 <div id="biliscope-hot-comment-icon">
                 </div>
                 <div id="biliscope-hot-comment">
-                    <span id="biliscope-hot-comment-author" class="bili-rich-text-module at">
+                    <span id="biliscope-hot-comment-author">
                     </span>
                     <span id="biliscope-hot-comment-text">
                     </span>
@@ -383,10 +383,6 @@ VideoProfileCard.prototype.drawHotComment = function() {
 }
 
 VideoProfileCard.prototype.updateData = function(data) {
-    if (!biliScopeOptions.enableAiSummary) {
-        return;
-    }
-
     if (this.valid == null) {
         document.getElementById("biliscope-hot-comment-wrapper").classList.add("d-none");
         document.getElementById("biliscope-ai-summary-popup").classList.add("d-none");
