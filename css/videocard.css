@@ -1,12 +1,6 @@
 #biliscope-video-card {
     position: absolute;
     z-index: 1002;
-    font-size: 14px;
-    display: flex;
-    flex-direction: column;
-    background-color: #fff;
-    border-radius: 8px;
-    max-height: calc(50vh + 74px);
 }
 
 #biliscope-video-card * {
@@ -15,6 +9,15 @@
 
 #biliscope-video-card .d-none {
     display: none;
+}
+
+#biliscope-video-card-inner {
+    font-size: 14px;
+    display: flex;
+    flex-direction: column;
+    background-color: #fff;
+    border-radius: 8px;
+    max-height: calc(50vh + 74px);
 }
 
 #biliscope-ai-summary-none {
