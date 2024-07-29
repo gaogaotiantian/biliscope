@@ -59,6 +59,21 @@
     font-size: 13px;
 }
 
+#biliscope-hot-comment-text img {
+    width: 1.4em;
+    height: 1.4em;
+    vertical-align: text-bottom;
+}
+
+#biliscope-hot-comment-text a {
+    color: #008ac5;
+    cursor: pointer;
+}
+
+#biliscope-hot-comment-text a:hover {
+    color: #00AEEC;
+}
+
 #biliscope-hot-comment-author {
     color: #61666d;
     cursor: pointer;

@@ -303,15 +303,13 @@ VideoProfileCard.prototype.drawConclusion = function() {
 }
 
 VideoProfileCard.prototype.drawHotComment = function() {
-    let hotComment;
-
     // 具有热评标签的
-    hotComment = this.data.replies.filter(reply =>
+    let hotComment = this.data.replies.filter(reply =>
         reply?.attr == 32768
     )?.[0];
 
     // 高赞的
-    if(!hotComment) {
+    if (!hotComment) {
         hotComment = this.data.replies.reduce((lReply, rReply) =>
             lReply.like > rReply.like ? lReply : rReply
         );
@@ -331,8 +329,8 @@ VideoProfileCard.prototype.drawHotComment = function() {
         } else {
             hotCommentText.innerHTML = '';
             let separators = [];
-            let emotes = content?.emote;
-            let jump_urls = content?.jump_url;
+            const emotes = content?.emote;
+            const jump_urls = content?.jump_url;
             if (emotes) {
                 separators = separators.concat(Object.keys(emotes));
             }
@@ -342,29 +340,22 @@ VideoProfileCard.prototype.drawHotComment = function() {
 
             let regexStr = separators.map(s =>
                 s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join('|');
-            let hotComments, hotCommentItem;
+            let hotCommentItems;
 
             if (regexStr) {
-                hotComments = content.message.split(new RegExp(`(${regexStr})`));
+                hotCommentItems = content.message.split(new RegExp(`(${regexStr})`));
             } else {
-                hotComments = [content.message];
+                hotCommentItems = [content.message];
             }
 
             let jump_urls_copy = {...jump_urls};
-            hotComments.map(s => {
+            hotCommentItems.map(s => {
+                let hotCommentItem;
                 if (emotes?.[s]) {
                     hotCommentItem = document.createElement("img");
-                    hotCommentItem.style = "width:1.4em;height:1.4em;vertical-align:text-bottom;";
                     hotCommentItem.src = emotes[s].url;
                 } else if (jump_urls_copy?.[s]) {
                     hotCommentItem = document.createElement("a");
-                    hotCommentItem.style = "color:#008ac5;cursor:pointer;";
-                    hotCommentItem.onmouseover = function() {
-                        this.style.color = '#00AEEC';
-                    }
-                    hotCommentItem.onmouseout = function() {
-                        this.style.color = '#008ac5';
-                    }
                     hotCommentItem.target = "_blank";
                     hotCommentItem.href = jump_urls_copy[s].pc_url;
                     hotCommentItem.innerHTML = s;
@@ -377,8 +368,6 @@ VideoProfileCard.prototype.drawHotComment = function() {
                 hotCommentText.appendChild(hotCommentItem);
             });
         }
-
-        document.getElementById("biliscope-hot-comment-wrapper").classList.remove("d-none");
     }
 }
 
@@ -396,28 +385,21 @@ VideoProfileCard.prototype.updateData = function(data) {
         this.drawConclusion();
 
         if (this.data.conclusion.model_result.summary) {
-            document.getElementById("biliscope-ai-summary-none").classList.add("d-none");
-            document.getElementById("biliscope-ai-summary-popup").classList.remove("d-none");
             this.valid = true;
-        } else {
-            document.getElementById("biliscope-hot-comment-wrapper").classList.add("d-none");
-            this.valid = false;
         }
     } else if (data["api"] == "reply") {
-        if (this.valid == false) {
-            return;
-        }
-
         this.data.replies = data.payload?.replies;
         if(this.data.replies) {
             this.drawHotComment();
-            this.valid = true;
-        } else {
-            this.valid = false;
         }
     }
 
     if (this.enabled && this.el) {
+        if (this.valid) {
+            document.getElementById("biliscope-ai-summary-none").classList.add("d-none");
+            document.getElementById("biliscope-ai-summary-popup").classList.remove("d-none");
+            document.getElementById("biliscope-hot-comment-wrapper").classList.remove("d-none");
+        }
         this.el.style.display = "flex";
     }
 
