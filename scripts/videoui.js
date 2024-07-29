@@ -311,9 +311,8 @@ VideoProfileCard.prototype.drawConclusion = function() {
 }
 
 VideoProfileCard.prototype.drawHotComment = function() {
-    document.getElementById("biliscope-hot-comment-wrapper").classList.add("d-none");
-
-    if (!this.data.replies || this.data.replies.length == 0) {
+    if (!this.data.replies?.length) {
+        document.getElementById("biliscope-hot-comment-wrapper").classList.add("d-none");
         return;
     }
 
