@@ -17,7 +17,7 @@
     flex-direction: column;
     background-color: #fff;
     border-radius: 8px;
-    max-height: calc(50vh + 74px);
+    max-height: 50vh;
 }
 
 #biliscope-ai-summary-none {
