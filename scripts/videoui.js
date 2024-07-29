@@ -373,7 +373,7 @@ VideoProfileCard.prototype.drawHotComment = function() {
                     hotCommentItem.target = "_blank";
                     hotCommentItem.href = jump_urls_copy[s].pc_url;
                     hotCommentItem.innerHTML = s;
-                    delete jump_urls_copy[s];
+                    jump_urls_copy[s] = undefined;
                 } else {
                     hotCommentItem = document.createElement("span");
                     hotCommentItem.innerHTML = s;
