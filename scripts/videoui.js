@@ -392,11 +392,10 @@ VideoProfileCard.prototype.updateData = function(data) {
         this.data.view = data["payload"];
     } else if (data["api"] == "conclusion") {
         this.data.conclusion = data["payload"];
-        this.drawConclusion();
-
         if (this.data.conclusion.model_result.summary) {
             this.valid = true;
         }
+        this.drawConclusion();
     } else if (data["api"] == "reply") {
         this.data.replies = data.payload?.replies;
         this.drawHotComment();
