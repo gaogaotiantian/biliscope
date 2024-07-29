@@ -313,7 +313,7 @@ VideoProfileCard.prototype.drawConclusion = function() {
 VideoProfileCard.prototype.drawHotComment = function() {
     document.getElementById("biliscope-hot-comment-wrapper").classList.add("d-none");
 
-    if (this.data.replies.length == 0) {
+    if (!this.data.replies || this.data.replies.length == 0) {
         return;
     }
 
@@ -329,7 +329,7 @@ VideoProfileCard.prototype.drawHotComment = function() {
         );
     }
 
-    if(hotComment) {
+    if (hotComment) {
         const {content, member} = hotComment;
         const hotCommentText = document.getElementById("biliscope-hot-comment-text");
 
@@ -342,18 +342,15 @@ VideoProfileCard.prototype.drawHotComment = function() {
             hotCommentText.innerHTML = content.message;
         } else {
             hotCommentText.innerHTML = '';
-            let separators = [];
             const emotes = content?.emote;
             const jump_urls = content?.jump_url;
-            if (emotes) {
-                separators = separators.concat(Object.keys(emotes));
-            }
-            if (jump_urls) {
-                separators = separators.concat(Object.keys(jump_urls));
-            }
+            const separators = Object.keys(emotes || {})
+                               .concat(Object.keys(jump_urls || {}));
 
-            let regexStr = separators.map(s =>
-                s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join('|');
+            // 转义separators中每个元素的特殊字符，并用'|'作为分隔符连接为字符串
+            const regexStr = separators.map(s =>
+                s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
+            ).join('|');
             let hotCommentItems;
 
             if (regexStr) {
@@ -373,7 +370,9 @@ VideoProfileCard.prototype.drawHotComment = function() {
                     hotCommentItem.target = "_blank";
                     hotCommentItem.href = jump_urls_copy[s].pc_url;
                     hotCommentItem.innerHTML = s;
-                    jump_urls_copy[s] = undefined;
+
+                    // 只标注一次jump_url，其余当作普通文本
+                    delete jump_urls_copy[s];
                 } else {
                     hotCommentItem = document.createElement("span");
                     hotCommentItem.innerHTML = s;
