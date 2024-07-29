@@ -331,35 +331,29 @@ VideoProfileCard.prototype.drawHotComment = function() {
     if (hotComment) {
         const {content, member} = hotComment;
         const hotCommentText = document.getElementById("biliscope-hot-comment-text");
+        const hotCommentAuthor = document.getElementById("biliscope-hot-comment-author");
 
-        document.getElementById("biliscope-hot-comment-author").innerHTML = `${member.uname}：`;
-        document.getElementById("biliscope-hot-comment-author").onclick = function() {
+        hotCommentText.innerHTML = '';
+        hotCommentAuthor.innerHTML = `${member.uname}：`;
+        hotCommentAuthor.onclick = function() {
             open(`//space.bilibili.com/${member.mid}`);
         }
 
-        if (!content?.emote && !content?.jump_url) {
+        const emotes = content?.emote;
+        const jump_urls = content?.jump_url;
+        const separators = Object.keys(emotes || {}).concat(Object.keys(jump_urls || {}));
+
+        // 转义separators中每个元素的特殊字符，并用'|'作为分隔符连接为字符串
+        const regexStr = separators.map(s =>
+            s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
+        ).join('|');
+
+        if (!regexStr) {
             hotCommentText.innerHTML = content.message;
         } else {
-            hotCommentText.innerHTML = '';
-            const emotes = content?.emote;
-            const jump_urls = content?.jump_url;
-            const separators = Object.keys(emotes || {})
-                               .concat(Object.keys(jump_urls || {}));
-
-            // 转义separators中每个元素的特殊字符，并用'|'作为分隔符连接为字符串
-            const regexStr = separators.map(s =>
-                s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
-            ).join('|');
-            let hotCommentItems;
-
-            if (regexStr) {
-                hotCommentItems = content.message.split(new RegExp(`(${regexStr})`));
-            } else {
-                hotCommentItems = [content.message];
-            }
-
             let jump_urls_copy = {...jump_urls};
-            hotCommentItems.map(s => {
+
+            content.message.split(new RegExp(`(${regexStr})`)).map(s => {
                 let hotCommentItem;
                 if (emotes?.[s]) {
                     hotCommentItem = document.createElement("img");
