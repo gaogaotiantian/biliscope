@@ -2,6 +2,7 @@
 var BILIBILI_DYNAMIC_URL = "https://t.bilibili.com"
 var BILIBILI_NEW_DYNAMIC_URL = "https://www.bilibili.com/opus"
 var BILIBILI_VIDEO_URL = "https://www.bilibili.com/video"
+var BILIBILI_SPACE_URL = "https://space.bilibili.com"
 
 function labelVideoCommentIp(observer) {
 
@@ -146,8 +147,11 @@ function hookVueComponent() {
 }
 
 function installIpHooks() {
-    if (window.location.href.startsWith(BILIBILI_DYNAMIC_URL) ||
-        window.location.href.startsWith(BILIBILI_NEW_DYNAMIC_URL)) {
+    const {href, pathname} = window.location;
+
+    if (href.startsWith(BILIBILI_DYNAMIC_URL) ||
+        href.startsWith(BILIBILI_NEW_DYNAMIC_URL) ||
+        (href.startsWith(BILIBILI_SPACE_URL) && pathname.endsWith("dynamic"))) {
         hookVueComponent();
         let ipObserver = new MutationObserver((mutationList, observer) => {
             labelDynamicCommentIp();
@@ -158,7 +162,7 @@ function installIpHooks() {
         });
     }
 
-    if (window.location.href.startsWith(BILIBILI_VIDEO_URL)) {
+    if (href.startsWith(BILIBILI_VIDEO_URL)) {
         let ipObserver = new MutationObserver((mutationList, observer) => {
             labelVideoCommentIp(ipObserver);
         });
