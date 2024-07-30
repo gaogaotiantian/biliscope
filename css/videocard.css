@@ -15,6 +15,7 @@
     font-size: 14px;
     display: flex;
     flex-direction: column;
+    border: 1px solid #e3e5e7;
     background-color: #fff;
     border-radius: 8px;
     max-height: 50vh;
@@ -34,6 +35,7 @@
     width: 376px;
     flex-shrink: 0;
     background-color: #fff;
+    border-top: 1px solid #e3e5e7;
     border-radius: 8px;
 }
 
@@ -99,7 +101,6 @@
 .biliscope-ai-summary-popup {
     width: 375px;
     border-radius: 8px 8px 0 0;
-    border: 1px solid #e3e5e7;
     background: #fff;
     box-shadow: 0 0 30px rgba(0, 0, 0, .10196);
     display: -ms-flexbox;

@@ -392,16 +392,16 @@ VideoProfileCard.prototype.updateData = function(data) {
         } else {
             this.valid = false;
         }
-        this.drawConclusion();
     } else if (data["api"] == "reply") {
         this.data.replies = data.payload?.replies;
-        this.drawHotComment();
     }
 
-    if (this.enabled && this.el && this.el.style.display != "flex") {
+    if (this.enabled && this.el) {
         if (this.valid != null) {
             this.el.style.display = "flex";
             if (this.valid) {
+                this.drawConclusion();
+                this.drawHotComment();
                 document.getElementById("biliscope-video-card-inner").classList.remove("d-none");
                 document.getElementById("biliscope-ai-summary-none").classList.add("d-none");
             } else {
