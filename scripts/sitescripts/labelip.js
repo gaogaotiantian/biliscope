@@ -147,11 +147,9 @@ function hookVueComponent() {
 }
 
 function installIpHooks() {
-    const {href, pathname} = window.location;
-
-    if (href.startsWith(BILIBILI_DYNAMIC_URL) ||
-        href.startsWith(BILIBILI_NEW_DYNAMIC_URL) ||
-        (href.startsWith(BILIBILI_SPACE_URL) && pathname.endsWith("dynamic"))) {
+    if (window.location.href.startsWith(BILIBILI_DYNAMIC_URL) ||
+        window.location.href.startsWith(BILIBILI_NEW_DYNAMIC_URL) ||
+        window.location.href.startsWith(BILIBILI_SPACE_URL)) {
         hookVueComponent();
         let ipObserver = new MutationObserver((mutationList, observer) => {
             labelDynamicCommentIp();
@@ -162,7 +160,7 @@ function installIpHooks() {
         });
     }
 
-    if (href.startsWith(BILIBILI_VIDEO_URL)) {
+    if (window.location.href.startsWith(BILIBILI_VIDEO_URL)) {
         let ipObserver = new MutationObserver((mutationList, observer) => {
             labelVideoCommentIp(ipObserver);
         });
