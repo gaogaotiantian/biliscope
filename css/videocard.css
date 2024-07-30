@@ -36,7 +36,7 @@
     flex-shrink: 0;
     background-color: #fff;
     border-top: 1px solid #e3e5e7;
-    border-radius: 8px;
+    border-radius:0 0 8px 8px;
 }
 
 #biliscope-hot-comment {
