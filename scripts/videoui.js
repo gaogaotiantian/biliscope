@@ -386,6 +386,8 @@ VideoProfileCard.prototype.updateData = function(data) {
         this.data.conclusion = data["payload"];
         if (this.data.conclusion.model_result.summary) {
             this.valid = true;
+        } else {
+            this.valid = false;
         }
         this.drawConclusion();
     } else if (data["api"] == "reply") {
@@ -393,15 +395,18 @@ VideoProfileCard.prototype.updateData = function(data) {
         this.drawHotComment();
     }
 
-    if (this.enabled && this.el) {
-        if (this.valid) {
-            document.getElementById("biliscope-ai-summary-none").classList.add("d-none");
-            document.getElementById("biliscope-video-card-inner").classList.remove("d-none");
-        } else {
-            document.getElementById("biliscope-video-card-inner").classList.add("d-none");
-            document.getElementById("biliscope-ai-summary-none").classList.remove("d-none");
+    if (this.enabled && this.el && this.el.style.display != "flex") {
+        if (this.valid != null) {
+            this.el.style.display = "flex";
+            if (this.valid) {
+                document.getElementById("biliscope-video-card-inner").classList.remove("d-none");
+                document.getElementById("biliscope-ai-summary-none").classList.add("d-none");
+            } else {
+                document.getElementById("biliscope-video-card-inner").classList.add("d-none");
+                document.getElementById("biliscope-ai-summary-none").classList.remove("d-none");
+            }
+
         }
-        this.el.style.display = "flex";
     }
 
     this.updateCursor(this.cursorX, this.cursorY);
