@@ -107,10 +107,10 @@ function installIdHooks() {
         if (window.location.href.startsWith(BILIBILI_POPULAR_URL)) {
             labelPopularPage();
         } else if (window.location.href.startsWith(BILIBILI_DYNAMIC_URL) ||
-                   window.location.href.startsWith(BILIBILI_NEW_DYNAMIC_URL)) {
-            labelDynamicPage();
-        } else if (window.location.href.startsWith(BILIBILI_VIDEO_URL) ||
+                   window.location.href.startsWith(BILIBILI_NEW_DYNAMIC_URL) ||
                    window.location.href.startsWith(BILIBILI_SPACE_URL)) {
+            labelDynamicPage();
+        } else if (window.location.href.startsWith(BILIBILI_VIDEO_URL)) {
             labelVideoPage();
         }
     })
