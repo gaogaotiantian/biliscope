@@ -4,6 +4,7 @@ var BILIBILI_NEW_DYNAMIC_URL = "https://www.bilibili.com/opus"
 var BILIBILI_SPACE_URL = "https://space.bilibili.com"
 var BILIBILI_POPULAR_URL = "https://www.bilibili.com/v/popular"
 var BILIBILI_VIDEO_URL = "https://www.bilibili.com/video"
+var BILIBILI_WATCH_LATER_URL = "https://www.bilibili.com/list/watchlater"
 
 function getUserIdFromLink(s) {
     let regex = /.*?bilibili.com\/([0-9]*)(\/dynamic)?([^\/]*|\/|\/\?.*)$/;
@@ -15,14 +16,18 @@ function getUserIdFromLink(s) {
     return userId;
 }
 
-function getVideoIdFromLink(s) {
-    let regex = /.*?bilibili.com\/video\/(BV[1-9a-zA-Z]{10})(\/|\/\?.*)?$/;
-    let videoId = null;
+function getVideoIdFromLink(link) {
+    const url = URL.parse(link);
+    const videoId = null;
 
-    if (s && s.match(regex)) {
-        return s.match(regex)[1];
+    if (!url) {
+        return videoId;
     }
-    return videoId;
+
+    const regexBV = /(BV[1-9a-zA-Z]{10})/g;
+    const matches = url.pathname.match(regexBV) || url.search.match(regexBV);
+
+    return matches?.[0] || videoId;
 }
 
 function labelPopularPage() {
@@ -90,8 +95,9 @@ function labelLinks() {
             if (userId) {
                 el.setAttribute("biliscope-userid", userId);
             }
-        } else if (el.href.startsWith(BILIBILI_VIDEO_URL)) {
-            let videoId = getVideoIdFromLink(el.href);
+        } else if (el.href.startsWith(BILIBILI_VIDEO_URL) ||
+                   el.href.startsWith(BILIBILI_WATCH_LATER_URL)) {
+            const videoId = getVideoIdFromLink(el.href);
             if (videoId) {
                 el.setAttribute("biliscope-videoid", videoId);
             }
