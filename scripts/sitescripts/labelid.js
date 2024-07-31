@@ -58,35 +58,12 @@ function labelDynamicPage() {
             up.setAttribute("biliscope-userid", upList[idx].mid);
         }
     }
-
-    for (let className of ["user-name", "root-reply-avatar", "sub-user-name", "sub-reply-avatar"]) {
-        for (let el of document.getElementsByClassName(className)) {
-            let mid = el.getAttribute("data-user-id");
-            if (mid) {
-                el.setAttribute("biliscope-userid", mid);
-            }
-        }
-    }
-}
-
-function labelVideoPage() {
-    for (let el of document.querySelectorAll(".user-name,.root-reply-avatar,.sub-user-name,.sub-reply-avatar")) {
-        let mid = el.getAttribute("data-user-id");
-        if (mid) {
-            el.setAttribute("biliscope-userid", mid);
-        }
-    }
 }
 
 function labelLinks() {
     for (let el of document.getElementsByTagName("a")) {
         if (el.href.startsWith(BILIBILI_SPACE_URL)) {
             let userId = getUserIdFromLink(el.href);
-            if (userId) {
-                el.setAttribute("biliscope-userid", userId);
-            }
-        } else if (el.classList.contains("jump-link")) {
-            let userId = el.getAttribute("data-user-id");
             if (userId) {
                 el.setAttribute("biliscope-userid", userId);
             }
@@ -110,8 +87,6 @@ function installIdHooks() {
                    window.location.href.startsWith(BILIBILI_NEW_DYNAMIC_URL) ||
                    window.location.href.startsWith(BILIBILI_SPACE_URL)) {
             labelDynamicPage();
-        } else if (window.location.href.startsWith(BILIBILI_VIDEO_URL)) {
-            labelVideoPage();
         }
     })
 
