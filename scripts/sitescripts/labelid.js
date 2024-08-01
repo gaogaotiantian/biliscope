@@ -49,6 +49,13 @@ function labelDynamicPage() {
         }
     }
 
+    for (const el of document.querySelectorAll(".dyn-orig-author__face, .dyn-orig-author__name")) {
+        const {uid} = el?._profile;
+        if (uid) {
+            el.setAttribute("biliscope-userid", uid);
+        }
+    }
+
     for (let el of document.getElementsByClassName("bili-dyn-up-list")) {
         let upList = el.__vue__.list;
         let upElements = el.getElementsByClassName("bili-dyn-up-list__item");
