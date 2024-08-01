@@ -17,17 +17,8 @@ function getUserIdFromLink(s) {
 }
 
 function getVideoIdFromLink(link) {
-    const url = URL.parse(link);
-    const videoId = null;
-
-    if (!url) {
-        return videoId;
-    }
-
     const regexBV = /(BV[1-9a-zA-Z]{10})/g;
-    const matches = url.pathname.match(regexBV) || url.search.match(regexBV);
-
-    return matches?.[0] || videoId;
+    return link.match(regexBV)?.[0];
 }
 
 function labelPopularPage() {
