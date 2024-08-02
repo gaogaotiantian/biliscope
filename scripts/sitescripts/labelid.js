@@ -4,6 +4,7 @@ var BILIBILI_NEW_DYNAMIC_URL = "https://www.bilibili.com/opus"
 var BILIBILI_SPACE_URL = "https://space.bilibili.com"
 var BILIBILI_POPULAR_URL = "https://www.bilibili.com/v/popular"
 var BILIBILI_VIDEO_URL = "https://www.bilibili.com/video"
+var BILIBILI_WATCH_LATER_URL = "https://www.bilibili.com/list/watchlater"
 
 function getUserIdFromLink(s) {
     let regex = /.*?bilibili.com\/([0-9]*)(\/dynamic)?([^\/]*|\/|\/\?.*)$/;
@@ -15,14 +16,9 @@ function getUserIdFromLink(s) {
     return userId;
 }
 
-function getVideoIdFromLink(s) {
-    let regex = /.*?bilibili.com\/video\/(BV[1-9a-zA-Z]{10})(\/|\/\?.*)?$/;
-    let videoId = null;
-
-    if (s && s.match(regex)) {
-        return s.match(regex)[1];
-    }
-    return videoId;
+function getVideoIdFromLink(link) {
+    const regexBV = /(BV[1-9a-zA-Z]{10})/g;
+    return link.match(regexBV)?.[0];
 }
 
 function labelPopularPage() {
@@ -50,6 +46,13 @@ function labelDynamicPage() {
     }
 
     for (const el of document.querySelectorAll(".dyn-orig-author__face, .dyn-orig-author__name")) {
+      const uid = el?._profile?.uid;
+        if (uid) {
+            el.setAttribute("biliscope-userid", uid);
+        }
+    }
+
+    for (const el of document.getElementsByClassName("bili-rich-text-module at")) {
         const uid = el?._profile?.uid;
         if (uid) {
             el.setAttribute("biliscope-userid", uid);
@@ -97,8 +100,9 @@ function labelLinks() {
             if (userId) {
                 el.setAttribute("biliscope-userid", userId);
             }
-        } else if (el.href.startsWith(BILIBILI_VIDEO_URL)) {
-            let videoId = getVideoIdFromLink(el.href);
+        } else if (el.href.startsWith(BILIBILI_VIDEO_URL) ||
+                   el.href.startsWith(BILIBILI_WATCH_LATER_URL)) {
+            const videoId = getVideoIdFromLink(el.href);
             if (videoId) {
                 el.setAttribute("biliscope-videoid", videoId);
             }
