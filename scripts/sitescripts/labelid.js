@@ -45,6 +45,13 @@ function labelDynamicPage() {
         }
     }
 
+    for (const el of document.getElementsByClassName("bili-rich-text-module at")) {
+        const uid = el?._profile?.uid;
+        if (uid) {
+            el.setAttribute("biliscope-userid", uid);
+        }
+    }
+
     for (let el of document.getElementsByClassName("bili-dyn-up-list")) {
         let upList = el.__vue__.list;
         let upElements = el.getElementsByClassName("bili-dyn-up-list__item");
