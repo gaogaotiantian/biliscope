@@ -193,7 +193,14 @@ function save_options() {
         options[key] = element.type === 'checkbox' ? element.checked : element.value;
     }
     chrome.storage.sync.set(options, function () {
-        show_status('保存成功，刷新网页后生效', 3000);
+        chrome.tabs.query({
+            active: true,
+            currentWindow: true
+        }).then(tabs => {
+            chrome.tabs.sendMessage(tabs[0].id, {refreshOptions: true});
+        });
+
+        show_status('保存成功', 3000);
     });
 }
 
