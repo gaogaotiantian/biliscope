@@ -236,11 +236,17 @@ VideoProfileCard.prototype.updatePosition = function() {
         /** @type {DOMRect} */
         const targetBounding = this.target.getBoundingClientRect();
 
-        if (targetBounding.left - windowPadding < cardWidth) {
+        const leftBoundary = window.location.href.startsWith(BILIBILI_POPULAR_URL) ? 0 : cardWidth;
+        if (targetBounding.left - windowPadding < leftBoundary) {
             // Will overflow to the left, put it on the right
             this.el.style.left = `${targetBounding.right + window.scrollX + cursorPaddingX}px`;
         } else {
-            this.el.style.left = `${targetBounding.left + window.scrollX - cursorPaddingX - cardWidth}px`;
+            let leftPx = targetBounding.left - cursorPaddingX - cardWidth;
+            // Will overflow to the left
+            if (leftPx < 0) {
+                leftPx = cursorPaddingX;
+            }
+            this.el.style.left = `${leftPx + window.scrollX}px`;
         }
 
         if (targetBounding.top + windowPadding + cardHeight > window.innerHeight) {
