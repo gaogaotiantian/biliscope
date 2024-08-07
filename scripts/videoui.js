@@ -226,34 +226,28 @@ VideoProfileCard.prototype.updateVideoId = function(videoId) {
     return updated;
 }
 
-VideoProfileCard.prototype.updateCursor = function(cursorX, cursorY) {
-    const cursorPadding = 10;
-    const windowPadding = 20;
-
-    this.cursorX = cursorX;
-    this.cursorY = cursorY;
-
+VideoProfileCard.prototype.updatePosition = function() {
     if (this.el) {
-        let width = this.el.scrollWidth;
-        let height = this.el.scrollHeight;
+        const cardWidth = this.el.scrollWidth;
+        const cardHeight = this.el.scrollHeight;
 
-        if (this.cursorX + width + windowPadding > window.scrollX + window.innerWidth) {
-            // Will overflow to the right, put it on the left
-            this.el.style.left = `${this.cursorX - cursorPadding - width}px`;
+        const cursorPaddingX = 10;
+        const windowPadding = 20;
+        /** @type {DOMRect} */
+        const targetBounding = this.target.getBoundingClientRect();
+
+        if (targetBounding.left - windowPadding < cardWidth) {
+            // Will overflow to the left, put it on the right
+            this.el.style.left = `${targetBounding.right + window.scrollX + cursorPaddingX}px`;
         } else {
-            this.el.style.left = `${this.cursorX + cursorPadding}px`;
+            this.el.style.left = `${targetBounding.left + window.scrollX - cursorPaddingX - cardWidth}px`;
         }
 
-        if (this.cursorY + height + windowPadding > window.scrollY + window.innerHeight) {
+        if (targetBounding.top + windowPadding + cardHeight > window.innerHeight) {
             // Will overflow to the bottom, put it on the top
-            if (this.cursorY - windowPadding - height < window.scrollY) {
-                // Can't fit on top either, put it in the middle
-                this.el.style.top = `${window.scrollY + (window.innerHeight - height) / 2}px`;
-            } else {
-                this.el.style.top = `${this.cursorY - cursorPadding - height}px`;
-            }
+            this.el.style.top = `${targetBounding.bottom + window.scrollY - cardHeight}px`;
         } else {
-            this.el.style.top = `${this.cursorY + cursorPadding}px`;
+            this.el.style.top = `${targetBounding.top + window.scrollY}px`;
         }
     }
 }
@@ -412,5 +406,5 @@ VideoProfileCard.prototype.updateData = function(data) {
         }
     }
 
-    this.updateCursor(this.cursorX, this.cursorY);
+    this.updatePosition();
 }

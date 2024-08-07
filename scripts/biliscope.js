@@ -1,14 +1,3 @@
-let currCursorX = 0;
-let currCursorY = 0;
-
-// Load the site script to label the user links
-window.addEventListener("load", function() {
-    this.document.addEventListener("mousemove", (event) => {
-        currCursorX = event.pageX;
-        currCursorY = event.pageY;
-    });
-});
-
 function getTarget(target) {
     let maxDepth = 5;
     el = target;
@@ -53,8 +42,8 @@ function showProfile(event, targetData) {
 
         if (biliScopeOptions.enableAiSummary && videoProfileCard && videoProfileCard.enable()) {
             const updated = videoProfileCard.updateVideoId(videoId);
-            videoProfileCard.updateCursor(currCursorX, currCursorY);
             videoProfileCard.updateTarget(target);
+            videoProfileCard.updatePosition();
             if (updated) {
                 videoInfoConsumer.push(videoProfileCard);
             }
