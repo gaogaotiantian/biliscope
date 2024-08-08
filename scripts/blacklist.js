@@ -46,6 +46,18 @@ function updateBanMids() {
     });
 }
 
+function removeElChildren(selector) {
+    const target = document.querySelector(selector);
+    if (target) {
+        for (const el of target.children) {
+            const mid = el.querySelector("[biliscope-userid]")?.getAttribute("biliscope-userid");
+            if (banMids.includes(parseInt(mid))) {
+                el.remove();
+            }
+        }
+    }
+}
+
 function hiddenElChildren(selector) {
     const target = document.querySelector(selector);
     if (target) {
@@ -59,10 +71,10 @@ function hiddenElChildren(selector) {
 function cleanPopularPage() {
     const { pathname } = window.location;
 
-    if (pathname.includes("weekly")) {
-        hiddenElChildren(".video-list");
-    } else if (pathname.includes("rank/all")) {
-        hiddenElChildren(".rank-list");
+    if (pathname.endsWith("weekly/")) {
+        removeElChildren(".video-list");
+    } else if (pathname.includes("rank")) {
+        removeElChildren(".rank-list");
     }
 }
 
