@@ -253,6 +253,16 @@ document.getElementById('clear-note-confirm').addEventListener('click', () => {
     document.getElementById('clear-note-button-div').hidden = false;
 });
 
+document.getElementById('refresh-blacklist').addEventListener('click', () => {
+    chrome.tabs.query({
+        active: true,
+        currentWindow: true
+    }).then(tabs => {
+        chrome.tabs.sendMessage(tabs[0].id, {refreshBlackList: true});
+        show_status('刷新成功', 3000);
+    });
+});
+
 document.getElementById('report-issue').addEventListener('click', () => {
     chrome.tabs.create({url: 'https://github.com/gaogaotiantian/biliscope/issues'});
 });
