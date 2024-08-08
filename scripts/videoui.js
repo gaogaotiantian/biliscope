@@ -249,11 +249,20 @@ VideoProfileCard.prototype.updatePosition = function() {
             this.el.style.left = `${leftPx + window.scrollX}px`;
         }
 
-        if (targetBounding.top + windowPadding + cardHeight > window.innerHeight) {
-            // Will overflow to the bottom, put it on the top
-            this.el.style.top = `${targetBounding.bottom + window.scrollY - cardHeight}px`;
+        const middle = targetBounding.top + (targetBounding.bottom - targetBounding.top) / 2;
+        const topOverflow = middle - windowPadding - cardHeight / 2 < 0;
+        const bottomOverflow = middle + windowPadding + cardHeight / 2 > window.innerHeight;
+        if (topOverflow || bottomOverflow) {
+            if (bottomOverflow) {
+                // Put it on the top
+                this.el.style.top = `${targetBounding.bottom - cardHeight + window.scrollY}px`;
+            } else {
+                // Put it on the bottom
+                this.el.style.top = `${targetBounding.top + window.scrollY}px`;
+            }
         } else {
-            this.el.style.top = `${targetBounding.top + window.scrollY}px`;
+            // Put it in the middle
+            this.el.style.top = `${middle - cardHeight / 2 + window.scrollY}px`;
         }
     }
 }
