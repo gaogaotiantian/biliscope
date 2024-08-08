@@ -236,7 +236,7 @@ VideoProfileCard.prototype.updatePosition = function() {
         /** @type {DOMRect} */
         const targetBounding = this.target.getBoundingClientRect();
 
-        const leftBoundary = window.location.href.search(/www.bilibili.com\/(\?|$)/) ? cardWidth : 0;
+        const leftBoundary = window.location.href.match(/www.bilibili.com\/(\?|$)/) ? cardWidth : 0;
         if (targetBounding.left - windowPadding < leftBoundary) {
             // Will overflow to the left, put it on the right
             this.el.style.left = `${targetBounding.right + window.scrollX + cursorPaddingX}px`;
