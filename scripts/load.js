@@ -125,7 +125,7 @@ window.addEventListener("load", function() {
 });
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-    if (request?.refreshOptions) {
+    if (request?.reloadOptions) {
         loadOptions().then((items) => {
             biliScopeOptions = items;
         });

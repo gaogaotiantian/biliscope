@@ -197,7 +197,7 @@ function save_options() {
             active: true,
             currentWindow: true
         }).then(tabs => {
-            chrome.tabs.sendMessage(tabs[0].id, {refreshOptions: true});
+            chrome.tabs.sendMessage(tabs[0].id, {reloadOptions: true});
         });
 
         show_status('保存成功', 3000);
