@@ -1,17 +1,3 @@
-chrome.storage.local.get({
-    noteData: {}
-}, function(result) {
-    noteData = result.noteData;
-});
-
-chrome.storage.sync.get({
-    tagColors: {},
-    enableTagColor: false,
-}, function(result) {
-    tagColors = result.tagColors;
-    enableTagColor = result.enableTagColor;
-});
-
 function getUserIdFromLink(s) {
     let regex = /.*?bilibili.com\/([0-9]*)(\/dynamic)?([^\/]*|\/|\/\?.*)$/;
     let userId = null;

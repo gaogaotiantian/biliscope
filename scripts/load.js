@@ -1,4 +1,18 @@
 function loadOptions() {
+    chrome.storage.local.get({
+        noteData: {}
+    }, function(result) {
+        noteData = result.noteData;
+    });
+
+    chrome.storage.sync.get({
+        tagColors: {},
+        enableTagColor: false,
+    }, function(result) {
+        tagColors = result.tagColors;
+        enableTagColor = result.enableTagColor;
+    });
+
     return chrome.storage.sync.get({
         enableUpCard: true,
         enableBlockButton: true,
@@ -115,11 +129,5 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         loadOptions().then((items) => {
             biliScopeOptions = items;
         });
-
-        chrome.storage.local.get({
-            noteData: {}
-        }, function(result) {
-            noteData = result.noteData;
-        });
     }
-})
+});
