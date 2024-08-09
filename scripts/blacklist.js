@@ -46,24 +46,17 @@ function updateBanMids() {
     });
 }
 
-function removeElChildren(selector) {
-    const target = document.querySelector(selector);
-    if (target) {
-        for (const el of target.children) {
-            const mid = el.querySelector("[biliscope-userid]")?.getAttribute("biliscope-userid");
-            if (banMids.includes(parseInt(mid))) {
-                el.remove();
-            }
-        }
-    }
-}
-
 function hiddenElChildren(selector) {
     const target = document.querySelector(selector);
     if (target) {
         for (const el of target.children) {
             const mid = el.querySelector("[biliscope-userid]")?.getAttribute("biliscope-userid");
-            el.hidden = banMids.includes(parseInt(mid));
+            if (banMids.includes(parseInt(mid))) {
+                el._display ??= el.style.display;
+                el.style.display = "none";
+            } else if (el._display != undefined) {
+                el.style.display = el._display;
+            }
         }
     }
 }
@@ -72,9 +65,9 @@ function cleanPopularPage() {
     const { pathname } = window.location;
 
     if (pathname.endsWith("weekly/")) {
-        removeElChildren(".video-list");
+        hiddenElChildren(".video-list");
     } else if (pathname.includes("rank")) {
-        removeElChildren(".rank-list");
+        hiddenElChildren(".rank-list");
     }
 }
 
