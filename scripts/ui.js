@@ -159,7 +159,7 @@ function getUserProfileCardDataHTML(data) {
                     <span class="biliscope-auth-icon ${titleTypeToClass(data["title_type"])}"></span>
                     ${data["title"]}
                 </span>
-                <span class="biliscope-profession-description" style="display: ${data["profession"] ? "flex": "none"}">
+                <span class="biliscope-profession-description" style="display: ${data["profession"] != ' ' ? "flex": "none"}">
                     <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADYAAAA2CAMAAAC7m5rvAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAABFUExURUxpcWFlbV9lbWFlbF9ka2FlbV9nb2FmbF9jb19jbF9fb19kbGFmbV9lbV9mbF9mbWJlbmFlbV9mbGFmbWJnbmBlbGFmbSRGAiYAAAAWdFJOUwC/kN8w3yDvEEAgYJ+AcFCPz6Cvb7D9AeNOAAABvElEQVR42u1Wy7aDIAwU5C1WrS3//6k3UE9zEsB6F901OyGTZCYRGH72TXNe7tqmZDcx+6sgLwGBZqO6AhKpMhE+lbcWPy0n4+BLLVKXhdWdoUJxioSPuue18SShyqSE4csmA0d1hrK31s4t76hehf2YRgMuNNXIKFIgx40tXVaIZ855r40SgTblxfmBQz0yAoTvANBDVDVALHMOM4108Z1smnCVrkD7JNsCwurlU1F8pPTCeRCNigkr45u5dbydRzrNq5wxv2ZCx3fEQYIXV2nBxMmTxpRkB4EngW1AjQtdN8ZAYq6Iw82cGhNgYxzwJjDYJERHh0wlcevDHOSeMYLpwbBIbEIoeljUo1WkRgaoA4qPE7gR2POISpsQ2BQuqHG7kXtx0JCUec2N4UIzmRQRnw0XiufZtFnNgiuuSMkf+cmC7aM/FxMhkJ8swyZ+bKiPv7zgAxjRg6a7ESaaHmSP9rEhq4MXiR0DI3vHa+hfKlwg7FUfpzLK/PfqeFjOgMdMsUoYREJU74IAIPHwIDyvkJuTqTjJRTn4MtNxCUs3nJtpXflXXhnqTh8Y8vrTZBZbFk/v0rvhZ1+0P1TyJPe5FgeZAAAAAElFTkSuQmCC"
                          class="biliscope-profession-description-icon">
                     ${data["profession"]}
