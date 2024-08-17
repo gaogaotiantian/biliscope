@@ -6,6 +6,7 @@ function FeedcardManager() {
     this.insertParent = null;
     this.insertReference = null;
     this.adFeedcards = new Set();
+    this.isRefreshing = false;
 }
 
 FeedcardManager.prototype.addButton = function (parentNode) {
@@ -66,14 +67,10 @@ const isAdFeedcard = function (feedcard) {
 }
 
 FeedcardManager.prototype.onRollFeedcard = function () {
+    if (this.isRefreshing) return;
     const oldFeedcards = [...document.querySelectorAll('.feed-card')];
     this.insertParent ??= oldFeedcards[0].parentElement;
     this.insertReference ??= oldFeedcards.at(-1).nextElementSibling;
-
-    // 防止连续点击换一换导致重复入栈
-    if (this.backwardStack.length > 0 && oldFeedcards[0] == this.backwardStack.at(-1)[0]) {
-        return;
-    }
 
     // 换一换后移除旧的feedcard
     const observer = new MutationObserver((mutationsList, observer) => {
@@ -92,11 +89,13 @@ FeedcardManager.prototype.onRollFeedcard = function () {
                     this.insertParent.insertBefore(feedcard, this.insertReference);
                 }
                 observer.disconnect();
+                this.isRefreshing = false;
                 break;
             }
         }
     });
     observer.observe(oldFeedcards[0].parentElement, { childList: true });
+    this.isRefreshing = true;
 
     this.backwardStack.push(oldFeedcards.filter(feedcard => !isAdFeedcard(feedcard)));
     this.forwardStack = [];
@@ -120,7 +119,7 @@ FeedcardManager.prototype.replaceFeedcards = function (newFeedcards) {
 }
 
 FeedcardManager.prototype.backward = function () {
-    if (this.backwardStack.length > 0) {
+    if (this.backwardStack.length > 0 && !this.isRefreshing) {
         const newFeedcards = this.backwardStack.pop();
         const oldFeedcards = this.replaceFeedcards(newFeedcards);
         this.forwardStack.push(oldFeedcards);
@@ -129,7 +128,7 @@ FeedcardManager.prototype.backward = function () {
 }
 
 FeedcardManager.prototype.forward = function () {
-    if (this.forwardStack.length > 0) {
+    if (this.forwardStack.length > 0 && !this.isRefreshing) {
         const newFeedcards = this.forwardStack.pop();
         const oldFeedcards = this.replaceFeedcards(newFeedcards);
         this.backwardStack.push(oldFeedcards);
