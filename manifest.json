@@ -41,6 +41,9 @@
   "permissions": [
     "storage"
   ],
+  "host_permissions": [
+    "https://*.bilibili.com/*"
+  ],
   "action": {
     "default_popup": "options/options.html",
     "default_title": "BiliScope - Bilibili插件，你的B站小助手"

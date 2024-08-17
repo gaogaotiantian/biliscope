@@ -194,10 +194,11 @@ function save_options() {
     }
     chrome.storage.sync.set(options, function () {
         chrome.tabs.query({
-            active: true,
-            currentWindow: true
+            url: "https://*.bilibili.com/*"
         }).then(tabs => {
-            chrome.tabs.sendMessage(tabs[0].id, {reloadOptions: true});
+            tabs.forEach(tab => {
+                chrome.tabs.sendMessage(tab.id, {action: "reloadOptions"});
+            });
         });
 
         show_status('保存成功', 3000);
