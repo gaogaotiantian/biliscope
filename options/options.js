@@ -255,10 +255,11 @@ document.getElementById('clear-note-confirm').addEventListener('click', () => {
 
 document.getElementById('refresh-blacklist').addEventListener('click', () => {
     chrome.tabs.query({
-        active: true,
-        currentWindow: true
+        url: "https://*.bilibili.com/*"
     }).then(tabs => {
-        chrome.tabs.sendMessage(tabs[0].id, {refreshBlackList: true});
+        tabs.forEach(tab => {
+            chrome.tabs.sendMessage(tab.id, {action: "refreshBlackList"});
+        });
         show_status('刷新成功', 3000);
     });
 });

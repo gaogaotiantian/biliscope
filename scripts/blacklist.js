@@ -23,7 +23,7 @@ chrome.storage.local.get({
     updateBanMids();
 });
 
-function updateBanMids() {
+function updateBanMids(callback) {
     let banLists = [];
     getBlackList(1).then((data) => {
         banLists = banLists.concat(data["data"]["list"]);
@@ -43,6 +43,8 @@ function updateBanMids() {
         chrome.storage.local.set({
             banMids: banMids
         });
+
+        callback(data);
     });
 }
 
@@ -95,7 +97,7 @@ window.addEventListener("load", function () {
 });
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-    if (request?.refreshBlackList) {
-        cleanPages();
+    if (request.action == "refreshBlackList") {
+        updateBanMids(() => cleanPages());
     }
 });
