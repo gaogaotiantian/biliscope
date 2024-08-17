@@ -231,38 +231,45 @@ VideoProfileCard.prototype.updatePosition = function() {
         const cardWidth = this.el.scrollWidth;
         const cardHeight = this.el.scrollHeight;
 
-        const cursorPaddingX = 10;
+        const cursorPadding = 10;
         const windowPadding = 20;
         /** @type {DOMRect} */
         const targetBounding = this.target.getBoundingClientRect();
 
-        const leftBoundary = window.location.href.match(/www.bilibili.com\/(\?|$)/) ? cardWidth : 0;
-        if (targetBounding.left - windowPadding < leftBoundary) {
-            // Will overflow to the left, put it on the right
-            this.el.style.left = `${targetBounding.right + window.scrollX + cursorPaddingX}px`;
-        } else {
-            let leftPx = targetBounding.left - cursorPaddingX - cardWidth;
-            // Will overflow to the left
-            if (leftPx < 0) {
-                leftPx = cursorPaddingX;
-            }
-            this.el.style.left = `${leftPx + window.scrollX}px`;
-        }
-
-        const middle = targetBounding.top + (targetBounding.bottom - targetBounding.top) / 2;
-        const topOverflow = middle - windowPadding - cardHeight / 2 < 0;
-        const bottomOverflow = middle + windowPadding + cardHeight / 2 > window.innerHeight;
-        if (topOverflow || bottomOverflow) {
-            if (bottomOverflow) {
-                // Put it on the top
-                this.el.style.top = `${targetBounding.bottom - cardHeight + window.scrollY}px`;
+        if (window.location.href.match(/www.bilibili.com\/(\?|$)/)) {
+            // 首页，卡片只会往左右显示
+            if (targetBounding.right + windowPadding + cardWidth > window.innerWidth) {
+                // Will overflow to the right, put it on the left
+                this.el.style.left = `${targetBounding.left - cursorPadding - cardWidth + window.scrollX}px`;
             } else {
-                // Put it on the bottom
-                this.el.style.top = `${targetBounding.top + window.scrollY}px`;
+                this.el.style.left = `${targetBounding.right + window.scrollX + cursorPadding}px`;
+            }
+
+            const middle = targetBounding.top + (targetBounding.bottom - targetBounding.top) / 2;
+            const topOverflow = middle - windowPadding - cardHeight / 2 < 0;
+            const bottomOverflow = middle + windowPadding + cardHeight / 2 > window.innerHeight;
+            if (topOverflow || bottomOverflow) {
+                if (bottomOverflow) {
+                    // Put it on the top
+                    this.el.style.top = `${targetBounding.bottom - cardHeight + window.scrollY}px`;
+                } else {
+                    // Put it on the bottom
+                    this.el.style.top = `${targetBounding.top + window.scrollY}px`;
+                }
+            } else {
+                // Put it in the middle
+                this.el.style.top = `${middle - cardHeight / 2 + window.scrollY}px`;
             }
         } else {
-            // Put it in the middle
-            this.el.style.top = `${middle - cardHeight / 2 + window.scrollY}px`;
+            // 其他页面，卡片只会往上下显示
+            if (targetBounding.bottom + cardHeight > window.innerHeight) {
+                // Will overflow to the bottom, put it on the top
+                this.el.style.top = `${targetBounding.top - cursorPadding - cardHeight + window.scrollY}px`;
+            } else {
+                this.el.style.top = `${targetBounding.bottom + window.scrollY + cursorPadding}px`;
+            }
+
+            this.el.style.left = `${targetBounding.left + window.scrollX}px`;
         }
     }
 }
