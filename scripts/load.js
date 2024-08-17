@@ -45,17 +45,17 @@ window.addEventListener("load", function() {
         }
 
         if (biliScopeOptions.enableFoldDynamicComment) {
-            const roots = [];
+            const selectors = [];
             if (window.location.href.startsWith(BILIBILI_SPACE_URL)) {
-                roots.push("div:has(> #page-dynamic)");
-                roots.push("#page-dynamic");
+                selectors.push("div:has(> #page-dynamic)");
+                selectors.push("#page-dynamic");
             } else if (window.location.href.startsWith(BILIBILI_DYNAMIC_URL)) {
-                roots.push("aside.left");
-                roots.push("aside.right");
+                selectors.push("aside.left");
+                selectors.push("aside.right");
             }
 
             const pageObserver = new MutationObserver((mutationList, observer) => {
-                const targets = document.querySelectorAll(roots.join(","));
+                const targets = document.querySelectorAll(selectors.join(","));
                 if (targets.length == 0) {
                     return;
                 }
@@ -63,7 +63,8 @@ window.addEventListener("load", function() {
                 for (const target of targets) {
                     target.addEventListener('click', (ev) => {
                         if (ev.target == target) {
-                            for (const el of document.querySelectorAll(".bili-dyn-item:has(.bili-dyn-action.comment.active)")) {
+                            // 只找有评论区的
+                            for (const el of document.querySelectorAll(".bili-dyn-item:has(.bili-dyn-item__panel)")) {
                                 if (el.getBoundingClientRect().top < ev.y && ev.y < el.getBoundingClientRect().bottom) {
                                     // 65为顶栏高度
                                     const topBoundary = el.querySelector(".bili-dyn-item__panel").getBoundingClientRect().top - 65;
@@ -81,7 +82,7 @@ window.addEventListener("load", function() {
                 pageObserver.disconnect();
             })
 
-            if (roots.length != 0) {
+            if (selectors.length != 0) {
                 pageObserver.observe(document.body, {
                     childList: true,
                     subtree: true,
