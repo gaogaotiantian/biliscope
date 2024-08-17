@@ -228,6 +228,15 @@ VideoProfileCard.prototype.updateVideoId = function(videoId) {
 
 VideoProfileCard.prototype.updatePosition = function() {
     if (this.el) {
+        let horizontalDisplay = true;
+        const sibling = this.target.nextElementSibling ?? this.target.previousElementSibling;
+        const currentTargetStyle = window.getComputedStyle(this.target);
+        if (sibling && sibling.getBoundingClientRect().x != this.target.getBoundingClientRect().x) {
+            horizontalDisplay = false;
+        } else if (currentTargetStyle.display == "flex" && !currentTargetStyle.flexDirection.startsWith("column")) {
+            horizontalDisplay = false;
+        }
+
         const cardWidth = this.el.scrollWidth;
         const cardHeight = this.el.scrollHeight;
 
@@ -236,8 +245,8 @@ VideoProfileCard.prototype.updatePosition = function() {
         /** @type {DOMRect} */
         const targetBounding = this.target.getBoundingClientRect();
 
-        if (window.location.href.match(/www.bilibili.com\/(\?|$)/)) {
-            // 首页，卡片只会往左右显示
+        if (horizontalDisplay) {
+            // 往左右显示
             if (targetBounding.right + windowPadding + cardWidth > window.innerWidth) {
                 // Will overflow to the right, put it on the left
                 this.el.style.left = `${targetBounding.left - cursorPadding - cardWidth + window.scrollX}px`;
@@ -261,7 +270,7 @@ VideoProfileCard.prototype.updatePosition = function() {
                 this.el.style.top = `${middle - cardHeight / 2 + window.scrollY}px`;
             }
         } else {
-            // 其他页面，卡片只会往上下显示
+            // 往上下显示
             if (targetBounding.bottom + cardHeight > window.innerHeight) {
                 // Will overflow to the bottom, put it on the top
                 this.el.style.top = `${targetBounding.top - cursorPadding - cardHeight + window.scrollY}px`;
@@ -269,7 +278,12 @@ VideoProfileCard.prototype.updatePosition = function() {
                 this.el.style.top = `${targetBounding.bottom + window.scrollY + cursorPadding}px`;
             }
 
-            this.el.style.left = `${targetBounding.left + window.scrollX}px`;
+            if (targetBounding.left + cardWidth > window.innerWidth) {
+                // Will overflow to the right, put it on the left
+                this.el.style.left = `${targetBounding.right - cardHeight + window.scrollX}px`;
+            } else {
+                this.el.style.left = `${targetBounding.left + window.scrollX}px`;
+            }
         }
     }
 }
