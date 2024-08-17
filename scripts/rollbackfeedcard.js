@@ -3,6 +3,9 @@ function FeedcardManager() {
     this.forwardStack = [];
     this.backwardButton = null;
     this.forwardButton = null;
+    this.insertParent = null;
+    this.insertReference = null;
+    this.adFeedcards = new Set();
 }
 
 FeedcardManager.prototype.addButton = function (parentNode) {
@@ -58,8 +61,14 @@ FeedcardManager.prototype.refreshButtonState = function () {
     }
 }
 
+const isAdFeedcard = function (feedcard) {
+    return !feedcard.querySelector('.bili-video-card').classList.contains('enable-no-interest');
+}
+
 FeedcardManager.prototype.onRollFeedcard = function () {
-    const oldFeedcards = document.querySelectorAll('.feed-card');
+    const oldFeedcards = [...document.querySelectorAll('.feed-card')];
+    this.insertParent ??= oldFeedcards[0].parentElement;
+    this.insertReference ??= oldFeedcards.at(-1).nextElementSibling;
 
     // 防止连续点击换一换导致重复入栈
     if (this.backwardStack.length > 0 && oldFeedcards[0] == this.backwardStack.at(-1)[0]) {
@@ -70,8 +79,17 @@ FeedcardManager.prototype.onRollFeedcard = function () {
     const observer = new MutationObserver((mutationsList, observer) => {
         for (const mutation of mutationsList) {
             if (mutation.type === 'childList') {
-                for (feedcard of oldFeedcards) {
+                document.querySelectorAll('.feed-card').forEach(feedcard => {
+                    if (isAdFeedcard(feedcard)) {
+                        this.adFeedcards.add(feedcard);
+                        feedcard.remove();
+                    }
+                });
+                for (const feedcard of oldFeedcards) {
                     feedcard.remove();
+                }
+                for (const feedcard of this.adFeedcards) {
+                    this.insertParent.insertBefore(feedcard, this.insertReference);
                 }
                 observer.disconnect();
                 break;
@@ -80,24 +98,25 @@ FeedcardManager.prototype.onRollFeedcard = function () {
     });
     observer.observe(oldFeedcards[0].parentElement, { childList: true });
 
-    this.backwardStack.push(oldFeedcards);
+    this.backwardStack.push(oldFeedcards.filter(feedcard => !isAdFeedcard(feedcard)));
     this.forwardStack = [];
     this.refreshButtonState();
 }
 
 FeedcardManager.prototype.replaceFeedcards = function (newFeedcards) {
-    const oldFeedcards = document.querySelectorAll('.feed-card');
-    const referenceNode = [...oldFeedcards].at(-1).nextElementSibling;
-    const parentNode = oldFeedcards[0].parentElement;
+    const oldFeedcards = [...document.querySelectorAll('.feed-card')];
 
     for (const feedcard of oldFeedcards) {
         feedcard.remove();
     }
     for (const feedcard of newFeedcards) {
-        parentNode.insertBefore(feedcard, referenceNode);
+        this.insertParent.insertBefore(feedcard, this.insertReference);
+    }
+    for (const feedcard of this.adFeedcards) {
+        this.insertParent.insertBefore(feedcard, this.insertReference);
     }
 
-    return oldFeedcards;
+    return oldFeedcards.filter(feedcard => !isAdFeedcard(feedcard));
 }
 
 FeedcardManager.prototype.backward = function () {
