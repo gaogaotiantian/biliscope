@@ -7,6 +7,7 @@ let optionLoad = chrome.storage.sync.get({
     aiSummaryHoverThreshold: 800,
     enableVideoTag: true,
     enableIpLabel: true,
+    enableFoldDynamicComment: true,
     minSize: 5
 });
 
@@ -40,6 +41,51 @@ window.addEventListener("load", function() {
                 rollBtn.addEventListener('click', () => {
                     feedcardManager.onRollFeedcard()
                 });
+            }
+        }
+
+        if (biliScopeOptions.enableFoldDynamicComment) {
+            const roots = [];
+            if (window.location.href.startsWith(BILIBILI_SPACE_URL)) {
+                roots.push("div:has(> #page-dynamic)");
+                roots.push("#page-dynamic");
+            } else if (window.location.href.startsWith(BILIBILI_DYNAMIC_URL)) {
+                roots.push("aside.left");
+                roots.push("aside.right");
+            }
+
+            const pageObserver = new MutationObserver((mutationList, observer) => {
+                const targets = document.querySelectorAll(roots.join(","));
+                if (targets.length == 0) {
+                    return;
+                }
+
+                for (const target of targets) {
+                    target.addEventListener('click', (ev) => {
+                        if (ev.target == target) {
+                            for (const el of document.querySelectorAll(".bili-dyn-item:has(.bili-dyn-action.comment.active)")) {
+                                if (el.getBoundingClientRect().top < ev.y && ev.y < el.getBoundingClientRect().bottom) {
+                                    // 65为顶栏高度
+                                    const topBoundary = el.querySelector(".bili-dyn-item__panel").getBoundingClientRect().top - 65;
+                                    if (topBoundary < 0) {
+                                        window.scrollBy({top: topBoundary});
+                                    }
+
+                                    el.getElementsByClassName("bili-dyn-action comment active")[0].click();
+                                }
+                            }
+                        }
+                    })
+                }
+
+                pageObserver.disconnect();
+            })
+
+            if (roots.length != 0) {
+                pageObserver.observe(document.body, {
+                    childList: true,
+                    subtree: true,
+                })
             }
         }
 

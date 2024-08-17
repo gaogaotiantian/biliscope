@@ -177,6 +177,7 @@ const all_options = [
     ['enable-video-tag', null, true],
     ['enable-tag-color', null, true],
     ['enable-ip-label', null, true],
+    ['enable-fold-dynamic-comment', null, true],
     ['min-number', 'minSize', 5],
 ]
 
