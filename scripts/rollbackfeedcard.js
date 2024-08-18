@@ -76,6 +76,7 @@ FeedcardManager.prototype.onRollFeedcard = function () {
     const observer = new MutationObserver((mutationsList, observer) => {
         for (const mutation of mutationsList) {
             if (mutation.type === 'childList') {
+                this.adFeedcards.clear();
                 document.querySelectorAll('.feed-card').forEach(feedcard => {
                     if (isAdFeedcard(feedcard)) {
                         this.adFeedcards.add(feedcard);
