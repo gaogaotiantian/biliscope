@@ -231,9 +231,11 @@ VideoProfileCard.prototype.updatePosition = function() {
         let horizontalDisplay = true;
         const sibling = this.target.nextElementSibling ?? this.target.previousElementSibling;
         const currentTargetStyle = window.getComputedStyle(this.target);
-        if (sibling && sibling.getBoundingClientRect().x != this.target.getBoundingClientRect().x) {
+        if (sibling && sibling.getBoundingClientRect().right != this.target.getBoundingClientRect().right) {
+            // 元素呈水平布局
             horizontalDisplay = false;
         } else if (currentTargetStyle.display == "flex" && !currentTargetStyle.flexDirection.startsWith("column")) {
+            // 元素呈水平布局
             horizontalDisplay = false;
         }
 
