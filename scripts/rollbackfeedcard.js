@@ -66,21 +66,18 @@ FeedcardManager.prototype.onRollFeedcard = function () {
         return;
     }
 
-    // 换一换后移除旧的feedcard
-    const observer = new MutationObserver((mutationsList, observer) => {
-        for (const mutation of mutationsList) {
-            if (mutation.type === 'childList') {
-                for (feedcard of oldFeedcards) {
-                    feedcard.remove();
-                }
-                observer.disconnect();
-                break;
-            }
-        }
-    });
-    observer.observe(oldFeedcards[0].parentElement, { childList: true });
-
     this.backwardStack.push(oldFeedcards);
+
+    if (this.forwardStack.length > 0) {
+        // gh-211
+        // Restore to the actual state to avoid failure
+        // Bilibili reuses the same feedcard elements if the roll gives the same video.
+        // We can't simply remove all the feedback cards. The safest way is to restore the state.
+        // This will give a flash to the initial state, but it's better than failure.
+        // The good side of this is that now Bilibili handles the removal of all the feedback cards.
+        this.replaceFeedcards(this.forwardStack[0]);
+    }
+
     this.forwardStack = [];
     this.refreshButtonState();
 }
