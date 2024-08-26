@@ -228,11 +228,9 @@ VideoProfileCard.prototype.updateVideoId = function(videoId) {
 
 VideoProfileCard.prototype.updatePosition = function() {
     if (this.el) {
-        let horizontalDisplay = false;
-        const sibling = this.target.nextElementSibling ?? this.target.previousElementSibling;
+        let horizontalDisplay = true;
         const currentTargetStyle = window.getComputedStyle(this.target);
-        if (sibling && sibling.getBoundingClientRect().right == this.target.getBoundingClientRect().right ||
-            currentTargetStyle.display == "flex" && currentTargetStyle.flexDirection.startsWith("column")) {
+        if (currentTargetStyle.display == "flex" && currentTargetStyle.flexDirection.startsWith("column")) {
             // 元素呈垂直布局
             horizontalDisplay = true;
         }
@@ -254,36 +252,32 @@ VideoProfileCard.prototype.updatePosition = function() {
                 this.el.style.left = `${targetBounding.right + window.scrollX + cursorPadding}px`;
             }
 
-            const middle = targetBounding.top + (targetBounding.bottom - targetBounding.top) / 2;
-            const topOverflow = middle - windowPadding - cardHeight / 2 < 0;
-            const bottomOverflow = middle + windowPadding + cardHeight / 2 > window.innerHeight;
-            if (topOverflow || bottomOverflow) {
-                if (bottomOverflow) {
-                    // Put it on the top
-                    this.el.style.top = `${targetBounding.bottom - cardHeight + window.scrollY}px`;
-                } else {
-                    // Put it on the bottom
-                    this.el.style.top = `${targetBounding.top + window.scrollY}px`;
-                }
+            if (targetBounding.top + windowPadding + cardHeight < window.innerHeight) {
+                // Put it on the bottom
+                this.el.style.top = `${targetBounding.top + window.scrollY}px`;
+            } else if (targetBounding.bottom - windowPadding - cardHeight > 0) {
+                // Put it on the top
+                this.el.style.top = `${targetBounding.bottom - cardHeight + window.scrollY}px`;
             } else {
                 // Put it in the middle
+                const middle = targetBounding.top + (targetBounding.bottom - targetBounding.top) / 2;
                 this.el.style.top = `${middle - cardHeight / 2 + window.scrollY}px`;
             }
+        }
+    } else {
+        // 往上下显示
+        if (targetBounding.bottom + cardHeight > window.innerHeight) {
+            // Will overflow to the bottom, put it on the top
+            this.el.style.top = `${targetBounding.top - cursorPadding - cardHeight + window.scrollY}px`;
         } else {
-            // 往上下显示
-            if (targetBounding.bottom + cardHeight > window.innerHeight) {
-                // Will overflow to the bottom, put it on the top
-                this.el.style.top = `${targetBounding.top - cursorPadding - cardHeight + window.scrollY}px`;
-            } else {
-                this.el.style.top = `${targetBounding.bottom + window.scrollY + cursorPadding}px`;
-            }
+            this.el.style.top = `${targetBounding.bottom + window.scrollY + cursorPadding}px`;
+        }
 
-            if (targetBounding.left + cardWidth > window.innerWidth) {
-                // Will overflow to the right, put it on the left
-                this.el.style.left = `${targetBounding.right - cardHeight + window.scrollX}px`;
-            } else {
-                this.el.style.left = `${targetBounding.left + window.scrollX}px`;
-            }
+        if (targetBounding.left + cardWidth > window.innerWidth) {
+            // Will overflow to the right, put it on the left
+            this.el.style.left = `${targetBounding.right - cardHeight + window.scrollX}px`;
+        } else {
+            this.el.style.left = `${targetBounding.left + window.scrollX}px`;
         }
     }
 }
