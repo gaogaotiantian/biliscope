@@ -19,6 +19,7 @@ function loadOptions() {
         enableRollbackFeedcard: true,
         enableWordCloud: true,
         enableAiSummary: true,
+        enableHotComment: true,
         aiSummaryHoverThreshold: 800,
         enableVideoTag: true,
         enableIpLabel: true,
