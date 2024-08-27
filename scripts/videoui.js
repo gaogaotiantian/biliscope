@@ -314,7 +314,7 @@ VideoProfileCard.prototype.drawConclusion = function() {
 }
 
 VideoProfileCard.prototype.drawHotComment = function() {
-    if (!this.data.replies?.length) {
+    if (!this.data.replies?.length || !biliScopeOptions.enableHotComment) {
         document.getElementById("biliscope-hot-comment-wrapper").classList.add("d-none");
         return;
     }
