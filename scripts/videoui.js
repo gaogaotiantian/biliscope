@@ -228,13 +228,6 @@ VideoProfileCard.prototype.updateVideoId = function(videoId) {
 
 VideoProfileCard.prototype.updatePosition = function() {
     if (this.el) {
-        let horizontalDisplay = true;
-        const currentTargetStyle = window.getComputedStyle(this.target);
-        if (currentTargetStyle.display == "flex" && currentTargetStyle.flexDirection.startsWith("column")) {
-            // 元素呈垂直布局
-            horizontalDisplay = true;
-        }
-
         const cardWidth = this.el.scrollWidth;
         const cardHeight = this.el.scrollHeight;
 
@@ -243,7 +236,7 @@ VideoProfileCard.prototype.updatePosition = function() {
         /** @type {DOMRect} */
         const targetBounding = this.target.getBoundingClientRect();
 
-        if (horizontalDisplay) {
+        if (!this.target.hasAttribute("biliscope-display")) {
             // 往左右显示
             if (targetBounding.right + windowPadding + cardWidth > window.innerWidth) {
                 // Will overflow to the right, put it on the left
@@ -263,21 +256,22 @@ VideoProfileCard.prototype.updatePosition = function() {
                 const middle = targetBounding.top + (targetBounding.bottom - targetBounding.top) / 2;
                 this.el.style.top = `${middle - cardHeight / 2 + window.scrollY}px`;
             }
-        }
-    } else {
-        // 往上下显示
-        if (targetBounding.bottom + cardHeight > window.innerHeight) {
-            // Will overflow to the bottom, put it on the top
-            this.el.style.top = `${targetBounding.top - cursorPadding - cardHeight + window.scrollY}px`;
         } else {
-            this.el.style.top = `${targetBounding.bottom + window.scrollY + cursorPadding}px`;
-        }
+            // 往上下显示
+            // 40 为热评的高度，热评可以出现溢出，以解决上下位置都不够放卡片的问题
+            if (targetBounding.bottom + cardHeight - 40 > window.innerHeight) {
+                // Will overflow to the bottom, put it on the top
+                this.el.style.top = `${targetBounding.top - cursorPadding - cardHeight + window.scrollY}px`;
+            } else {
+                this.el.style.top = `${targetBounding.bottom + window.scrollY + cursorPadding}px`;
+            }
 
-        if (targetBounding.left + cardWidth > window.innerWidth) {
-            // Will overflow to the right, put it on the left
-            this.el.style.left = `${targetBounding.right - cardHeight + window.scrollX}px`;
-        } else {
-            this.el.style.left = `${targetBounding.left + window.scrollX}px`;
+            if (targetBounding.left + cardWidth > window.innerWidth) {
+                // Will overflow to the right, put it on the left
+                this.el.style.left = `${targetBounding.right - cardHeight + window.scrollX}px`;
+            } else {
+                this.el.style.left = `${targetBounding.left + window.scrollX}px`;
+            }
         }
     }
 }

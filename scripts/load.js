@@ -17,6 +17,11 @@ window.addEventListener("load", function() {
     s.onload = function() { this.remove(); };
     (document.head || document.documentElement).appendChild(s);
 
+    s = document.createElement('script');
+    s.src = chrome.runtime.getURL('scripts/sitescripts/labeldisplay.js');
+    s.onload = function() { this.remove(); };
+    (document.head || document.documentElement).appendChild(s);
+
     optionLoad.then((items) => {
         biliScopeOptions = items;
 
