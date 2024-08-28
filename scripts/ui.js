@@ -20,10 +20,6 @@ function relationDisplay(data) {
         return null;
     }
 
-    if (data["relation"]["attribute"] == 128) {
-        return "已拉黑";
-    }
-
     if (data["be_relation"]["attribute"] == 128) {
         return "已被拉黑";
     }
@@ -49,7 +45,7 @@ function relationClass(data) {
     text = relationDisplay(data);
     if (text == null) {
         return "d-none";
-    } else if (text == "已拉黑" || text == "已被拉黑") {
+    } else if (text == "已被拉黑") {
         return "biliscope-relation-black";
     } else if (text == "关注" || text == "关注了你") {
         return "biliscope-relation-follow";
@@ -58,8 +54,21 @@ function relationClass(data) {
     }
 }
 
+function blockDisplay(data) {
+    if (data?.relation?.attribute === undefined) {
+        return null;
+    }
+
+    if (data["relation"]["attribute"] == 128) {
+        return "取消拉黑";
+    } else {
+        return "拉黑";
+    }
+}
+
 function blockClass(data) {
-    if (biliScopeOptions.enableBlockButton && data?.relation?.attribute == 0) {
+    const text = blockDisplay(data);
+    if (biliScopeOptions.enableBlockButton && text) {
         return "biliscope-relation-block";
     }
     return "d-none";
@@ -88,8 +97,8 @@ function getUserProfileCardDataHTML(data) {
         <div class="idc-theme-img" style="background-image: url(&quot;${data["top_photo"]}@100Q.webp&quot;);">
             <div style="position: absolute; top: 85px; right: 10px">
                 <a><span id="biliscope-follow-button" class="biliscope-relation ${relationClass(data)}">${relationDisplay(data)}</span></a>
-                <a><span id="biliscope-block-button" class="biliscope-relation ${blockClass(data)}">拉黑</span></a>
-                <a href="${messageLink(data)}"><span id="biliscope-block-button" class="biliscope-relation ${messageClass(data)}">私信</span></a>
+                <a><span id="biliscope-block-button" class="biliscope-relation ${blockClass(data)}">${blockDisplay(data)}</span></a>
+                <a href="${messageLink(data)}"><span class="biliscope-relation ${messageClass(data)}">私信</span></a>
             </div>
         </div>
         <div class="idc-info clearfix">
@@ -632,9 +641,11 @@ UserProfileCard.prototype.setupTriggers = function() {
     blockButton.addEventListener("click", (ev) => {
         ev.stopPropagation();
 
+        const needBlock = blockButton.innerText == "拉黑";
+
         biliPost("https://api.bilibili.com/x/relation/modify", {
             fid: this.data["mid"],
-            act: 5,
+            act: needBlock ? 5 : 6,
             re_src: 11
         })
         .then((data) => {
