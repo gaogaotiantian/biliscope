@@ -1,14 +1,30 @@
-let optionLoad = chrome.storage.sync.get({
-    enableUpCard: true,
-    enableBlockButton: true,
-    enableRollbackFeedcard: true,
-    enableWordCloud: true,
-    enableAiSummary: true,
-    aiSummaryHoverThreshold: 800,
-    enableVideoTag: true,
-    enableIpLabel: true,
-    minSize: 5
-});
+function loadOptions() {
+    chrome.storage.local.get({
+        noteData: {}
+    }, function(result) {
+        noteData = result.noteData;
+    });
+
+    chrome.storage.sync.get({
+        tagColors: {},
+        enableTagColor: false,
+    }, function(result) {
+        tagColors = result.tagColors;
+        enableTagColor = result.enableTagColor;
+    });
+
+    return chrome.storage.sync.get({
+        enableUpCard: true,
+        enableBlockButton: true,
+        enableRollbackFeedcard: true,
+        enableWordCloud: true,
+        enableAiSummary: true,
+        aiSummaryHoverThreshold: 800,
+        enableVideoTag: true,
+        enableIpLabel: true,
+        minSize: 5
+    });
+}
 
 window.addEventListener("load", function() {
 
@@ -22,7 +38,12 @@ window.addEventListener("load", function() {
     s.onload = function() { this.remove(); };
     (document.head || document.documentElement).appendChild(s);
 
-    optionLoad.then((items) => {
+    s = document.createElement('script');
+    s.src = chrome.runtime.getURL('scripts/sitescripts/labeldisplay.js');
+    s.onload = function() { this.remove(); };
+    (document.head || document.documentElement).appendChild(s);
+
+    loadOptions().then((items) => {
         biliScopeOptions = items;
 
         // Load the user profile card
@@ -111,4 +132,12 @@ window.addEventListener("load", function() {
         myMid = data["profile"]["mid"];
     })
 
+});
+
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+    if (request.action == "reloadOptions") {
+        loadOptions().then((items) => {
+            biliScopeOptions = items;
+        });
+    }
 });

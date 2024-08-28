@@ -243,6 +243,17 @@
     background-position: -5px -54px;
 }
 
+.biliscope-profession-description {
+    column-gap: 4px;
+    margin-top: 6px;
+    word-break: break-all;
+}
+
+.biliscope-profession-description-icon {
+    width: 20px;
+    height: 20px;
+}
+
 .biliscope-icon {
     margin: 0px !important;
     display: inline-block;

@@ -193,7 +193,15 @@ function save_options() {
         options[key] = element.type === 'checkbox' ? element.checked : element.value;
     }
     chrome.storage.sync.set(options, function () {
-        show_status('保存成功，刷新网页后生效', 3000);
+        chrome.tabs.query({
+            url: "https://*.bilibili.com/*"
+        }).then(tabs => {
+            tabs.forEach(tab => {
+                chrome.tabs.sendMessage(tab.id, {action: "reloadOptions"});
+            });
+        });
+
+        show_status('保存成功', 3000);
     });
 }
 
