@@ -19,6 +19,7 @@ function loadOptions() {
         enableRollbackFeedcard: true,
         enableWordCloud: true,
         enableAiSummary: true,
+        enableHotComment: true,
         aiSummaryHoverThreshold: 800,
         enableVideoTag: true,
         enableIpLabel: true,
@@ -30,16 +31,6 @@ window.addEventListener("load", function() {
 
     var s = document.createElement('script');
     s.src = chrome.runtime.getURL('scripts/sitescripts/labelid.js');
-    s.onload = function() { this.remove(); };
-    (document.head || document.documentElement).appendChild(s);
-
-    s = document.createElement('script');
-    s.src = chrome.runtime.getURL('scripts/sitescripts/labeldisplay.js');
-    s.onload = function() { this.remove(); };
-    (document.head || document.documentElement).appendChild(s);
-
-    s = document.createElement('script');
-    s.src = chrome.runtime.getURL('scripts/sitescripts/labeldisplay.js');
     s.onload = function() { this.remove(); };
     (document.head || document.documentElement).appendChild(s);
 
