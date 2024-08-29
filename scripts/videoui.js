@@ -227,6 +227,31 @@ VideoProfileCard.prototype.updateVideoId = function(videoId) {
 }
 
 VideoProfileCard.prototype.updatePosition = function() {
+    const needVerticalDisplay = () => {
+        if (window.location.href.startsWith(BILIBILI_DYNAMIC_URL) ||
+            window.location.href.startsWith(BILIBILI_NEW_DYNAMIC_URL) ||
+            window.location.href.startsWith(BILIBILI_SPACE_URL) &&
+            window.location.pathname.endsWith("/dynamic")) {
+            // 动态页的视频
+            if (this.target.matches(".bili-dyn-card-video")) {
+                return true;
+            }
+        } else if (window.location.href.startsWith(BILIBILI_VIDEO_URL) ||
+                    window.location.href.startsWith(BILIBILI_WATCH_LATER_URL)) {
+            // 视频页右侧的推荐视频
+            if (this.target.matches("#reco_list [biliscope-videoid]")) {
+                return true;
+            }
+        } else if (window.location.href.startsWith(BILIBILI_POPULAR_URL)) {
+            // 热门页的视频
+            if (this.target.matches(".popular-container > :last-child [biliscope-videoid]:not(.title)")) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     if (this.el) {
         const cardWidth = this.el.scrollWidth;
         const cardHeight = this.el.scrollHeight;
@@ -236,7 +261,7 @@ VideoProfileCard.prototype.updatePosition = function() {
         /** @type {DOMRect} */
         const targetBounding = this.target.getBoundingClientRect();
 
-        if (!this.target.hasAttribute("biliscope-display")) {
+        if (!needVerticalDisplay()) {
             // 往左右显示
             if (targetBounding.right + windowPadding + cardWidth > window.innerWidth) {
                 // Will overflow to the right, put it on the left
@@ -258,8 +283,8 @@ VideoProfileCard.prototype.updatePosition = function() {
             }
         } else {
             // 往上下显示
-            // 40 为热评的高度，热评可以出现溢出，以解决上下位置都不够放卡片的问题
-            if (targetBounding.bottom + cardHeight - 40 > window.innerHeight) {
+            // 40 为热评的高度，热评可以在屏幕外，以解决上下位置都不够放卡片的问题
+            if (targetBounding.bottom - cursorPadding + cardHeight - 40 > window.innerHeight) {
                 // Will overflow to the bottom, put it on the top
                 this.el.style.top = `${targetBounding.top - cursorPadding - cardHeight + window.scrollY}px`;
             } else {
