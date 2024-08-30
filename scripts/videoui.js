@@ -244,7 +244,7 @@ VideoProfileCard.prototype.updatePosition = function() {
             }
         } else if (window.location.href.startsWith(BILIBILI_POPULAR_URL)) {
             // 热门页的视频
-            if (this.target.matches(".popular-container > :last-child [biliscope-videoid]:not(.title)")) {
+            if (this.target.matches(".popular-container [biliscope-videoid]:not(.title)")) {
                 return true;
             }
         }
@@ -283,9 +283,9 @@ VideoProfileCard.prototype.updatePosition = function() {
             }
         } else {
             // 往上下显示
-            // 40 为热评的高度，热评可以在屏幕外，以解决上下位置都不够放卡片的问题
-            if (targetBounding.bottom - cursorPadding + cardHeight - 40 > window.innerHeight) {
-                // Will overflow to the bottom, put it on the top
+            if (targetBounding.bottom + cardHeight > window.innerHeight &&
+                targetBounding.top - cardHeight > 0) {
+                // Will overflow to the bottom and not overflow to the top, put it on the top
                 this.el.style.top = `${targetBounding.top - cursorPadding - cardHeight + window.scrollY}px`;
             } else {
                 this.el.style.top = `${targetBounding.bottom + window.scrollY + cursorPadding}px`;
