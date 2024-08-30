@@ -244,7 +244,7 @@ VideoProfileCard.prototype.updatePosition = function() {
             }
         } else if (window.location.href.startsWith(BILIBILI_POPULAR_URL)) {
             // 热门页的视频
-            if (this.target.matches(".popular-container [biliscope-videoid]:not(.title)")) {
+            if (this.target.matches(".popular-container [biliscope-videoid]")) {
                 return true;
             }
         }
