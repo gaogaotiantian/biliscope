@@ -261,7 +261,23 @@ VideoProfileCard.prototype.updatePosition = function() {
         /** @type {DOMRect} */
         const targetBounding = this.target.getBoundingClientRect();
 
-        if (!needVerticalDisplay()) {
+        if (needVerticalDisplay()) {
+            // 往上下显示
+            if (targetBounding.bottom + cardHeight > window.innerHeight &&
+                targetBounding.top - cardHeight > 0) {
+                // Will overflow to the bottom and not overflow to the top, put it on the top
+                this.el.style.top = `${targetBounding.top - cursorPadding - cardHeight + window.scrollY}px`;
+            } else {
+                this.el.style.top = `${targetBounding.bottom + window.scrollY + cursorPadding}px`;
+            }
+
+            if (targetBounding.left + cardWidth > window.innerWidth) {
+                // Will overflow to the right, put it on the left
+                this.el.style.left = `${targetBounding.right - cardHeight + window.scrollX}px`;
+            } else {
+                this.el.style.left = `${targetBounding.left + window.scrollX}px`;
+            }
+        } else {
             // 往左右显示
             if (targetBounding.right + windowPadding + cardWidth > window.innerWidth) {
                 // Will overflow to the right, put it on the left
@@ -280,22 +296,6 @@ VideoProfileCard.prototype.updatePosition = function() {
                 // Put it in the middle
                 const middle = targetBounding.top + (targetBounding.bottom - targetBounding.top) / 2;
                 this.el.style.top = `${middle - cardHeight / 2 + window.scrollY}px`;
-            }
-        } else {
-            // 往上下显示
-            if (targetBounding.bottom + cardHeight > window.innerHeight &&
-                targetBounding.top - cardHeight > 0) {
-                // Will overflow to the bottom and not overflow to the top, put it on the top
-                this.el.style.top = `${targetBounding.top - cursorPadding - cardHeight + window.scrollY}px`;
-            } else {
-                this.el.style.top = `${targetBounding.bottom + window.scrollY + cursorPadding}px`;
-            }
-
-            if (targetBounding.left + cardWidth > window.innerWidth) {
-                // Will overflow to the right, put it on the left
-                this.el.style.left = `${targetBounding.right - cardHeight + window.scrollX}px`;
-            } else {
-                this.el.style.left = `${targetBounding.left + window.scrollX}px`;
             }
         }
     }
