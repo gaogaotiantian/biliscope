@@ -226,34 +226,77 @@ VideoProfileCard.prototype.updateVideoId = function(videoId) {
     return updated;
 }
 
-VideoProfileCard.prototype.updateCursor = function(cursorX, cursorY) {
-    const cursorPadding = 10;
-    const windowPadding = 20;
-
-    this.cursorX = cursorX;
-    this.cursorY = cursorY;
-
-    if (this.el) {
-        let width = this.el.scrollWidth;
-        let height = this.el.scrollHeight;
-
-        if (this.cursorX + width + windowPadding > window.scrollX + window.innerWidth) {
-            // Will overflow to the right, put it on the left
-            this.el.style.left = `${this.cursorX - cursorPadding - width}px`;
-        } else {
-            this.el.style.left = `${this.cursorX + cursorPadding}px`;
+VideoProfileCard.prototype.updatePosition = function() {
+    const needVerticalDisplay = () => {
+        if (window.location.href.startsWith(BILIBILI_DYNAMIC_URL) ||
+            window.location.href.startsWith(BILIBILI_NEW_DYNAMIC_URL) ||
+            window.location.href.startsWith(BILIBILI_SPACE_URL) &&
+            window.location.pathname.endsWith("/dynamic")) {
+            // 动态页的视频
+            if (this.target.matches(".bili-dyn-card-video")) {
+                return true;
+            }
+        } else if (window.location.href.startsWith(BILIBILI_VIDEO_URL) ||
+                    window.location.href.startsWith(BILIBILI_WATCH_LATER_URL)) {
+            // 视频页右侧的推荐视频
+            if (this.target.matches("#reco_list [biliscope-videoid]")) {
+                return true;
+            }
+        } else if (window.location.href.startsWith(BILIBILI_POPULAR_URL)) {
+            // 热门页的视频
+            if (this.target.matches(".popular-container [biliscope-videoid]")) {
+                return true;
+            }
         }
 
-        if (this.cursorY + height + windowPadding > window.scrollY + window.innerHeight) {
-            // Will overflow to the bottom, put it on the top
-            if (this.cursorY - windowPadding - height < window.scrollY) {
-                // Can't fit on top either, put it in the middle
-                this.el.style.top = `${window.scrollY + (window.innerHeight - height) / 2}px`;
+        return false;
+    }
+
+    if (this.el) {
+        const cardWidth = this.el.scrollWidth;
+        const cardHeight = this.el.scrollHeight;
+
+        const cursorPadding = 10;
+        const windowPadding = 20;
+        /** @type {DOMRect} */
+        const targetBounding = this.target.getBoundingClientRect();
+
+        if (needVerticalDisplay()) {
+            // 往上下显示
+            if (targetBounding.bottom + cardHeight > window.innerHeight &&
+                targetBounding.top - cardHeight > 0) {
+                // Will overflow to the bottom and not overflow to the top, put it on the top
+                this.el.style.top = `${targetBounding.top - cursorPadding - cardHeight + window.scrollY}px`;
             } else {
-                this.el.style.top = `${this.cursorY - cursorPadding - height}px`;
+                this.el.style.top = `${targetBounding.bottom + window.scrollY + cursorPadding}px`;
+            }
+
+            if (targetBounding.left + cardWidth > window.innerWidth) {
+                // Will overflow to the right, put it on the left
+                this.el.style.left = `${targetBounding.right - cardHeight + window.scrollX}px`;
+            } else {
+                this.el.style.left = `${targetBounding.left + window.scrollX}px`;
             }
         } else {
-            this.el.style.top = `${this.cursorY + cursorPadding}px`;
+            // 往左右显示
+            if (targetBounding.right + windowPadding + cardWidth > window.innerWidth) {
+                // Will overflow to the right, put it on the left
+                this.el.style.left = `${targetBounding.left - cursorPadding - cardWidth + window.scrollX}px`;
+            } else {
+                this.el.style.left = `${targetBounding.right + window.scrollX + cursorPadding}px`;
+            }
+
+            if (targetBounding.top + windowPadding + cardHeight < window.innerHeight) {
+                // Put it on the bottom
+                this.el.style.top = `${targetBounding.top + window.scrollY}px`;
+            } else if (targetBounding.bottom - windowPadding - cardHeight > 0) {
+                // Put it on the top
+                this.el.style.top = `${targetBounding.bottom - cardHeight + window.scrollY}px`;
+            } else {
+                // Put it in the middle
+                const middle = targetBounding.top + (targetBounding.bottom - targetBounding.top) / 2;
+                this.el.style.top = `${middle - cardHeight / 2 + window.scrollY}px`;
+            }
         }
     }
 }
@@ -412,5 +455,5 @@ VideoProfileCard.prototype.updateData = function(data) {
         }
     }
 
-    this.updateCursor(this.cursorX, this.cursorY);
+    this.updatePosition();
 }
