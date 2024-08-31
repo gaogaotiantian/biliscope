@@ -11,7 +11,8 @@ function convertManifest(inputFile) {
 
     manifest["browser_specific_settings"] = {
         "gecko": {
-          "strict_min_version": "125.0"
+            "id": "{7da5011d-0496-4632-8408-e0da16b8c59f}",
+            "strict_min_version": "125.0"
         }
     }
 
