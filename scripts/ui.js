@@ -658,15 +658,15 @@ UserProfileCard.prototype.setupTriggers = function() {
 
 UserProfileCard.prototype.drawWordCloud = function(canvas) {
     canvas.style.height = `${canvas.offsetWidth / 2}px`;
-    canvas.width = canvas.offsetWidth;
-    canvas.height = canvas.offsetHeight;
+    canvas.width = canvas.offsetWidth * window.devicePixelRatio;
+    canvas.height = canvas.offsetHeight * window.devicePixelRatio;
 
     canvas.parentNode.classList.add("biliscope-canvas-show");
 
     WordCloud(canvas, {
         list: JSON.parse(JSON.stringify(this.data["wordcloud"])),
         backgroundColor: "transparent",
-        weightFactor: 100 / this.wordCloudMaxCount(),
+        weightFactor: 100 / this.wordCloudMaxCount() * window.devicePixelRatio,
         shrinkToFit: true,
         minSize: biliScopeOptions.minSize
     });
