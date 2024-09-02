@@ -669,6 +669,7 @@ UserProfileCard.prototype.drawWordCloud = function(canvas) {
         weightFactor: 100 / this.wordCloudMaxCount() * window.devicePixelRatio,
         shrinkToFit: true,
         minSize: biliScopeOptions.minSize
+        minSize: biliScopeOptions.minSize * window.devicePixelRatio
     });
 }
 
