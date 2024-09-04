@@ -21,6 +21,10 @@ function getVideoIdFromLink(link) {
     return link.match(regexBV)?.[0];
 }
 
+function elementImageChildren(el) {
+    return el.querySelector("img") || el.querySelector("picture");
+}
+
 function labelPopularPage() {
     for (let el of document.getElementsByClassName("video-card")) {
         let mid = el.__vue__.videoData.owner.mid;
@@ -103,7 +107,7 @@ function labelLinks() {
         } else if (el.href.startsWith(BILIBILI_VIDEO_URL) ||
                    el.href.startsWith(BILIBILI_WATCH_LATER_URL)) {
             const videoId = getVideoIdFromLink(el.href);
-            if (videoId) {
+            if (videoId && elementImageChildren(el)) {
                 el.setAttribute("biliscope-videoid", videoId);
             }
         }
