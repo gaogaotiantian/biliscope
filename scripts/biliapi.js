@@ -196,14 +196,6 @@ function updateVideoData(userId, callback) {
     });
 }
 
-function cacheValid(cache) {
-    if (!cache) {
-        return false;
-    }
-
-    return ["stat", "info", "wordcloud", "count"].every((key) => cache[key]);
-}
-
 function cacheAndUpdate(callback, userId, api, payload) {
     let cache = userInfoCache.get(userId) ?? {};
 
@@ -212,14 +204,6 @@ function cacheAndUpdate(callback, userId, api, payload) {
     userInfoCache.set(userId, cache);
 
     callback({"uid": userId, "api": api, "payload": payload});
-}
-
-function cacheValidVideo(cache) {
-    if (!cache) {
-        return false;
-    }
-
-    return ["conclusion", "view"].every((key) => cache[key]);
 }
 
 function cacheAndUpdateVideo(callback, videoId, api, payload) {
@@ -244,8 +228,8 @@ function updateRelation(userId, callback) {
 }
 
 function updateUserInfo(userId, callback) {
-    let cache = userInfoCache.get(userId);
-    if (cacheValid(cache)) {
+    const cache = userInfoCache.get(userId);
+    if (cache && ["stat", "info", "relation", "count"].every((key) => cache[key])) {
         for (let api in cache) {
             callback({"uid": userId, "api": api, "payload": cache[api]});
         }
@@ -269,8 +253,8 @@ function updateUserInfo(userId, callback) {
 }
 
 function updateVideoInfo(videoId, callback) {
-    let cache = videoInfoCache.get(videoId);
-    if (cacheValidVideo(cache)) {
+    const cache = videoInfoCache.get(videoId);
+    if (cache && ["conclusion", "view", "reply"].every((key) => cache[key])) {
         for (let api in cache) {
             callback({"videoId": videoId, "api": api, "payload": cache[api]});
         }
