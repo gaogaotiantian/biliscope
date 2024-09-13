@@ -229,7 +229,7 @@ VideoProfileCard.prototype.updateVideoId = function(videoId) {
 VideoProfileCard.prototype.updatePosition = function() {
     const needVerticalDisplay = () => {
         if (window.location.href.startsWith(BILIBILI_DYNAMIC_URL) ||
-            window.location.href.startsWith(BILIBILI_NEW_DYNAMIC_URL) ||
+            window.location.href.startsWith(BILIBILI_DYNAMIC_DETAIL_URL) ||
             window.location.href.startsWith(BILIBILI_SPACE_URL) &&
             window.location.pathname.endsWith("/dynamic")) {
             // 动态页的视频

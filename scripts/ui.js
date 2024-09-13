@@ -348,7 +348,7 @@ UserProfileCard.prototype.clearOriginalCard = function() {
     }
 
     for (let card of document.getElementsByTagName("bili-user-profile")) {
-        card.hidden = true;
+        card.style.display = "none";
     }
 }
 
