@@ -17,10 +17,6 @@ function labelVideoCommentIp(observer) {
 
     const comments = document.getElementsByTagName("bili-comments");
 
-    if (!comments) {
-        return;
-    }
-
     for (const comment of comments) {
         const feed = comment?.shadowRoot?.children?.contents?.children?.feed;
 
