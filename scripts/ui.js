@@ -45,7 +45,7 @@ function subscribeTimeToDisplay(data) {
     if (data["relation"] && data["relation"]["mtime"]) {
         return timestampToDisplay(data["relation"]["mtime"]);
     } else {
-        return '尚未关注';
+        return '';
     }
 }
 
@@ -168,7 +168,7 @@ function getUserProfileCardDataHTML(data) {
                 <div class="idc-meta" style="${data["count"] ? "": "display: none"}">
                     <span class="idc-meta-item"><data-title>平均稿件长度</data-title> ${secondsToDisplay(data["totalVideoLength"] / data["count"])}</span>
                 </div>
-                <div class="idc-meta" style="${data["count"] ? "": "display: none"}">
+                <div class="idc-meta" style="${(data["relation"] && data["relation"]["mtime"] !== 0) ? "": "display: none"}">
                     <span class="idc-meta-item"><data-title>关注时间</data-title> ${subscribeTimeToDisplay(data)}</span>
                 </div>
             </div>
