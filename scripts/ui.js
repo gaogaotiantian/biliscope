@@ -475,9 +475,11 @@ UserProfileCard.prototype.setLeaveEvent = function() {
         }
     }
 
-    this.enterCallback = () => {
+    this.enterCallback = (ev) => {
         clearTimeout(this.disableDebounce.timer);
-        dispatchToPopover("mouseenter");
+        if (ev.target == this.el) {
+            dispatchToPopover("mouseenter");
+        }
         this.cursorInside = true;
     }
 
