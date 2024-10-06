@@ -459,23 +459,19 @@ UserProfileCard.prototype.setLeaveEvent = function() {
     // the leave event. We need to dispatch the event to the popover to prevent
     // the popover from disappearing.
     const dispatchToPopover = (event) => {
-        let node = this.target;
-        while (node && node != document) {
-            if (node.classList && node.classList.contains("v-popover")) {
-                node.dispatchEvent(new Event(event));
-                break;
-            }
-            node = node.parentNode;
-        }
+        const popover = this.target.closest(".v-popover");
+        popover?.dispatchEvent(new Event(event));
     }
 
-    this.leaveCallback = () => {
+    this.leaveCallback = (ev) => {
         if (this.disable()) {
             for (let target of validTargets) {
                 target.removeEventListener("mouseleave", this.disableDebounce);
                 target.removeEventListener("mouseenter", this.enterCallback);
             }
-            dispatchToPopover("mouseleave");
+            if (ev.target == this.el) {
+                dispatchToPopover("mouseleave");
+            }
         }
     }
 
@@ -485,10 +481,10 @@ UserProfileCard.prototype.setLeaveEvent = function() {
         this.cursorInside = true;
     }
 
-    this.disableDebounce = () => {
+    this.disableDebounce = (ev) => {
         this.cursorInside = false;
         this.disableDebounce.timer = setTimeout(() => {
-            this.leaveCallback();
+            this.leaveCallback(ev);
         }, 400);
     }
 
