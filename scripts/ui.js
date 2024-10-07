@@ -649,6 +649,15 @@ UserProfileCard.prototype.setupTriggers = function() {
         .then((data) => {
             if (data["code"] == 0) {
                 updateRelation(this.userId, (data) => this.updateData(data));
+
+                if (needBlock) {
+                    banMids.push(parseInt(this.userId));
+                } else {
+                    banMids.splice(banMids.indexOf(parseInt(this.userId)));
+                }
+                chrome.storage.local.set({
+                    banMids: banMids
+                });
             }
         });
     });
