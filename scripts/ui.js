@@ -43,7 +43,7 @@ function relationDisplay(data) {
 
 function subscribeTimeToDisplay(data) {
     if (data["relation"] && data["relation"]["mtime"]) {
-        return timestampToDisplay(data["relation"]["mtime"]);
+        return `关注时间：${timestampToDisplay(data["relation"]["mtime"])}`;
     } else {
         return '';
     }
@@ -104,7 +104,10 @@ function getUserProfileCardDataHTML(data) {
     return `
         <div class="idc-theme-img" style="background-image: url(&quot;${data["top_photo"]}@100Q.webp&quot;);">
             <div style="position: absolute; top: 85px; right: 10px">
-                <a><span id="biliscope-follow-button" class="biliscope-relation ${relationClass(data)}">${relationDisplay(data)}</span></a>
+                <a><span id="biliscope-follow-button" class="biliscope-relation ${relationClass(data)}" 
+                ${(data["relation"] && data["relation"]["mtime"] !== 0) ? `title="${subscribeTimeToDisplay(data)}"` : ''}>
+                    ${relationDisplay(data)}
+                </span></a>
                 <a><span id="biliscope-block-button" class="biliscope-relation ${blockClass(data)}">${blockDisplay(data)}</span></a>
                 <a href="${messageLink(data)}"><span class="biliscope-relation ${messageClass(data)}">私信</span></a>
             </div>
@@ -167,7 +170,6 @@ function getUserProfileCardDataHTML(data) {
                 </div>
                 <div class="idc-meta" style="${data["count"] ? "": "display: none"}">
                     <span class="idc-meta-item"><data-title>平均稿件长度</data-title> ${secondsToDisplay(data["totalVideoLength"] / data["count"])}</span>
-                    <span class="idc-meta-item" style="${(data["relation"] && data["relation"]["mtime"] !== 0) ? "": "display: none"}"><data-title>关注时间</data-title> ${subscribeTimeToDisplay(data)}</span>
                 </div>
             </div>
             <div id="biliscope-tag-list">
