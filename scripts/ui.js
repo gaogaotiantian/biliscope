@@ -347,20 +347,10 @@ UserProfileCard.prototype.clearOriginalCard = function() {
         document.getElementById("id-card").remove();
     }
 
-    for (let card of document.getElementsByClassName("user-card")) {
+    for (const card of document.querySelectorAll(".user-card, .card-loaded, .bili-user-profile, bili-user-profile")) {
         card.hidden = true;
-    }
-
-    for (let card of document.getElementsByClassName("card-loaded")) {
-        card.hidden = true;
-    }
-
-    for (let card of document.getElementsByClassName("bili-user-profile")) {
-        card.hidden = true;
-    }
-
-    for (let card of document.getElementsByTagName("bili-user-profile")) {
         card.style.display = "none";
+        card.style.visibility = "hidden";
     }
 }
 
