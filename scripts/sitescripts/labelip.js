@@ -1,6 +1,6 @@
 // These could be redefined in the other site scripts so use var instead of const
 var BILIBILI_DYNAMIC_URL = "https://t.bilibili.com"
-var BILIBILI_NEW_DYNAMIC_URL = "https://www.bilibili.com/opus"
+var BILIBILI_DYNAMIC_DETAIL_URL = "https://www.bilibili.com/opus"
 var BILIBILI_VIDEO_URL = "https://www.bilibili.com/video"
 var BILIBILI_SPACE_URL = "https://space.bilibili.com"
 
@@ -15,11 +15,12 @@ function labelVideoCommentIp(observer) {
         }
     }
 
-    if (window.location.href.startsWith(BILIBILI_VIDEO_URL)) {
-        const comments = document.getElementsByTagName("bili-comments")[0];
-        const feed = comments?.renderRoot?.children?.contents?.children?.feed;
+    const comments = document.getElementsByTagName("bili-comments");
 
-        tryObserve(comments?.renderRoot);
+    for (const comment of comments) {
+        const feed = comment?.shadowRoot?.children?.contents?.children?.feed;
+
+        tryObserve(comment?.shadowRoot);
 
         if (!feed) {
             return;
@@ -147,9 +148,7 @@ function hookVueComponent() {
 }
 
 function installIpHooks() {
-    if (window.location.href.startsWith(BILIBILI_DYNAMIC_URL) ||
-        window.location.href.startsWith(BILIBILI_NEW_DYNAMIC_URL) ||
-        window.location.href.startsWith(BILIBILI_SPACE_URL)) {
+    if (window.location.href.startsWith(BILIBILI_SPACE_URL)) {
         hookVueComponent();
         let ipObserver = new MutationObserver((mutationList, observer) => {
             labelDynamicCommentIp();
@@ -160,8 +159,10 @@ function installIpHooks() {
         });
     }
 
-    if (window.location.href.startsWith(BILIBILI_VIDEO_URL)) {
-        let ipObserver = new MutationObserver((mutationList, observer) => {
+    if (window.location.href.startsWith(BILIBILI_DYNAMIC_URL) ||
+        window.location.href.startsWith(BILIBILI_DYNAMIC_DETAIL_URL) ||
+        window.location.href.startsWith(BILIBILI_VIDEO_URL)) {
+        const ipObserver = new MutationObserver((mutationList, observer) => {
             labelVideoCommentIp(ipObserver);
         });
         ipObserver.observe(document.body, {

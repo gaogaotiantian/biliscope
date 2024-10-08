@@ -1,6 +1,6 @@
 // These could be redefined in the other site scripts so use var instead of const
 var BILIBILI_DYNAMIC_URL = "https://t.bilibili.com"
-var BILIBILI_NEW_DYNAMIC_URL = "https://www.bilibili.com/opus"
+var BILIBILI_DYNAMIC_DETAIL_URL = "https://www.bilibili.com/opus"
 var BILIBILI_SPACE_URL = "https://space.bilibili.com"
 var BILIBILI_POPULAR_URL = "https://www.bilibili.com/v/popular"
 var BILIBILI_VIDEO_URL = "https://www.bilibili.com/video"
@@ -50,7 +50,7 @@ function labelDynamicPage() {
     }
 
     for (const el of document.querySelectorAll(".dyn-orig-author__face, .dyn-orig-author__name")) {
-      const uid = el?._profile?.uid;
+        const uid = el?._profile?.uid;
         if (uid) {
             el.setAttribute("biliscope-userid", uid);
         }
@@ -73,19 +73,12 @@ function labelDynamicPage() {
         }
     }
 
-    for (let className of ["user-name", "root-reply-avatar", "sub-user-name", "sub-reply-avatar"]) {
-        for (let el of document.getElementsByClassName(className)) {
-            let mid = el.getAttribute("data-user-id");
-            if (mid) {
-                el.setAttribute("biliscope-userid", mid);
-            }
-        }
-    }
+    labelComments();
 }
 
-function labelVideoPage() {
-    for (let el of document.querySelectorAll(".user-name,.root-reply-avatar,.sub-user-name,.sub-reply-avatar")) {
-        let mid = el.getAttribute("data-user-id");
+function labelComments() {
+    for (const el of document.querySelectorAll(".user-name, .root-reply-avatar, .sub-user-name, .sub-reply-avatar")) {
+        const mid = el.getAttribute("data-user-id");
         if (mid) {
             el.setAttribute("biliscope-userid", mid);
         }
@@ -122,11 +115,11 @@ function installIdHooks() {
         if (window.location.href.startsWith(BILIBILI_POPULAR_URL)) {
             labelPopularPage();
         } else if (window.location.href.startsWith(BILIBILI_DYNAMIC_URL) ||
-                   window.location.href.startsWith(BILIBILI_NEW_DYNAMIC_URL) ||
+                   window.location.href.startsWith(BILIBILI_DYNAMIC_DETAIL_URL) ||
                    window.location.href.startsWith(BILIBILI_SPACE_URL)) {
             labelDynamicPage();
-        } else if (window.location.href.startsWith(BILIBILI_VIDEO_URL)) {
-            labelVideoPage();
+        } else if (window.location.href.startsWith(BILIBILI_WATCH_LATER_URL)) {
+            labelComments();
         }
     })
 

@@ -60,49 +60,75 @@ window.addEventListener("load", function() {
             }
         }
 
-        const hookComment = (retry) => {
-            if (retry < 1) {
-                return;
-            }
+        const labelComments = (observer) => {
 
-            if (!document.querySelector("bili-comments")?.shadowRoot
-                 .querySelector("bili-comment-thread-renderer")?.shadowRoot
-                 .querySelector("bili-comment-renderer")) {
-                setTimeout(() => hookComment(retry-1), 500);
-                return;
-            }
-
-            document.querySelector("bili-comments").shadowRoot
-            .querySelectorAll("bili-comment-thread-renderer")
-            .forEach(element => {
-                const renderer = element.shadowRoot
-                                 .querySelector("bili-comment-renderer")
-                const avatar = renderer.shadowRoot.getElementById("user-avatar");
-                avatar.addEventListener("mouseover", showProfileDebounce);
-
-                const userNameA = renderer.shadowRoot
-                                  .querySelector("bili-comment-user-info").shadowRoot
-                                  .querySelector("#user-name > a");
-                userNameA.addEventListener("mouseover", showProfileDebounce);
-
-                const replies = element.shadowRoot
-                                .querySelector("bili-comment-replies-renderer").shadowRoot
-                                .querySelectorAll("bili-comment-reply-renderer");
-                for (const reply of replies){
-                    const userInfo = reply.shadowRoot
-                                     .querySelector("bili-comment-user-info");
-                    const avatar = userInfo.querySelector("#user-avatar");
-                    avatar.addEventListener("mouseover", showProfileDebounce);
-
-                    const userNameA = userInfo.shadowRoot.querySelector("#user-name > a");
-                    userNameA.addEventListener("mouseover", showProfileDebounce);
+            const tryObserve = (root) => {
+                if (root) {
+                    observer.observe(root, {
+                        childList: true,
+                        subtree: true,
+                    })
                 }
-            })
+            };
+
+            const comments = document.getElementsByTagName("bili-comments");
+
+            for (const comment of comments) {
+                const feed = comment?.shadowRoot?.children?.contents?.children?.feed;
+
+                tryObserve(comment?.shadowRoot);
+
+                if (!feed) {
+                    return;
+                }
+
+                for (const commentStack of feed.children) {
+                    const mainComment = commentStack.shadowRoot.children.comment;
+                    const replies = commentStack.shadowRoot.children?.replies;
+
+                    tryObserve(commentStack.shadowRoot);
+
+                    if (mainComment) {
+                        tryObserve(mainComment.shadowRoot);
+                        const avatar = mainComment.shadowRoot.getElementById("user-avatar");
+                        avatar?.addEventListener("mouseover", showProfileDebounce);
+
+                        const userNameA = mainComment.shadowRoot
+                                          .querySelector("bili-comment-user-info").shadowRoot
+                                          .querySelector("#user-name > a");
+                        userNameA?.addEventListener("mouseover", showProfileDebounce);
+                    }
+
+                    if (replies) {
+                        tryObserve(replies.children[0].shadowRoot);
+                        for (const reply of replies.children[0].shadowRoot
+                                            .querySelectorAll("bili-comment-reply-renderer")) {
+                            tryObserve(reply.shadowRoot);
+                            const userInfo = reply.shadowRoot.querySelector("bili-comment-user-info");
+                            const avatar = userInfo.querySelector("#user-avatar");
+                            avatar?.addEventListener("mouseover", showProfileDebounce);
+
+                            tryObserve(userInfo.shadowRoot);
+                            const userNameA = userInfo.shadowRoot.querySelector("#user-name > a");
+                            userNameA?.addEventListener("mouseover", showProfileDebounce);
+                        }
+                    }
+
+                }
+            }
         }
 
-        if (window.location.href.startsWith(BILIBILI_VIDEO_URL)) {
-            setTimeout(() => hookComment(20), 500);
-        }
+        if (window.location.href.startsWith(BILIBILI_DYNAMIC_URL) ||
+            window.location.href.startsWith(BILIBILI_DYNAMIC_DETAIL_URL) ||
+            window.location.href.startsWith(BILIBILI_VIDEO_URL)) {
+            const idObserver = new MutationObserver((mutationList, observer) => {
+                labelComments(idObserver);
+            });
+            idObserver.observe(document.body, {
+                childList: true,
+                subtree: true,
+            });
+    }
     });
 
     getGuardInfo(6726252, 245645656).then((data) => {
