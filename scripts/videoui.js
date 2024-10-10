@@ -259,6 +259,16 @@ VideoProfileCard.prototype.updatePosition = function() {
         /** @type {DOMRect} */
         const targetBounding = this.target.getBoundingClientRect();
 
+        if (targetBounding.left - windowPadding - cardWidth > 0 &&
+            (window.location.href.startsWith(BILIBILI_DYNAMIC_URL) ||
+             window.location.href.startsWith(BILIBILI_DYNAMIC_DETAIL_URL))) {
+            // 动态页面默认左中显示
+            this.el.style.left = `${targetBounding.left - cursorPadding - cardWidth + window.scrollX}px`;
+            const middle = targetBounding.top + (targetBounding.bottom - targetBounding.top) / 2;
+            this.el.style.top = `${middle - cardHeight / 2 + window.scrollY}px`;
+            return;
+        }
+
         if (needVerticalDisplay()) {
             // 往上下显示
             if (targetBounding.bottom + cardHeight > window.innerHeight &&
