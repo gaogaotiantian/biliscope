@@ -226,9 +226,7 @@ VideoProfileCard.prototype.updateVideoId = function(videoId) {
 
 VideoProfileCard.prototype.updatePosition = function() {
     const needVerticalDisplay = () => {
-        if (window.location.href.startsWith(BILIBILI_DYNAMIC_URL) ||
-            window.location.href.startsWith(BILIBILI_DYNAMIC_DETAIL_URL) ||
-            window.location.href.startsWith(BILIBILI_SPACE_URL) &&
+        if (window.location.href.startsWith(BILIBILI_SPACE_URL) &&
             window.location.pathname.endsWith("/dynamic")) {
             // 动态页的视频
             if (this.target.matches(".bili-dyn-card-video")) {
@@ -258,6 +256,15 @@ VideoProfileCard.prototype.updatePosition = function() {
         const windowPadding = 20;
         /** @type {DOMRect} */
         const targetBounding = this.target.getBoundingClientRect();
+
+        if (window.location.href.startsWith(BILIBILI_DYNAMIC_URL) ||
+            window.location.href.startsWith(BILIBILI_DYNAMIC_DETAIL_URL)) {
+            // 动态页面往左中显示
+            this.el.style.left = `${targetBounding.left - cursorPadding - cardWidth + window.scrollX}px`;
+            const middle = targetBounding.top + (targetBounding.bottom - targetBounding.top) / 2;
+            this.el.style.top = `${middle - cardHeight / 2 + window.scrollY}px`;
+            return;
+        }
 
         if (needVerticalDisplay()) {
             // 往上下显示
