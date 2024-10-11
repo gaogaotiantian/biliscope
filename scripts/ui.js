@@ -411,35 +411,14 @@ UserProfileCard.prototype.updateUserId = function(userId) {
 }
 
 UserProfileCard.prototype.updateCursor = function(cursorX, cursorY) {
-    const cursorPadding = 10;
-    const windowPadding = 20;
-
     this.cursorX = cursorX;
     this.cursorY = cursorY;
 
-    if (this.el) {
-        let width = this.el.scrollWidth;
-        let height = this.el.scrollHeight;
-
-        if (this.cursorX + width + windowPadding > window.scrollX + window.innerWidth) {
-            // Will overflow to the right, put it on the left
-            this.el.style.left = `${this.cursorX - cursorPadding - width}px`;
-        } else {
-            this.el.style.left = `${this.cursorX + cursorPadding}px`;
-        }
-
-        if (this.cursorY + height + windowPadding > window.scrollY + window.innerHeight) {
-            // Will overflow to the bottom, put it on the top
-            if (this.cursorY - windowPadding - height < window.scrollY) {
-                // Can't fit on top either, put it in the middle
-                this.el.style.top = `${window.scrollY + (window.innerHeight - height) / 2}px`;
-            } else {
-                this.el.style.top = `${this.cursorY - cursorPadding - height}px`;
-            }
-        } else {
-            this.el.style.top = `${this.cursorY + cursorPadding}px`;
-        }
-    }
+    displayElOutsideTarget(
+        this.el,
+        {left:cursorX,right:cursorX,top:cursorY,bottom:cursorY},
+        ['right', 'left']
+    );
 }
 
 UserProfileCard.prototype.updateTarget = function(target) {
