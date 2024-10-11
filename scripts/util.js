@@ -165,7 +165,7 @@ function displayElOutsideTarget(el, targetBounding, directions, cursorPadding=10
                     const middle = top + (bottom - top) / 2;
                     el.style.top = `${middle - cardHeight / 2 + window.scrollY}px`;
                 }
-                break;
+                return;
             case "top":
             case "bottom":
             case "default":
@@ -175,8 +175,7 @@ function displayElOutsideTarget(el, targetBounding, directions, cursorPadding=10
                 } else {
                     el.style.left = `${left + window.scrollX}px`;
                 }
-                break;
+                return;
         }
-        break;
     }
 }
