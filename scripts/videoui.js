@@ -140,6 +140,15 @@ function VideoProfileCard() {
     this.el.style.display = "none";
     this.el.innerHTML = getVideoProfileCardHTML(this.data);
     document.body.appendChild(this.el);
+    const outlineDiv = document.getElementById("biliscope-ai-summary-outline");
+    outlineDiv?.addEventListener("click", (ev) => {
+        const node = ev.target.closest("[biliscope-video-timestamp]");
+        if (node) {
+            const timestamp = parseInt(node.getAttribute("biliscope-video-timestamp"));
+            const tLink = secondsToTimeLink(timestamp);
+            window.open(`https://www.bilibili.com/video/${this.videoId}/?t=${tLink}`, "_blank");
+        }
+    });
 
     this.disable();
 }
@@ -343,14 +352,6 @@ VideoProfileCard.prototype.drawConclusion = function() {
             }
             outlineHTML += "</div>";
         }
-        outlineDiv.addEventListener("click", (event) => {
-            const node = event.target.closest("[biliscope-video-timestamp]");
-            if (node) {
-                const timestamp = parseInt(node.getAttribute("biliscope-video-timestamp"));
-                const tLink = secondsToTimeLink(timestamp);
-                window.open(`https://www.bilibili.com/video/${this.videoId}/?t=${tLink}`, "_blank");
-            }
-        });
         outlineDiv.innerHTML = outlineHTML;
     } else {
         outlineDiv.classList.add("d-none");
