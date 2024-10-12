@@ -140,6 +140,7 @@ function VideoProfileCard() {
     this.el.style.display = "none";
     this.el.innerHTML = getVideoProfileCardHTML(this.data);
     document.body.appendChild(this.el);
+
     const outlineDiv = document.getElementById("biliscope-ai-summary-outline");
     outlineDiv?.addEventListener("click", (ev) => {
         const node = ev.target.closest("[biliscope-video-timestamp]");
