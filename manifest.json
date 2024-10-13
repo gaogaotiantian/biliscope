@@ -10,7 +10,6 @@
     {
       "js": [
         "scripts/constants.js",
-        "scripts/globals.js",
         "scripts/stopwords.js",
         "scripts/wordcloud2.min.js",
         "scripts/md5.js",
