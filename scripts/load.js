@@ -42,11 +42,6 @@ window.addEventListener("load", function() {
         videoProfileCard = new VideoProfileCard();
         this.document.addEventListener("mouseover", showProfileDebounce);
 
-        userNameObserver.observe(document.body, {
-            childList: true,
-            subtree: true
-        });
-
         if (biliScopeOptions.enableIpLabel) {
             s = document.createElement('script');
             s.src = chrome.runtime.getURL('scripts/sitescripts/labelip.js');

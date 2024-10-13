@@ -83,4 +83,9 @@ window.addEventListener("load", function() {
         childList: true,
         subtree: true
     });
+
+    userNameObserver.observe(document.body, {
+        childList: true,
+        subtree: true
+    });
 });
