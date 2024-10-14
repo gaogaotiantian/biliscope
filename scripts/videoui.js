@@ -139,20 +139,17 @@ function VideoProfileCard() {
     this.el.style.position = "absolute";
     this.el.style.display = "none";
     this.el.innerHTML = getVideoProfileCardHTML(this.data);
-    this.el.addEventListener("click", (event) => {
-        event.stopPropagation();
-        let node = event.target;
-        while (node && node.id != "biliscope-video-card") {
-            if (node.getAttribute("biliscope-video-timestamp")) {
-                let timestamp = parseInt(node.getAttribute("biliscope-video-timestamp"));
-                let tLink = secondsToTimeLink(timestamp);
-                window.open(`https://www.bilibili.com/video/${this.videoId}/?t=${tLink}`, "_blank");
-                break;
-            }
-            node = node.parentNode;
+    document.body.appendChild(this.el);
+
+    const outlineDiv = document.getElementById("biliscope-ai-summary-outline");
+    outlineDiv?.addEventListener("click", (ev) => {
+        const node = ev.target.closest("[biliscope-video-timestamp]");
+        if (node) {
+            const timestamp = parseInt(node.getAttribute("biliscope-video-timestamp"));
+            const tLink = secondsToTimeLink(timestamp);
+            window.open(`https://www.bilibili.com/video/${this.videoId}/?t=${tLink}`, "_blank");
         }
     });
-    document.body.appendChild(this.el);
 
     this.disable();
 }
@@ -325,11 +322,19 @@ VideoProfileCard.prototype.updateTarget = function(target) {
 VideoProfileCard.prototype.drawConclusion = function() {
     let summary = this.data.conclusion?.model_result?.summary;
     let outline = this.data.conclusion?.model_result?.outline;
-    document.getElementById("biliscope-ai-summary-abstracts").innerHTML = summary || "";
+    const summaryDiv = document.getElementById("biliscope-ai-summary-abstracts");
+    const outlineDiv = document.getElementById("biliscope-ai-summary-outline");
+
+    if (summary) {
+        summaryDiv.classList.remove("d-none");
+        summaryDiv.innerHTML = summary;
+    } else {
+        summaryDiv.classList.add("d-none");
+    }
 
     if (outline && outline.length > 0) {
         let outlineHTML = "";
-        document.getElementById("biliscope-ai-summary-outline").classList.remove("d-none");
+        outlineDiv.classList.remove("d-none");
         for (let i = 0; i < outline.length; i++) {
             outlineHTML += `<div class="ai-summary-section" biliscope-video-timestamp="${outline[i].timestamp}">`;
             outlineHTML += `<div class="ai-summary-section-title">
@@ -348,9 +353,9 @@ VideoProfileCard.prototype.drawConclusion = function() {
             }
             outlineHTML += "</div>";
         }
-        document.getElementById("biliscope-ai-summary-outline").innerHTML = outlineHTML;
+        outlineDiv.innerHTML = outlineHTML;
     } else {
-        document.getElementById("biliscope-ai-summary-outline").classList.add("d-none");
+        outlineDiv.classList.add("d-none");
     }
 }
 
@@ -428,7 +433,7 @@ VideoProfileCard.prototype.updateData = function(data) {
         this.data.view = data["payload"];
     } else if (data["api"] == "conclusion") {
         this.data.conclusion = data["payload"];
-        if (this.data.conclusion.model_result.summary) {
+        if (this.data.conclusion.code == 0) {
             this.valid = true;
         } else {
             this.valid = false;
