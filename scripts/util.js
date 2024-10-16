@@ -111,11 +111,11 @@ function parseCookie(cookie) {
  * @param {number} cursorPadding
  * @param {number} windowPadding
  */
-function displayElOutsideTarget(el, targetBounding, directions, cursorPadding=10, windowPadding=20) {
+function displayElOutsideTarget(el, targetBounding, directions, cursorPadding = 10, windowPadding = 20) {
     const cardWidth = el.scrollWidth;
     const cardHeight = el.scrollHeight;
 
-    const {left=0,right=0,top=0,bottom=0} = targetBounding;
+    const {left = 0, right = 0, top = 0, bottom = 0} = targetBounding;
 
     for (const direction of directions) {
         switch (direction) {

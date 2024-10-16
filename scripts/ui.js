@@ -416,7 +416,7 @@ UserProfileCard.prototype.updateCursor = function(cursorX, cursorY) {
 
     displayElOutsideTarget(
         this.el,
-        {left:cursorX,right:cursorX,top:cursorY,bottom:cursorY},
+        {left: cursorX, right: cursorX, top: cursorY, bottom: cursorY},
         ['right', 'left']
     );
 }
