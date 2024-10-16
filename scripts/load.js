@@ -94,8 +94,8 @@ window.addEventListener("load", function() {
                         avatar?.addEventListener("mouseover", showProfileDebounce);
 
                         const userNameA = mainComment.shadowRoot
-                                          .querySelector("bili-comment-user-info").shadowRoot
-                                          .querySelector("#user-name > a");
+                                          ?.querySelector("bili-comment-user-info")?.shadowRoot
+                                          ?.querySelector("#user-name > a");
                         userNameA?.addEventListener("mouseover", showProfileDebounce);
                     }
 
@@ -105,12 +105,14 @@ window.addEventListener("load", function() {
                                             .querySelectorAll("bili-comment-reply-renderer")) {
                             tryObserve(reply.shadowRoot);
                             const userInfo = reply.shadowRoot.querySelector("bili-comment-user-info");
-                            const avatar = userInfo.querySelector("#user-avatar");
-                            avatar?.addEventListener("mouseover", showProfileDebounce);
+                            if (userInfo) {
+                                const avatar = userInfo.querySelector("#user-avatar");
+                                avatar?.addEventListener("mouseover", showProfileDebounce);
 
-                            tryObserve(userInfo.shadowRoot);
-                            const userNameA = userInfo.shadowRoot.querySelector("#user-name > a");
-                            userNameA?.addEventListener("mouseover", showProfileDebounce);
+                                tryObserve(userInfo.shadowRoot);
+                                const userNameA = userInfo.shadowRoot?.querySelector("#user-name > a");
+                                userNameA?.addEventListener("mouseover", showProfileDebounce);
+                            }
                         }
                     }
 
