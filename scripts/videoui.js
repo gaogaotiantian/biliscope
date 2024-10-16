@@ -226,17 +226,19 @@ VideoProfileCard.prototype.updatePosition = function() {
     const targetBounding = this.target.getBoundingClientRect();
     const {href} = window.location;
 
-    if ((href.startsWith(BILIBILI_DYNAMIC_URL) || href.startsWith(BILIBILI_DYNAMIC_DETAIL_URL) ||
-         href.startsWith(BILIBILI_SPACE_URL) && window.location.pathname.endsWith("/dynamic")) &&
-         this.target.matches(".bili-dyn-card-video")) {
+    if (this.target.matches(".bili-dyn-card-video") &&
+        (href.startsWith(BILIBILI_DYNAMIC_URL) ||
+         href.startsWith(BILIBILI_DYNAMIC_DETAIL_URL) ||
+         href.startsWith(BILIBILI_SPACE_URL) && window.location.pathname.endsWith("/dynamic"))) {
         // 动态界面
         displayElOutsideTarget(this.el, targetBounding, ['left', 'bottom', 'top', 'right', "default"]);
-    } else if (href.startsWith(BILIBILI_POPULAR_URL) &&
-               this.target.matches(".popular-container [biliscope-videoid]")) {
+    } else if (this.target.matches(".popular-container [biliscope-videoid]") &&
+               href.startsWith(BILIBILI_POPULAR_URL)) {
         // 热门页的视频
         displayElOutsideTarget(this.el, targetBounding, ['bottom', 'top', 'left', "default"]);
-    } else if ((href.startsWith(BILIBILI_VIDEO_URL) || href.startsWith(BILIBILI_WATCH_LATER_URL)) &&
-                this.target.matches("#reco_list [biliscope-videoid]")) {
+    } else if (this.target.matches("#reco_list [biliscope-videoid]") &&
+               (href.startsWith(BILIBILI_VIDEO_URL) ||
+                href.startsWith(BILIBILI_WATCH_LATER_URL))) {
         // 视频页右侧的推荐视频
         displayElOutsideTarget(this.el, targetBounding, ['left', 'bottom', 'top', "default"]);
     } else {
