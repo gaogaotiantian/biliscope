@@ -21,7 +21,7 @@ function showProfile(event, targetData) {
             let userId = target.getAttribute("biliscope-userid")
                 || target.getAttribute("data-user-profile-id");
             let updated = userProfileCard.updateUserId(userId);
-            userProfileCard.updateCursor(event.pageX, event.pageY);
+            userProfileCard.updateCursor(event.clientX, event.clientY);
             userProfileCard.updateTarget(target);
             if (updated) {
                 updateUserInfo(userId, (data) => userProfileCard.updateData(data));
