@@ -118,8 +118,6 @@ function installIdHooks() {
                    window.location.href.startsWith(BILIBILI_DYNAMIC_DETAIL_URL) ||
                    window.location.href.startsWith(BILIBILI_SPACE_URL)) {
             labelDynamicPage();
-        } else if (window.location.href.startsWith(BILIBILI_WATCH_LATER_URL)) {
-            labelComments();
         }
     })
 
