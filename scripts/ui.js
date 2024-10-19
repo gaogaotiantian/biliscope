@@ -102,7 +102,7 @@ function noteDataToDisplay(noteData, mid) {
 
 function getUserProfileCardDataHTML(data) {
     return `
-        <div class="idc-theme-img" style="background-image: url(&quot;${data["top_photo"]}@100Q.webp&quot;);">
+        <div class="idc-theme-img" ${data["top_photo"] ? `style="background-image: url(&quot;${data["top_photo"]}@100Q.webp&quot;);"`: ''}>
             <div style="position: absolute; top: 85px; right: 10px">
                 <a><span id="biliscope-follow-button" 
                          class="biliscope-relation ${relationClass(data)}" 
@@ -115,7 +115,7 @@ function getUserProfileCardDataHTML(data) {
         </div>
         <div class="idc-info clearfix">
             <a class="idc-avatar-container" href="https://space.bilibili.com/${data["mid"]}" target="_blank">
-                <img alt="${data["name"]}" src="${data["face"]}@54w_54h_1c.webp" class="idc-avatar">
+                <img alt="${data["name"]}" ${data["face"] ? `src="${data["face"]}@54w_54h_1c.webp"` : ''} class="idc-avatar">
                 <div class="${data["live_status"] ? "": "d-none"}">
                     <div class="live-tab">
                         <img src="//s1.hdslb.com/bfs/static/jinkela/space/assets/live.gif" alt="live" class="live-gif">
