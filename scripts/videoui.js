@@ -166,17 +166,14 @@ VideoProfileCard.prototype.disable = function() {
     this.valid = false;
     this.data = {};
     this.el.style.display = "none";
-    this.clearCard();
+    this.hideCardContent();
     return true;
 }
 
-VideoProfileCard.prototype.clearCard = function() {
+VideoProfileCard.prototype.hideCardContent = function() {
     const ids = [
-        "biliscope-ai-summary-abstracts",
-        "biliscope-ai-summary-outline",
+        "biliscope-ai-summary-popup",
         "biliscope-hot-comment-wrapper",
-        "biliscope-ai-summary-none",
-        "biliscope-video-card-inner"
     ];
     for (const id of ids) {
         document.getElementById(id)?.classList.add("d-none");
@@ -287,6 +284,8 @@ VideoProfileCard.prototype.drawConclusion = function() {
     if (summary) {
         summaryDiv.classList.remove("d-none");
         summaryDiv.innerHTML = summary;
+    } else {
+        summaryDiv.classList.add("d-none");
     }
 
     if (outline && outline.length > 0) {
@@ -311,11 +310,18 @@ VideoProfileCard.prototype.drawConclusion = function() {
             outlineHTML += "</div>";
         }
         outlineDiv.innerHTML = outlineHTML;
+    } else {
+        outlineDiv.classList.add("d-none");
+    }
+
+    if (summary || outline?.length > 0) {
+        document.getElementById("biliscope-ai-summary-popup").classList.remove("d-none")
     }
 }
 
 VideoProfileCard.prototype.drawHotComment = function() {
     if (!biliScopeOptions.enableHotComment || !this.data.replies?.length) {
+        document.getElementById("biliscope-hot-comment-wrapper").classList.add("d-none");
         return;
     }
 
@@ -403,7 +409,9 @@ VideoProfileCard.prototype.updateData = function(data) {
                 this.drawConclusion();
                 this.drawHotComment();
                 document.getElementById("biliscope-video-card-inner").classList.remove("d-none");
+                document.getElementById("biliscope-ai-summary-none").classList.add("d-none");
             } else {
+                document.getElementById("biliscope-video-card-inner").classList.add("d-none");
                 document.getElementById("biliscope-ai-summary-none").classList.remove("d-none");
             }
 
