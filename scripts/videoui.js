@@ -171,10 +171,7 @@ VideoProfileCard.prototype.disable = function() {
 }
 
 VideoProfileCard.prototype.hideCardContent = function() {
-    const ids = [
-        "biliscope-ai-summary-popup",
-        "biliscope-hot-comment-wrapper",
-    ];
+    const ids = ["biliscope-ai-summary-popup", "biliscope-hot-comment-wrapper"];
     for (const id of ids) {
         document.getElementById(id)?.classList.add("d-none");
     }
