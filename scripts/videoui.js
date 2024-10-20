@@ -276,6 +276,8 @@ VideoProfileCard.prototype.updateTarget = function(target) {
 }
 
 VideoProfileCard.prototype.drawConclusion = function() {
+    document.getElementById("biliscope-ai-summary-popup").classList.add("d-none");
+
     let summary = this.data.conclusion?.model_result?.summary;
     let outline = this.data.conclusion?.model_result?.outline;
     const summaryDiv = document.getElementById("biliscope-ai-summary-abstracts");
@@ -315,7 +317,7 @@ VideoProfileCard.prototype.drawConclusion = function() {
     }
 
     if (summary || outline?.length > 0) {
-        document.getElementById("biliscope-ai-summary-popup").classList.remove("d-none")
+        document.getElementById("biliscope-ai-summary-popup").classList.remove("d-none");
     }
 }
 
