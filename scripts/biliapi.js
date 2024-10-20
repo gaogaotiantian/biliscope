@@ -31,8 +31,13 @@ async function biliGet(url, params, retry = 5) {
         biliMixin = await getBiliMixin();
     }
 
-    if (url.indexOf("/wbi/") != -1 || url.indexOf("/conclusion/get") != -1) {
+    if (url.includes("/wbi/") || url.includes("/conclusion/get")) {
         // convert params to url in a sorted order
+        if (url.includes("wbi/acc/info")) {
+            params["w_webid"] = await fetch(`https://space.bilibili.com/${myMid}/`)
+                                    .then(response => response.text())
+                                    .then(text => text.match(/eyJ[^%]*/));
+        }
         params["wts"] = Math.floor(Date.now() / 1000);
         let keys = Object.keys(params).sort();
         let paramsStr = keys.map((key) => `${key}=${params[key]}`).join("&");
