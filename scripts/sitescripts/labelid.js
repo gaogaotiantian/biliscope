@@ -72,11 +72,9 @@ function labelDynamicPage() {
             up.setAttribute("biliscope-userid", upList[idx].mid);
         }
     }
-
-    labelComments();
 }
 
-function labelComments() {
+function labelOldComments() {
     for (const el of document.querySelectorAll(".user-name, .root-reply-avatar, .sub-user-name, .sub-reply-avatar")) {
         const mid = el.getAttribute("data-user-id");
         if (mid) {
@@ -118,6 +116,7 @@ function installIdHooks() {
                    window.location.href.startsWith(BILIBILI_DYNAMIC_DETAIL_URL) ||
                    window.location.href.startsWith(BILIBILI_SPACE_URL)) {
             labelDynamicPage();
+            labelOldComments();
         }
     })
 
