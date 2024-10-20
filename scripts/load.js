@@ -122,7 +122,8 @@ window.addEventListener("load", function() {
 
         if (window.location.href.startsWith(BILIBILI_DYNAMIC_URL) ||
             window.location.href.startsWith(BILIBILI_DYNAMIC_DETAIL_URL) ||
-            window.location.href.startsWith(BILIBILI_VIDEO_URL)) {
+            window.location.href.startsWith(BILIBILI_VIDEO_URL) ||
+            window.location.href.startsWith(BILIBILI_WATCH_LATER_URL)) {
             const idObserver = new MutationObserver((mutationList, observer) => {
                 labelComments(idObserver);
             });
