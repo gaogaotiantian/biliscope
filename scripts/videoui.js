@@ -312,6 +312,7 @@ VideoProfileCard.prototype.drawConclusion = function() {
     }
 
     if (summary || outline?.length > 0) {
+        // d-none 在 hideCardContent 函数里 add，用于初始化时隐藏顶层元素
         document.getElementById("biliscope-ai-summary-popup").classList.remove("d-none");
     }
 }
