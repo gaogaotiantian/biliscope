@@ -7,6 +7,26 @@ const NUM_PER_PAGE = 50
 
 var biliMixin = null;
 
+async function getJwt() {
+    this.jwtTimeStamp ||= 0;
+    if (this.jwt && Date.now() - this.jwtTimeStamp < 3600 * 1000) {
+        return this.jwt;
+    }
+
+    this.jwt = await fetch(`https://space.bilibili.com/${myMid}/`)
+        .then(response => response.text())
+        .then(text => {
+            const parser = new DOMParser();
+            const html = parser.parseFromString(text, "text/html");
+            const dataEl = html.getElementById("__RENDER_DATA__");
+            if (dataEl) {
+                return JSON.parse(decodeURIComponent(dataEl.innerText))?.access_id;
+            }
+        });
+    this.jwtTimeStamp = Date.now();
+    return this.jwt;
+}
+
 async function getBiliMixin() {
     const OE = [46, 47, 18, 2, 53, 8, 23, 32, 15, 50, 10, 31, 58, 3, 45,
                 35, 27, 43, 5, 49, 33, 9, 42, 19, 29, 28, 14, 39, 12, 38,
@@ -31,8 +51,11 @@ async function biliGet(url, params, retry = 5) {
         biliMixin = await getBiliMixin();
     }
 
-    if (url.indexOf("/wbi/") != -1 || url.indexOf("/conclusion/get") != -1) {
+    if (url.includes("/wbi/") || url.includes("/conclusion/get")) {
         // convert params to url in a sorted order
+        if (url.includes("wbi/acc/info")) {
+            params["w_webid"] = await getJwt();
+        }
         params["wts"] = Math.floor(Date.now() / 1000);
         let keys = Object.keys(params).sort();
         let paramsStr = keys.map((key) => `${key}=${params[key]}`).join("&");
