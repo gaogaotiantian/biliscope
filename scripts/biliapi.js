@@ -7,6 +7,30 @@ const NUM_PER_PAGE = 50
 
 var biliMixin = null;
 
+async function getJwt() {
+    return chrome.storage.local.get({
+        biliJwt: null,
+        biliJwtTimeStamp: 0
+    }).then(async (result) => {
+        let {biliJwt, biliJwtTimeStamp} = result;
+        if (Date.now() - biliJwtTimeStamp < 86395 * 1000) {
+            return biliJwt;
+        }
+
+        // jwt 结构为 `%22eyJ*.eyJ*%22`
+        const jwtRegex = /%22(?<jwt>eyJ[^\.]*\.eyJ[^%]*)%22/;
+        biliJwt = await fetch(`https://space.bilibili.com/${myMid}/`)
+                        .then(response => response.text())
+                        .then(text => text.match(jwtRegex)?.groups.jwt);
+        biliJwtTimeStamp = Date.now();
+        chrome.storage.local.set({
+            biliJwt: biliJwt,
+            biliJwtTimeStamp: biliJwtTimeStamp
+        });
+        return biliJwt;
+    });
+}
+
 async function getBiliMixin() {
     const OE = [46, 47, 18, 2, 53, 8, 23, 32, 15, 50, 10, 31, 58, 3, 45,
                 35, 27, 43, 5, 49, 33, 9, 42, 19, 29, 28, 14, 39, 12, 38,
@@ -34,9 +58,7 @@ async function biliGet(url, params, retry = 5) {
     if (url.includes("/wbi/") || url.includes("/conclusion/get")) {
         // convert params to url in a sorted order
         if (url.includes("wbi/acc/info")) {
-            params["w_webid"] = await fetch(`https://space.bilibili.com/${myMid}/`)
-                                    .then(response => response.text())
-                                    .then(text => text.match(/eyJ[^%]*/));
+            params["w_webid"] = await getJwt();
         }
         params["wts"] = Math.floor(Date.now() / 1000);
         let keys = Object.keys(params).sort();
