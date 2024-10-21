@@ -17,11 +17,16 @@ async function getJwt() {
             return biliJwt;
         }
 
-        // jwt 结构为 `%22eyJ*.eyJ*%22`
-        const jwtRegex = /%22(?<jwt>eyJ[^\.]*\.eyJ[^%]*)%22/;
         biliJwt = await fetch(`https://space.bilibili.com/${myMid}/`)
                         .then(response => response.text())
-                        .then(text => text.match(jwtRegex)?.groups.jwt);
+                        .then(text => {
+                            const parser = new DOMParser();
+                            const html = parser.parseFromString(text, "text/html");
+                            const {innerText} = html.getElementById("__RENDER_DATA__");
+                            if (innerText) {
+                                return JSON.parse(decodeURIComponent(innerText))?.access_id;
+                            }
+                        });
         biliJwtTimeStamp = Date.now();
         chrome.storage.local.set({
             biliJwt: biliJwt,
