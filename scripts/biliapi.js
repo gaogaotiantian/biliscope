@@ -8,32 +8,23 @@ const NUM_PER_PAGE = 50
 var biliMixin = null;
 
 async function getJwt() {
-    return chrome.storage.local.get({
-        biliJwt: null,
-        biliJwtTimeStamp: 0
-    }).then(async (result) => {
-        let {biliJwt, biliJwtTimeStamp} = result;
-        if (Date.now() - biliJwtTimeStamp < 86395 * 1000) {
-            return biliJwt;
-        }
+    this.jwtTimeStamp ||= 0;
+    if (this.jwt && Date.now() - this.jwtTimeStamp < 3600 * 1000) {
+        return this.jwt;
+    }
 
-        biliJwt = await fetch(`https://space.bilibili.com/${myMid}/`)
-                        .then(response => response.text())
-                        .then(text => {
-                            const parser = new DOMParser();
-                            const html = parser.parseFromString(text, "text/html");
-                            const dataEl = html.getElementById("__RENDER_DATA__");
-                            if (dataEl) {
-                                return JSON.parse(decodeURIComponent(dataEl.innerText))?.access_id;
-                            }
-                        });
-        biliJwtTimeStamp = Date.now();
-        chrome.storage.local.set({
-            biliJwt: biliJwt,
-            biliJwtTimeStamp: biliJwtTimeStamp
+    this.jwt = await fetch(`https://space.bilibili.com/${myMid}/`)
+        .then(response => response.text())
+        .then(text => {
+            const parser = new DOMParser();
+            const html = parser.parseFromString(text, "text/html");
+            const dataEl = html.getElementById("__RENDER_DATA__");
+            if (dataEl) {
+                return JSON.parse(decodeURIComponent(dataEl.innerText))?.access_id;
+            }
         });
-        return biliJwt;
-    });
+    this.jwtTimeStamp = Date.now();
+    return this.jwt;
 }
 
 async function getBiliMixin() {
