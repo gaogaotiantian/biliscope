@@ -165,10 +165,16 @@ VideoProfileCard.prototype.disable = function() {
     this.enabled = false;
     this.valid = false;
     this.data = {};
-    if (this.el) {
-        this.el.style.display = "none";
-    }
+    this.el.style.display = "none";
+    this.hideCardContent();
     return true;
+}
+
+VideoProfileCard.prototype.hideCardContent = function() {
+    const ids = ["biliscope-ai-summary-popup", "biliscope-hot-comment-wrapper"];
+    for (const id of ids) {
+        document.getElementById(id)?.classList.add("d-none");
+    }
 }
 
 VideoProfileCard.prototype.setLeaveEvent = function() {
@@ -304,6 +310,11 @@ VideoProfileCard.prototype.drawConclusion = function() {
     } else {
         outlineDiv.classList.add("d-none");
     }
+
+    if (summary || outline?.length > 0) {
+        // d-none 在 hideCardContent 函数里 add，用于初始化时隐藏顶层元素
+        document.getElementById("biliscope-ai-summary-popup").classList.remove("d-none");
+    }
 }
 
 VideoProfileCard.prototype.drawHotComment = function() {
@@ -389,7 +400,7 @@ VideoProfileCard.prototype.updateData = function(data) {
         this.data.replies = data.payload?.replies;
     }
 
-    if (this.enabled && this.el) {
+    if (this.enabled) {
         if (this.valid != null) {
             this.el.style.display = "flex";
             if (this.valid) {
