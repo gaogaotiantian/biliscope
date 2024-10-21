@@ -22,9 +22,9 @@ async function getJwt() {
                         .then(text => {
                             const parser = new DOMParser();
                             const html = parser.parseFromString(text, "text/html");
-                            const {innerText} = html.getElementById("__RENDER_DATA__");
-                            if (innerText) {
-                                return JSON.parse(decodeURIComponent(innerText))?.access_id;
+                            const dataEl = html.getElementById("__RENDER_DATA__");
+                            if (dataEl) {
+                                return JSON.parse(decodeURIComponent(dataEl.innerText))?.access_id;
                             }
                         });
         biliJwtTimeStamp = Date.now();
