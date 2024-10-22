@@ -8,8 +8,7 @@ const NUM_PER_PAGE = 50
 var biliMixin = null;
 
 async function getJwt() {
-    this.jwtTimeStamp ||= 0;
-    if (this.jwt && Date.now() - this.jwtTimeStamp < 3600 * 1000) {
+    if (this.jwtTimestamp && Date.now() - this.jwtTimestamp < 3600 * 1000) {
         return this.jwt;
     }
 
@@ -23,7 +22,7 @@ async function getJwt() {
                 return JSON.parse(decodeURIComponent(dataEl.innerText))?.access_id;
             }
         });
-    this.jwtTimeStamp = Date.now();
+    this.jwtTimestamp = Date.now();
     return this.jwt;
 }
 
