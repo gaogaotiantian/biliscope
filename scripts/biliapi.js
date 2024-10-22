@@ -53,7 +53,10 @@ async function biliGet(url, params, retry = 5) {
     if (url.includes("/wbi/") || url.includes("/conclusion/get")) {
         // convert params to url in a sorted order
         if (url.includes("wbi/acc/info")) {
-            params["w_webid"] = await getJwt();
+            const w_webid = await getJwt();
+            if (w_webid) {
+                params["w_webid"] = w_webid;
+            }
         }
         params["wts"] = Math.floor(Date.now() / 1000);
         let keys = Object.keys(params).sort();
