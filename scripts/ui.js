@@ -711,11 +711,11 @@ UserProfileCard.prototype.updateData = function (data) {
     }
 
     if (this.enabled && this.valid && this.el && this.el.style.display != "flex") {
-        this.clearOriginalCard();
         this.idCardObserver.observe(document.body, {
             "childList": true,
             "subtree": true
         })
+        this.clearOriginalCard();
         this.el.style.display = "flex";
     }
 
