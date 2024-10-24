@@ -131,7 +131,7 @@ function VideoProfileCard() {
     this.enabled = false;
     this.data = {};
     this.target = null;
-    this.enabled = false;
+    this.valid = false;
     this.videoId = null;
     this.el = document.createElement("div");
     this.el.style.position = "absolute";
