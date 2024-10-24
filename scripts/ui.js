@@ -287,7 +287,7 @@ function UserProfileCard() {
     this.cursorY = 0;
     this.target = null;
     this.enabled = false;
-    this.valid = true;
+    this.valid = false;
     this.wordCloud = null;
     this.fixed = false;
     this.cursorInside = false;
