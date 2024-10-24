@@ -165,10 +165,16 @@ VideoProfileCard.prototype.disable = function() {
     this.enabled = false;
     this.valid = false;
     this.data = {};
-    if (this.el) {
-        this.el.style.display = "none";
-    }
+    this.el.style.display = "none";
+    this.hideCardContent();
     return true;
+}
+
+VideoProfileCard.prototype.hideCardContent = function() {
+    const ids = ["biliscope-ai-summary-popup", "biliscope-hot-comment-wrapper"];
+    for (const id of ids) {
+        document.getElementById(id)?.classList.add("d-none");
+    }
 }
 
 VideoProfileCard.prototype.setLeaveEvent = function() {
@@ -267,6 +273,8 @@ VideoProfileCard.prototype.updateTarget = function(target) {
 }
 
 VideoProfileCard.prototype.drawConclusion = function() {
+    document.getElementById("biliscope-ai-summary-popup").classList.add("d-none");
+
     let summary = this.data.conclusion?.model_result?.summary;
     let outline = this.data.conclusion?.model_result?.outline;
     const summaryDiv = document.getElementById("biliscope-ai-summary-abstracts");
@@ -303,6 +311,10 @@ VideoProfileCard.prototype.drawConclusion = function() {
         outlineDiv.innerHTML = outlineHTML;
     } else {
         outlineDiv.classList.add("d-none");
+    }
+
+    if (summary || outline?.length > 0) {
+        document.getElementById("biliscope-ai-summary-popup").classList.remove("d-none");
     }
 }
 
@@ -389,7 +401,7 @@ VideoProfileCard.prototype.updateData = function(data) {
         this.data.replies = data.payload?.replies;
     }
 
-    if (this.enabled && this.el) {
+    if (this.enabled) {
         if (this.valid != null) {
             this.el.style.display = "flex";
             if (this.valid) {
