@@ -36,6 +36,9 @@ function labelPopularPage() {
 
 function labelDynamicPage() {
     for (let el of document.getElementsByClassName("bili-dyn-item")) {
+        if (el.__vue__.author.type == "AUTHOR_TYPE_UGC_SEASON") {
+            continue;
+        }
         let mid = el.__vue__.author.mid;
         if (mid) {
             el.getElementsByClassName("bili-dyn-item__avatar")[0].setAttribute("biliscope-userid", mid);
@@ -43,6 +46,9 @@ function labelDynamicPage() {
     }
 
     for (let el of document.getElementsByClassName("bili-dyn-title")) {
+        if (el.__vue__.author.type == "AUTHOR_TYPE_UGC_SEASON") {
+            continue;
+        }
         let mid = el.__vue__.author.mid;
         if (mid) {
             el.getElementsByClassName("bili-dyn-title__text")[0].setAttribute("biliscope-userid", mid);
