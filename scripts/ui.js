@@ -287,7 +287,7 @@ function UserProfileCard() {
     this.cursorY = 0;
     this.target = null;
     this.enabled = false;
-    this.valid = true;
+    this.valid = false;
     this.wordCloud = null;
     this.fixed = false;
     this.cursorInside = false;
@@ -315,6 +315,7 @@ UserProfileCard.prototype.disable = function() {
         return false;
     }
 
+    this.valid = false;
     this.userId = null;
     this.enabled = false;
     this.data = {};
@@ -333,10 +334,6 @@ UserProfileCard.prototype.disable = function() {
 UserProfileCard.prototype.enable = function() {
     if (!this.enabled) {
         this.enabled = true;
-        this.idCardObserver.observe(document.body, {
-            "childList": true,
-            "subtree": true
-        })
         return true;
     }
     return false;
@@ -714,6 +711,10 @@ UserProfileCard.prototype.updateData = function (data) {
     }
 
     if (this.enabled && this.valid && this.el && this.el.style.display != "flex") {
+        this.idCardObserver.observe(document.body, {
+            "childList": true,
+            "subtree": true
+        })
         this.clearOriginalCard();
         this.el.style.display = "flex";
     }
