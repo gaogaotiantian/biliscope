@@ -632,10 +632,10 @@ UserProfileCard.prototype.setupTriggers = function() {
     });
 }
 
-UserProfileCard.prototype.drawWordCloud = function(canvas) {
-    canvas.style.height = `${canvas.offsetWidth / 2}px`;
-    canvas.width = canvas.offsetWidth * window.devicePixelRatio;
-    canvas.height = canvas.offsetHeight * window.devicePixelRatio;
+UserProfileCard.prototype.drawWordCloud = function (canvas) {
+    canvas.style.height = "187.5px";
+    canvas.width = 375 * window.devicePixelRatio;
+    canvas.height = 187.5 * window.devicePixelRatio;
 
     canvas.parentNode.classList.add("biliscope-canvas-show");
 
