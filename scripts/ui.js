@@ -633,8 +633,8 @@ UserProfileCard.prototype.setupTriggers = function() {
 }
 
 UserProfileCard.prototype.drawWordCloud = function(canvas) {
-    let cardWidth = window.getComputedStyle(document.getElementById("biliscope-id-card")).width;
-    cardWidth = parseInt(cardWidth.replace("px", ""));
+    const idCard = document.getElementById("biliscope-id-card");
+    const cardWidth = parseInt(window.getComputedStyle(idCard).width.replace("px", ""));
 
     canvas.style.height = `${cardWidth / 2}px`;
     canvas.width = cardWidth * window.devicePixelRatio;
