@@ -76,8 +76,6 @@ window.addEventListener("load", function() {
             for (const comment of comments) {
                 const feed = comment?.shadowRoot?.children?.contents?.children?.feed;
 
-                tryObserve(comment?.shadowRoot);
-
                 if (!feed) {
                     return;
                 }
@@ -86,10 +84,7 @@ window.addEventListener("load", function() {
                     const mainComment = commentStack.shadowRoot.children.comment;
                     const replies = commentStack.shadowRoot.children?.replies;
 
-                    tryObserve(commentStack.shadowRoot);
-
                     if (mainComment) {
-                        tryObserve(mainComment.shadowRoot);
                         const avatar = mainComment.shadowRoot.getElementById("user-avatar");
                         avatar?.addEventListener("mouseover", showProfileDebounce);
 
@@ -108,30 +103,29 @@ window.addEventListener("load", function() {
                     }
 
                     if (replies) {
-                        tryObserve(replies.children[0].shadowRoot);
-                        for (const reply of replies.children[0].shadowRoot
-                                            .querySelectorAll("bili-comment-reply-renderer")) {
-                            tryObserve(reply.shadowRoot);
-                            const userInfo = reply.shadowRoot.querySelector("bili-comment-user-info");
-                            if (userInfo) {
-                                const avatar = userInfo.querySelector("#user-avatar");
-                                avatar?.addEventListener("mouseover", showProfileDebounce);
+                        const repliesInner = replies.children[0].shadowRoot;
+                        tryObserve(repliesInner.getElementById("expander-footer"));
 
-                                tryObserve(userInfo.shadowRoot);
-                                const userNameA = userInfo.shadowRoot?.querySelector("#user-name > a");
-                                userNameA?.addEventListener("mouseover", showProfileDebounce);
-                            }
+                        setTimeout(() => {
+                            for (const reply of repliesInner.querySelectorAll("bili-comment-reply-renderer")) {
+                                const userInfo = reply.shadowRoot.querySelector("bili-comment-user-info");
+                                if (userInfo) {
+                                    const avatar = userInfo.querySelector("#user-avatar");
+                                    avatar?.addEventListener("mouseover", showProfileDebounce);
 
-                            const richText = reply.shadowRoot.querySelector("bili-rich-text");
-                            if (richText) {
-                                setTimeout(() => {
+                                    const userNameA = userInfo.shadowRoot?.querySelector("#user-name > a");
+                                    userNameA?.addEventListener("mouseover", showProfileDebounce);
+                                }
+
+                                const richText = reply.shadowRoot.querySelector("bili-rich-text");
+                                if (richText) {
                                     const userNameAts = richText.shadowRoot.querySelectorAll("a[data-user-profile-id]");
                                     for (const userNameAt of userNameAts) {
                                         userNameAt.addEventListener("mouseover", showProfileDebounce);
                                     }
-                                }, 0);
+                                }
                             }
-                        }
+                        }, 0);
                     }
 
                 }
