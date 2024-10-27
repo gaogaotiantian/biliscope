@@ -633,9 +633,12 @@ UserProfileCard.prototype.setupTriggers = function() {
 }
 
 UserProfileCard.prototype.drawWordCloud = function(canvas) {
-    canvas.style.height = `${canvas.offsetWidth / 2}px`;
-    canvas.width = canvas.offsetWidth * window.devicePixelRatio;
-    canvas.height = canvas.offsetHeight * window.devicePixelRatio;
+    const idCard = document.getElementById("biliscope-id-card");
+    const cardWidth = parseInt(window.getComputedStyle(idCard).width.replace("px", ""));
+
+    canvas.style.height = `${cardWidth / 2}px`;
+    canvas.width = cardWidth * window.devicePixelRatio;
+    canvas.height = cardWidth / 2 * window.devicePixelRatio;
 
     canvas.parentNode.classList.add("biliscope-canvas-show");
 
