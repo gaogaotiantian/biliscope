@@ -632,7 +632,7 @@ UserProfileCard.prototype.setupTriggers = function() {
     });
 }
 
-UserProfileCard.prototype.drawWordCloud = function (canvas) {
+UserProfileCard.prototype.drawWordCloud = function(canvas) {
     let cardWidth = window.getComputedStyle(document.getElementById("biliscope-id-card")).width;
     cardWidth = parseInt(cardWidth.replace("px", ""));
     canvas.style.height = `${cardWidth / 2}px`;
