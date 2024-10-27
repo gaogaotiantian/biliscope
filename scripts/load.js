@@ -124,10 +124,12 @@ window.addEventListener("load", function() {
 
                             const richText = reply.shadowRoot.querySelector("bili-rich-text");
                             if (richText) {
-                                const userNameAts = richText.shadowRoot.querySelectorAll("a[data-user-profile-id]");
-                                for (const userNameAt of userNameAts) {
-                                    userNameAt.addEventListener("mouseover", showProfileDebounce);
-                                }
+                                setTimeout(() => {
+                                    const userNameAts = richText.shadowRoot.querySelectorAll("a[data-user-profile-id]");
+                                    for (const userNameAt of userNameAts) {
+                                        userNameAt.addEventListener("mouseover", showProfileDebounce);
+                                    }
+                                }, 0);
                             }
                         }
                     }
