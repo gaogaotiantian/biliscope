@@ -100,7 +100,6 @@ window.addEventListener("load", function() {
 
                         const richText = mainComment.shadowRoot.querySelector("bili-rich-text");
                         if (richText) {
-                            tryObserve(richText.shadowRoot);
                             const userNameAts = richText.shadowRoot.querySelectorAll("a");
                             for (const userNameAt of userNameAts) {
                                 userNameAt.addEventListener("mouseover", showProfileDebounce);
@@ -125,7 +124,6 @@ window.addEventListener("load", function() {
 
                             const richText = reply.shadowRoot.querySelector("bili-rich-text");
                             if (richText) {
-                                tryObserve(richText.shadowRoot);
                                 const userNameAts = richText.shadowRoot.querySelectorAll("a");
                                 for (const userNameAt of userNameAts) {
                                     userNameAt.addEventListener("mouseover", showProfileDebounce);
