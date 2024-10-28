@@ -36,15 +36,15 @@ function labelPopularPage() {
 
 function labelDynamicPage() {
     for (let el of document.getElementsByClassName("bili-dyn-item")) {
-        let mid = el.__vue__.author.mid;
-        if (mid) {
+        const {mid, type} = el.__vue__.author;
+        if (mid && type == "AUTHOR_TYPE_NORMAL") {
             el.getElementsByClassName("bili-dyn-item__avatar")[0].setAttribute("biliscope-userid", mid);
         }
     }
 
     for (let el of document.getElementsByClassName("bili-dyn-title")) {
-        let mid = el.__vue__.author.mid;
-        if (mid) {
+        const {mid, type} = el.__vue__.author;
+        if (mid && type == "AUTHOR_TYPE_NORMAL") {
             el.getElementsByClassName("bili-dyn-title__text")[0].setAttribute("biliscope-userid", mid);
         }
     }
