@@ -100,6 +100,7 @@ window.addEventListener("load", function() {
 
                         const richText = mainComment.shadowRoot.querySelector("bili-rich-text");
                         if (richText) {
+                            tryObserve(richText.shadowRoot);
                             const userNameAts = richText.shadowRoot.querySelectorAll("a[data-user-profile-id]");
                             for (const userNameAt of userNameAts) {
                                 userNameAt.addEventListener("mouseover", showProfileDebounce);
@@ -117,19 +118,17 @@ window.addEventListener("load", function() {
                                 const avatar = userInfo.querySelector("#user-avatar");
                                 avatar?.addEventListener("mouseover", showProfileDebounce);
 
-                                tryObserve(userInfo.shadowRoot);
                                 const userNameA = userInfo.shadowRoot?.querySelector("#user-name > a");
                                 userNameA?.addEventListener("mouseover", showProfileDebounce);
                             }
 
                             const richText = reply.shadowRoot.querySelector("bili-rich-text");
                             if (richText) {
-                                setTimeout(() => {
-                                    const userNameAts = richText.shadowRoot.querySelectorAll("a[data-user-profile-id]");
-                                    for (const userNameAt of userNameAts) {
-                                        userNameAt.addEventListener("mouseover", showProfileDebounce);
-                                    }
-                                }, 0);
+                                tryObserve(richText.shadowRoot);
+                                const userNameAts = richText.shadowRoot.querySelectorAll("a[data-user-profile-id]");
+                                for (const userNameAt of userNameAts) {
+                                    userNameAt.addEventListener("mouseover", showProfileDebounce);
+                                }
                             }
                         }
                     }
