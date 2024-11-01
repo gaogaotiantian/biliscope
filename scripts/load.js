@@ -118,6 +118,7 @@ window.addEventListener("load", function() {
                                 const avatar = userInfo.querySelector("#user-avatar");
                                 avatar?.addEventListener("mouseover", showProfileDebounce);
 
+                                tryObserve(userInfo.shadowRoot);
                                 const userNameA = userInfo.shadowRoot?.querySelector("#user-name > a");
                                 userNameA?.addEventListener("mouseover", showProfileDebounce);
                             }
