@@ -97,6 +97,15 @@ window.addEventListener("load", function() {
                                           ?.querySelector("bili-comment-user-info")?.shadowRoot
                                           ?.querySelector("#user-name > a");
                         userNameA?.addEventListener("mouseover", showProfileDebounce);
+
+                        const richText = mainComment.shadowRoot.querySelector("bili-rich-text");
+                        if (richText) {
+                            tryObserve(richText.shadowRoot);
+                            const userNameAts = richText.shadowRoot.querySelectorAll("a[data-user-profile-id]");
+                            for (const userNameAt of userNameAts) {
+                                userNameAt.addEventListener("mouseover", showProfileDebounce);
+                            }
+                        }
                     }
 
                     if (replies) {
@@ -112,6 +121,15 @@ window.addEventListener("load", function() {
                                 tryObserve(userInfo.shadowRoot);
                                 const userNameA = userInfo.shadowRoot?.querySelector("#user-name > a");
                                 userNameA?.addEventListener("mouseover", showProfileDebounce);
+                            }
+
+                            const richText = reply.shadowRoot.querySelector("bili-rich-text");
+                            if (richText) {
+                                tryObserve(richText.shadowRoot);
+                                const userNameAts = richText.shadowRoot.querySelectorAll("a[data-user-profile-id]");
+                                for (const userNameAt of userNameAts) {
+                                    userNameAt.addEventListener("mouseover", showProfileDebounce);
+                                }
                             }
                         }
                     }
