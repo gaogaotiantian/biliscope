@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "BiliScope - Bilibili插件，你的B站小助手",
-  "version": "0.6.2",
+  "version": "0.6.3",
   "description": "可以显示视频的AI内容总结，在B站的各类网页上显示用户的详细信息，包括关注数、粉丝数、投稿数、签名、投稿词云等等。还可以给UP主做备注和标签！",
   "icons": {
     "128": "img/logo.png"
