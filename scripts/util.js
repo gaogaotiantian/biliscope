@@ -141,8 +141,6 @@ function displayElOutsideTarget(el, targetBounding, directions, cursorPadding = 
                 el.style.top = `${top - cursorPadding - cardHeight + window.scrollY}px`;
                 break;
             case "bottom":
-                console.log(bottom + cardHeight, window.innerHeight);
-
                 if (bottom + cardHeight > window.innerHeight) {
                     continue;
                 }

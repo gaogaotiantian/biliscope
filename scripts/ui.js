@@ -400,12 +400,28 @@ UserProfileCard.prototype.updateUserId = function(userId) {
 UserProfileCard.prototype.updateCursor = function(cursorX, cursorY) {
     this.cursorX = cursorX;
     this.cursorY = cursorY;
+    const targetBounding = this.target
+        ? this.target.getBoundingClientRect()
+        : {left: cursorX, right: cursorX, top: cursorY, bottom: cursorY};
 
-    displayElOutsideTarget(
-        this.el,
-        {left: cursorX, right: cursorX, top: cursorY, bottom: cursorY},
-        ['right', 'left']
-    );
+    const href = window.location.href;
+
+    if (href.startsWith(BILIBILI_DYNAMIC_URL) ||
+        href.startsWith(BILIBILI_DYNAMIC_DETAIL_URL)) {
+        // 动态界面
+        displayElOutsideTarget(
+            this.el,
+            targetBounding,
+            ['left', 'bottom', 'right', 'top', 'default']
+        );
+    } else {
+        displayElOutsideTarget(
+            this.el,
+            targetBounding,
+            ['right', 'left']
+        );
+
+    }
 }
 
 UserProfileCard.prototype.updateTarget = function(target) {
