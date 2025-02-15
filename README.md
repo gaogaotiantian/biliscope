@@ -62,6 +62,6 @@ Firefox的用户，可以去Mozilla Addon Store搜索[BiliScope](https://addons.
 
 ## LICENSE
 
-Copyright 2023-2024 Tian Gao.
+Copyright 2023-2025 Tian Gao.
 
 MIT
