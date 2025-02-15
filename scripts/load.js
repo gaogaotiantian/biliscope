@@ -138,7 +138,8 @@ window.addEventListener("load", function() {
             }
         }
 
-        if (window.location.href.startsWith(BILIBILI_DYNAMIC_URL) ||
+        if (window.location.href.startsWith(BILIBILI_SPACE_URL) ||
+            window.location.href.startsWith(BILIBILI_DYNAMIC_URL) ||
             window.location.href.startsWith(BILIBILI_DYNAMIC_DETAIL_URL) ||
             window.location.href.startsWith(BILIBILI_VIDEO_URL) ||
             window.location.href.startsWith(BILIBILI_WATCH_LATER_URL)) {
