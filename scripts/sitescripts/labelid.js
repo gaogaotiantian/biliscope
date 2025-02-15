@@ -5,6 +5,7 @@ var BILIBILI_SPACE_URL = "https://space.bilibili.com"
 var BILIBILI_POPULAR_URL = "https://www.bilibili.com/v/popular"
 var BILIBILI_VIDEO_URL = "https://www.bilibili.com/video"
 var BILIBILI_WATCH_LATER_URL = "https://www.bilibili.com/list/watchlater"
+var BILIBILI_CM_URL = "https://cm.bilibili.com"
 
 function getUserIdFromLink(s) {
     let regex = /.*?bilibili.com\/([0-9]*)(\/dynamic)?([^\/]*|\/|\/\?.*)$/;
@@ -92,6 +93,12 @@ function labelLinks() {
             }
         } else if (el.classList.contains("jump-link")) {
             let userId = el.getAttribute("data-user-id");
+            if (userId) {
+                el.setAttribute("biliscope-userid", userId);
+            }
+        } else if (el.href.startsWith(BILIBILI_CM_URL)) {
+            let url = new URL(el.href);
+            let userId = url.searchParams.get("space_mid");
             if (userId) {
                 el.setAttribute("biliscope-userid", userId);
             }
