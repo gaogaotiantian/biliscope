@@ -392,7 +392,7 @@ VideoProfileCard.prototype.updateData = function(data) {
         this.data.view = data["payload"];
     } else if (data["api"] == "conclusion") {
         this.data.conclusion = data["payload"];
-        if (this.data.conclusion.code == 0) {
+        if (this.data.conclusion.model_result.result_type != 0) {
             this.valid = true;
         } else {
             this.valid = false;
