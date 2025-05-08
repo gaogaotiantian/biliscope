@@ -260,7 +260,6 @@ function cacheAndUpdateVideo(callback, videoId, api, payload) {
 function updateRelation(userId, callback) {
     biliGet(`${BILIBILI_API_URL}/x/space/wbi/acc/relation`, {
         mid: userId,
-        web_location: 333.1387,
     })
     .then((data) => {
         if (data["code"] == 0) {
