@@ -22,6 +22,7 @@ function loadOptions() {
         enableHotComment: true,
         aiSummaryHoverThreshold: 800,
         enableVideoTag: true,
+        enableVideoData: true,
         enableIpLabel: true,
         minSize: 5
     });

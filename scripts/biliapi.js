@@ -290,7 +290,9 @@ function updateUserInfo(userId, callback) {
 
     updateRelation(userId, callback);
 
-    updateVideoData(userId, callback);
+    if (biliScopeOptions.enableVideoData) {
+        updateVideoData(userId, callback);
+    }
 }
 
 function updateVideoInfo(videoId, callback) {

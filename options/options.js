@@ -178,6 +178,7 @@ const all_options = [
     ['enable-video-tag', null, true],
     ['enable-tag-color', null, true],
     ['enable-ip-label', null, true],
+    ['enable-video-data', null, true],
     ['min-number', 'minSize', 5],
 ]
 
