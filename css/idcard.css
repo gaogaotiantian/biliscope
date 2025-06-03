@@ -470,3 +470,8 @@
 #biliscope-id-card .arrow-down {
     cursor: pointer;
 }
+
+#biliscope-id-card .idc-meta-item {
+    color: var(--note-color, #000);
+    font-family: var(--note-font, Arial);
+}

@@ -181,3 +181,16 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         });
     }
 });
+
+function applyNoteStyles() {
+    chrome.storage.sync.get(['noteFont', 'noteColor'], function (result) {
+        const noteFont = result.noteFont || 'Arial';
+        const noteColor = result.noteColor || '#000000';
+        document.documentElement.style.setProperty('--note-font', noteFont);
+        document.documentElement.style.setProperty('--note-color', noteColor);
+    });
+}
+
+window.addEventListener("load", function() {
+    applyNoteStyles();
+});

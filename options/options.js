@@ -180,6 +180,8 @@ const all_options = [
     ['enable-ip-label', null, true],
     ['enable-video-data', null, true],
     ['min-number', 'minSize', 5],
+    ['note-font', 'noteFont', 'Arial'],
+    ['note-color', 'noteColor', '#000000'],
 ]
 
 function toCamelCase(str) {

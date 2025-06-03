@@ -89,3 +89,20 @@ window.addEventListener("load", function() {
         subtree: true
     });
 });
+
+textarea.addEventListener("blur", (ev) => {
+    let mid = this.data["mid"];
+    if (mid) {
+        if (textarea.value == "") {
+            delete noteData[mid];
+        } else {
+            noteData[mid] = textarea.value;
+        }
+        text.innerHTML = noteDataToDisplay(noteData, mid);
+        text.style.color = noteColor;
+        text.style.fontFamily = noteFont;
+        chrome.storage.local.set({
+            noteData: noteData
+        });
+    }
+});
