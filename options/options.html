@@ -1,112 +1,121 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
 
 <head>
-  <meta charset="UTF-8">
-  <title>BiliScope设置</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>BiliScope 设置</title>
   <link rel="stylesheet" href="./options.css">
-</head>
+  </head>
 
 <body>
-  <div class="item">
-    <label for="enable-up-card">开启up主卡片:</label>
-    <input type="checkbox" id="enable-up-card">
-  </div>
-  <div class="item">
-    <label for="enable-block-button">开启拉黑键:</label>
-    <input type="checkbox" id="enable-block-button">
-  </div>
-  <div class="item">
-    <label for="enable-rollback-feedcard">开启首页换一换的前进后退:</label>
-    <input type="checkbox" id="enable-rollback-feedcard">
-  </div>
-  <div class="item">
-    <label for="enable-ai-summary">开启视频AI总结:</label>
-    <input type="checkbox" id="enable-ai-summary">
-  </div>
-  <div class="item">
-    <label for="enable-hot-comment">开启热评:</label>
-    <input type="checkbox" id="enable-hot-comment">
-  </div>
-  <div class="item">
-    <label for="ai-summary-hover-threshold">视频AI总结悬停触发时长（毫秒）:</label>
-    <input type="number" id="ai-summary-hover-threshold">
-  </div>
-  <div class="item">
-    <label for="enable-video-tag">开启视频标签:</label>
-    <input type="checkbox" id="enable-video-tag">
-  </div>
-  <div class="item">
-    <label for="enable-video-data">显示视频数据：</label>
-    <input type="checkbox" id="enable-video-data">
-  </div>
-  <div class="item">
-    <label for="enable-word-cloud">使用词云:</label>
-    <input type="checkbox" id="enable-word-cloud">
-  </div>
-  <div class="number-selector item">
-    <label for="min-number">词云最小字号:</label>
-    <button id="decrement" class="btn btn-change">-</button>
-      <input type="number" id="min-number" value="5" min="5" max="50">
-    <button id="increment" class="btn btn-change">+</button>
-    <p class="desc">(小于此设置字号的词将不会显示)</p>
-  </div>
+  <main class="container" role="main" aria-label="BiliScope 设置">
+    <h1>BiliScope 设置</h1>
 
-  <hr>
+    <section class="section" aria-labelledby="features-heading">
+      <h2 id="features-heading" style="position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap;">功能开关</h2>
+      
+      <div class="item">
+        <label for="enable-up-card">开启UP主卡片</label>
+        <input type="checkbox" id="enable-up-card" />
+      </div>
+      <div class="item">
+        <label for="enable-block-button">开启拉黑键</label>
+        <input type="checkbox" id="enable-block-button" />
+      </div>
+      <div class="item">
+        <label for="enable-rollback-feedcard">开启首页换一换的前进后退</label>
+        <input type="checkbox" id="enable-rollback-feedcard" />
+      </div>
+      <div class="item">
+        <label for="enable-ai-summary">开启视频AI总结</label>
+        <input type="checkbox" id="enable-ai-summary" />
+      </div>
+      <div class="item">
+        <label for="enable-hot-comment">开启热评</label>
+        <input type="checkbox" id="enable-hot-comment" />
+      </div>
+      <div class="item">
+        <label for="enable-video-tag">开启视频标签</label>
+        <input type="checkbox" id="enable-video-tag" />
+      </div>
+      <div class="item">
+        <label for="enable-video-data">显示视频数据</label>
+        <input type="checkbox" id="enable-video-data" />
+      </div>
+      <div class="item">
+        <label for="enable-word-cloud">使用词云</label>
+        <input type="checkbox" id="enable-word-cloud" />
+      </div>
+      <div class="item">
+        <label for="enable-ip-label" title="启用后将在动态和评论区显示用户IP属地信息">开启IP地址显示</label>
+        <input type="checkbox" id="enable-ip-label" />
+      </div>
+      <div class="item">
+        <label for="enable-tag-color" title="根据标签修改用户名颜色">根据标签修改用户名颜色</label>
+        <input type="checkbox" id="enable-tag-color" />
+      </div>
+    </section>
 
-  <div class="item">
-    <label for="enable-ip-label">开启IP地址显示:</label>
-    <input type="checkbox" id="enable-ip-label">
-  </div>
+    <section class="section number-selector" aria-labelledby="number-settings-heading" style="padding-top:0;">
+      <h2 id="number-settings-heading" style="position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap;">数字设置</h2>
+      <label for="ai-summary-hover-threshold" style="flex: 1 1 auto;">视频AI总结悬停触发时长（毫秒）</label>
+      <input type="number" id="ai-summary-hover-threshold" min="0" step="100" />
+    </section>
 
-  <hr>
+    <section class="section number-selector" aria-labelledby="wordcloud-settings-heading" style="padding-top:0;">
+      <h2 id="wordcloud-settings-heading" style="position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap;">词云设置</h2>
+      <label for="min-number" style="flex: 1 1 auto;">词云最小字号</label>
+      <div class="btn-group">
+        <button id="decrement" aria-label="减小词云最小字号">-</button>
+        <input type="number" id="min-number" value="5" min="5" max="50" />
+        <button id="increment" aria-label="增大词云最小字号">+</button>
+      </div>
+      <p class="desc">(小于此设置字号的词将不会显示)</p>
+    </section>
 
-  <div class="item">
-    <label for="enable-tag-color">根据标签修改用户名颜色:</label>
-    <input type="checkbox" id="enable-tag-color">
-    <div>
-      <div id="tag-color-setting-div">
-        <div id="tag-color-setting-display-div">
-        </div>
-
-        <div id="tag-color-setting-input-div" class="tag-color-setting-item">
-          <input type="text" id="tag-color-setting-add-text" placeholder="标签名">
-          <input type="color" id="tag-color-setting-add-color" value="#000000">
-          <svg id="tag-color-setting-add-button" xmlns="http://www.w3.org/2000/svg" height="16px" viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2023 Fonticons, Inc.--><path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z"/></svg>
+    <section class="section" aria-labelledby="tag-color-heading">
+      <h2 id="tag-color-heading" style="margin-bottom: 0.5em;">标签颜色设置</h2>
+      <div id="tag-color-setting-div" aria-live="polite" aria-relevant="additions removals">
+        <div id="tag-color-setting-display-div" role="list"></div>
+        <div id="tag-color-setting-input-div" class="tag-color-setting-item" role="form" aria-label="新增标签颜色设置">
+          <input type="text" id="tag-color-setting-add-text" placeholder="标签名" aria-label="标签名" />
+          <input type="color" id="tag-color-setting-add-color" value="#000000" aria-label="选择颜色" />
+          <button id="tag-color-setting-add-button" aria-label="添加标签颜色">
+            <!-- plus icon -->
+            <svg xmlns="http://www.w3.org/2000/svg" height="16px" viewBox="0 0 512 512" fill="#2563eb" role="img" aria-hidden="true"><path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z"/></svg>
+          </button>
         </div>
       </div>
-    </div>
-  </div>
+    </section>
 
-  <hr>
+    <hr />
 
-  <div class="item">
-    <div>
+    <section class="section" aria-labelledby="note-management-heading" style="justify-content: center; gap: 10px;">
+      <h2 id="note-management-heading" style="position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap;">备注管理</h2>
       <button id="export-note">导出备注</button>
       <button id="import-note">导入备注</button>
       <button id="extend-note">添加备注</button>
-    </div>
-  </div>
+    </section>
 
-  <div class="item">
-    <div>
+    <section class="section" style="justify-content: center; gap: 10px; margin-top: 0;">
       <div id="clear-note-button-div">
-        <button id="clear-note">清空备注</button>
+        <button id="clear-note" class="btn-danger">清空备注</button>
       </div>
       <div id="clear-note-confirm-div" hidden>
         <button id="clear-note-cancel">取消清空</button>
         <button id="clear-note-confirm" class="btn-danger">确认清空</button>
       </div>
-    </div>
-  </div>
+    </section>
 
-  <hr>
+    <div id="status" role="alert" aria-live="assertive"></div>
 
-  <div id="status" class="item"></div>
-  <div class="item">
-    <button id="save" class="btn btn-primary">保存</button>
-    <button id="report-issue" class="btn btn-primary" style="float: right;">反馈问题</button>
-  </div>
+  </main>
+  <section class="section" aria-label="保存按钮容器" style="justify-content: center; margin-top: 1rem;">
+    <button id="save">保存</button>
+  </section>
+  
   <script src="options.js"></script>
+
 </body>
 </html>
