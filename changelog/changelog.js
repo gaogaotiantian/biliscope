@@ -1,5 +1,11 @@
 const BILISCOPE_CHANGE_LOG = [
     {
+        version: "0.6.5",
+        changes: [
+            "紧急修复了用户卡片中背景图片不显示的问题",
+        ]
+    },
+    {
         version: "0.6.4",
         changes: [
             "修复了一些情况下用户卡片不显示的问题",
