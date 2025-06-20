@@ -694,7 +694,7 @@ UserProfileCard.prototype.updateData = function (data) {
         this.data["title_type"] = d["data"]["official"]["type"];
         this.data["live_status"] = d["data"]["live_room"] ? d["data"]["live_room"]["liveStatus"]: 0;
         this.data["vip"] = d["data"]["vip"]["status"];
-        this.data["top_photo"] = d["data"]["top_photo"].replace("http://", "https://");
+        this.data["top_photo"] = d["data"]["top_photo_v2"]["l_img"]
         this.data["profession"] = d["data"]["profession"]["is_show"]
             ? `${d["data"]["profession"]["title"]} ${d["data"]["profession"]["department"]}`
             : "";
